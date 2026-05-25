@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DJ Panel</title>
+
+  <!-- ✅ Google Font: New Rocker -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="dj">
+  <div class="container">
+
+    <!-- =======================
+         TOP BAR
+    ======================== -->
+    <div class="topbar">
+      <div>
+        <div class="title">🎧 Panel DJ</div>
+        <div class="muted"></div>
+      </div>
+
+      <div class="top-actions">
+        <span class="badge" id="countBadge">0 pendientes</span>
+
+        <button class="btn btn-small" id="refreshBtn" type="button">
+          Actualizar
+        </button>
+
+        <button class="btn btn-small btn-danger" id="clearAllBtn" type="button">
+          Limpiar
+        </button>
+
+        <button class="btn btn-small" id="logoutBtn" type="button">
+          Salir
+        </button>
+      </div>
+    </div>
+
+    <!-- =======================
+         CONTENIDO PRINCIPAL
+    ======================== -->
+    <div class="grid">
+
+      <!-- SOLICITUDES -->
+      <div class="requests-area">
+        <div class="h2">Solicitudes</div>
+
+        <div class="cards" id="cards"></div>
+
+        <div class="toast" id="emptyMsg" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <div class="panel">
+        <div class="h2">Mesas</div>
+
+        <!-- ❌ sin estilos inline, todo lo maneja CSS -->
+        <div id="lastTables" class="muted"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =======================
+       FRANJA INFERIOR PEDIDOS
+  ======================== -->
+  <div class="orders-strip open" id="ordersBar" aria-live="polite">
+    <div class="orders-strip-inner">
+      <span class="orders-dot open" id="ordersDot"></span>
+      <span id="ordersLabel">PEDIDOS</span>
+    </div>
+  </div>
+
+  <!-- =======================
+       SCRIPTS
+  ======================== -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/dj.js"></script>
+</body>
+</html>

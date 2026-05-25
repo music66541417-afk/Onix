@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="/styles.css">
+
+<style>
+  .switch{ position:relative; width:52px; height:28px; display:inline-block; }
+  .switch input{ display:none; }
+  .slider{ position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.14); border:1px solid var(--border); border-radius:999px; transition:.2s; }
+  .slider:before{ content:""; position:absolute; height:22px; width:22px; left:3px; top:2px; background:rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.18); border-radius:999px; transition:.2s; }
+  input:checked + .slider{ background:rgba(78,225,138,0.16); border-color:rgba(78,225,138,0.75); }
+  input:checked + .slider:before{ transform:translateX(24px); background:rgba(78,225,138,0.45); border-color:rgba(78,225,138,0.75); }
+
+  .admin-grid{ display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px; }
+  .rowline{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; }
+  .big{ font-size:28px; font-weight:900; letter-spacing:.5px; }
+
+  .stats-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; }
+  .select{ background: rgba(0,0,0,0.35); border:1px solid var(--border); color: var(--text); padding:8px 10px; border-radius:10px; }
+  .stats-grid{ display:grid; grid-template-columns:1fr; gap:16px; margin-top:12px; }
+
+  .mini{ font-size: 12px; opacity: .8; }
+  .tablelist{ width:100%; border-collapse: collapse; }
+  .tablelist td, .tablelist th{ border-bottom: 1px solid rgba(255,255,255,0.08); padding:8px 6px; text-align:left; }
+  .right{ text-align:right; }
+
+  .hist-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 12px; border-radius:12px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,0.35);
+    color: var(--text);
+    font-weight:900;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .overlay{
+    position:fixed; inset:0;
+    background: rgba(0,0,0,0.75);
+    opacity:0; pointer-events:none;
+    transition: opacity .18s ease;
+    z-index: 80;
+  }
+  .overlay.open{ opacity:1; pointer-events:auto; }
+
+  .modal{
+    position:fixed; left:50%; top:50%;
+    transform: translate(-50%, -48%) scale(0.985);
+    width:min(980px, 94vw);
+    height:min(84vh, 780px);
+    border:1px solid var(--border);
+    border-radius:18px;
+    background: rgba(0,0,0,0.92);
+    box-shadow: 0 22px 80px rgba(0,0,0,0.55);
+    opacity:0; pointer-events:none;
+    transition: opacity .18s ease, transform .18s ease;
+    z-index: 81;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .modal.open{
+    opacity:1; pointer-events:auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .modal-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:12px; padding:14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    background-image: radial-gradient(circle at 10% 10%, rgba(200,165,122,0.14), transparent 40%);
+  }
+  .modal-title{ font-weight:1000; letter-spacing:.5px; font-size:16px; }
+  .modal-sub{ color: var(--muted); font-size:12px; margin-top:4px; }
+
+  .modal-actions{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+  .modal-body{ padding:14px 16px; overflow:auto; display:flex; flex-direction:column; gap:14px; }
+
+  .summary-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr);
+    gap:10px;
+  }
+  @media (max-width: 900px){ .summary-grid{ grid-template-columns: repeat(2, 1fr); } }
+
+  .summary-card{
+    border:1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.35);
+    border-radius:14px;
+    padding:10px 12px;
+  }
+  .summary-card .k{ color: var(--muted); font-size:12px; }
+  .summary-card .v{ font-size:20px; font-weight:1000; margin-top:4px; }
+
+  .hist-table{
+    width:100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .hist-table th,.hist-table td{
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding:10px 8px;
+    vertical-align:top;
+  }
+  .hist-table th{
+    font-size:12px;
+    color:var(--muted);
+    font-weight:1000;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+  }
+
+  .tag{
+    display:inline-flex; padding:2px 8px; border:1px solid rgba(255,255,255,0.14);
+    border-radius:999px; font-size:12px; color: var(--muted);
+    background: rgba(0,0,0,0.25);
+  }
+  .who{ font-weight:1000; }
+  .song{ font-weight:900; }
+  .muted2{ color: var(--muted); font-size:12px; }
+  .statusline{ color: var(--muted); font-size:12px; }
+
+  .closeX{
+    border:1px solid rgba(255,255,255,0.14);
+    background: rgba(0,0,0,0.35);
+    color: var(--text);
+    border-radius:12px;
+    padding:10px 12px;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  .byday-main td{
+    font-size: 16px;
+    font-weight: 1000;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .byday-small td{
+    font-size: 12px;
+    opacity: 0.85;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  .raffle-modal{
+    width: min(1180px, 95vw);
+    height: min(88vh, 860px);
+  }
+
+  .raffle-head{
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 76px;
+  }
+
+  .raffle-head .modal-actions{
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .raffle-date-only{
+    min-width: 240px;
+    max-width: 260px;
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  .raffle-grid{
+    display:grid;
+    grid-template-columns: 1.25fr 0.95fr;
+    gap:18px;
+    align-items:start;
+  }
+  @media (max-width: 980px){
+    .raffle-grid{ grid-template-columns: 1fr; }
+  }
+
+  .raffle-left{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .raffle-right{
+    border-left: 1px solid rgba(255,255,255,0.08);
+    padding-left: 14px;
+  }
+  @media (max-width: 980px){
+    .raffle-right{
+      border-left:none;
+      padding-left:0;
+      border-top:1px solid rgba(255,255,255,0.08);
+      padding-top:14px;
+    }
+  }
+
+  .wheel-wrap{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 0;
+    min-height: 430px;
+  }
+
+  #wheelCanvas{
+    width: 420px;
+    height: 420px;
+    max-width: 100%;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), rgba(0,0,0,0.35)),
+      rgba(0,0,0,0.35);
+    border: 1px solid rgba(200,165,122,0.35);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.02) inset,
+      0 0 28px rgba(200,165,122,0.12),
+      0 18px 50px rgba(0,0,0,0.45);
+  }
+
+  .wheel-pointer{
+    position:absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-bottom: 24px solid var(--border);
+    filter: drop-shadow(0 8px 10px rgba(0,0,0,0.35));
+    z-index: 2;
+  }
+
+  .raffle-actions{
+    display:flex;
+    justify-content:center;
+    margin-top: -8px;
+  }
+
+  .raffle-spin-big{
+    padding: 12px 18px;
+    min-width: 122px;
+    border-radius: 18px;
+    font-size: 16px;
+    font-weight: 1000;
+  }
+
+  .raffle-block-title{
+    font-size: 14px;
+    font-weight: 1000;
+    letter-spacing: .4px;
+    color: rgba(255,255,255,0.92);
+    margin-bottom: 8px;
+  }
+
+  .winners-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size: 16px;
+    font-weight: 1000;
+    margin-bottom: 10px;
+  }
+
+  .winner-row-name{
+    font-weight: 1000;
+    font-size: 18px;
+    line-height: 1.05;
+  }
+
+  .winner-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: 7px 12px;
+    min-width: 92px;
+    border-radius: 999px;
+    border:1px solid rgba(200,165,122,0.45);
+    background: rgba(200,165,122,0.10);
+    color: rgba(255,240,220,0.96);
+    font-weight: 900;
+    font-size: 14px;
+    text-align:center;
+  }
+
+  .raffle-new-row td{
+    animation: raffleFlashRow 1.6s ease-in-out;
+  }
+
+  @keyframes raffleFlashRow{
+    0%   { background: rgba(255,215,120,0.00); }
+    20%  { background: rgba(255,215,120,0.22); }
+    100% { background: rgba(255,215,120,0.00); }
+  }
+
+  @media (max-width: 520px){
+    .rowline{
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 10px;
+      padding-right: 10px;
+    }
+
+    .rowline > div:last-child{
+      width: 100%;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .hist-btn{
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+
+    .big{
+      font-size: 24px;
+    }
+
+    .raffle-date-only{
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <div class="title">🛡️ Panel Admin</div>
+        <div class="muted">Control general del karaoke</div>
+      </div>
+
+      <div class="top-actions">
+        <span class="badge" id="connBadge">Conectando…</span>
+        <button class="btn btn-small" id="logoutBtn" type="button">Salir</button>
+      </div>
+    </div>
+
+    <div class="admin-grid">
+      <div class="panel" style="max-width:none;">
+        <div class="h2">DJ</div>
+
+        <div class="rowline">
+          <div class="muted">Solicitudes activas</div>
+          <div class="big" id="count1">0</div>
+        </div>
+
+        <div class="rowline">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="orders-dot open" id="dot1"></span>
+            <div>
+              <div style="font-weight:900;">Pedidos</div>
+              <div class="muted" id="label1">Abierto</div>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="hist-btn" id="histBtn1" type="button">🕘 Historial</button>
+            <button class="hist-btn" id="raffleBtn1" type="button">🏆 Ruleta</button>
+
+            <label class="switch" title="Abrir/Cerrar pedidos">
+              <input type="checkbox" id="toggle1" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-top">
+      <div>
+        <div class="h2">📊 Estadísticas</div>
+      </div>
+
+      <div style="display:flex; gap:10px; align-items:center;">
+        <span class="muted">Rango:</span>
+        <select id="daysSelect" class="select">
+          <option value="7">7 días</option>
+          <option value="30" selected>30 días</option>
+          <option value="90">90 días</option>
+        </select>
+        <button class="btn btn-small" id="refreshStatsBtn" type="button">Actualizar</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="panel" style="max-width:none;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <div class="h2">📅 Resumen diario</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button class="hist-btn" id="dayPickBtn" type="button">🗓️ Ver día</button>
+            <input class="select mono" id="dayPick" type="date" style="display:none;" />
+          </div>
+        </div>
+
+        <div class="statusline" id="dayPickResult" style="margin-top:6px; display:none;"></div>
+
+        <table class="tablelist" style="margin-top:8px;">
+          <thead>
+            <tr><th>Día</th><th class="right">Reproducidas</th></tr>
+          </thead>
+          <tbody id="byDayBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="panel" style="max-width:none;">
+        <div class="h2">🎵 Top canciones</div>
+        <table class="tablelist">
+          <thead>
+            <tr><th>Canción</th><th>Artista</th><th class="right">Veces</th></tr>
+          </thead>
+          <tbody id="topSongsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="histOverlay"></div>
+
+  <div class="modal" id="histModal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="histTitle">Historial</div>
+        <div class="modal-sub" id="histSub">—</div>
+      </div>
+
+      <div class="modal-actions">
+        <input class="select mono" id="histDate" type="date" />
+        <button class="btn btn-small" id="histLoadBtn" type="button">Cargar</button>
+        <button class="closeX" id="histCloseBtn" type="button">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="statusline" id="histStatus">—</div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="k">Reproducidas</div>
+          <div class="v" id="sumPlayed">0</div>
+        </div>
+        <div class="summary-card">
+          <div class="k">Mesas</div>
+          <div class="v" id="sumTables">0</div>
+        </div>
+        <div class="summary-card">
+          <div class="k">Espera promedio</div>
+          <div class="v" id="sumAvg">—</div>
+        </div>
+        <div class="summary-card">
+          <div class="k">Espera máx</div>
+          <div class="v" id="sumMax">—</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="h2" style="margin: 2px 0 10px 0;">🧾 Detalle por solicitud</div>
+        <table class="hist-table">
+          <thead>
+            <tr>
+              <th>Mesa</th>
+              <th>Solicitud</th>
+              <th>Pedido</th>
+              <th>Reproducida</th>
+              <th class="right">Espera</th>
+            </tr>
+          </thead>
+          <tbody id="histBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="raffleOverlay"></div>
+
+  <div class="modal raffle-modal" id="raffleModal" role="dialog" aria-modal="true">
+    <div class="modal-head raffle-head">
+      <div class="modal-actions">
+        <input class="select mono raffle-date-only" id="raffleDate" type="date" />
+        <button class="closeX" id="raffleCloseBtn" type="button">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="statusline" id="raffleStatus" style="display:none;"></div>
+
+      <div class="raffle-grid">
+        <div class="raffle-left">
+          <div class="wheel-wrap">
+            <div class="wheel-pointer" aria-hidden="true"></div>
+            <canvas id="wheelCanvas" width="420" height="420"></canvas>
+          </div>
+
+          <div class="raffle-actions">
+            <button class="btn raffle-spin-big" id="raffleSpinBtn" type="button">Girar 🎉</button>
+          </div>
+
+          <div class="participants-table-wrap">
+            <div class="raffle-block-title">👤 Participantes</div>
+            <table class="tablelist" style="margin-top:10px;">
+              <thead>
+                <tr><th>Nombre</th><th class="right">Cantó</th></tr>
+              </thead>
+              <tbody id="participantsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="raffle-right">
+          <div class="winners-title">🏆 Ganadores del día</div>
+          <table class="tablelist winners-table" style="margin-top:10px;">
+            <thead>
+              <tr><th>Hora</th><th>Nombre</th><th></th></tr>
+            </thead>
+            <tbody id="winnersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>

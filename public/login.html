@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login DJ - Zona Zero</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/login.css">
+</head>
+
+<body>
+  <main class="shell">
+    <section class="left">
+      <div class="left-overlay">
+        <div class="welcome">
+          <div class="brand-pill">Zona Zero • Karaoke System</div>
+          <h1>Zona Zero Karaoke</h1>
+          <p>Gestión en tiempo real de solicitudes, mesas y estadísticas.</p>
+
+          <div class="bullets">
+            <div class="b">⚡ En vivo en tiempo real</div>
+            <div class="b">🧾 Registro de actividad</div>
+            <div class="b">🎤 Control de karaoke</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="right">
+      <div class="card">
+        <div class="card-head">
+          <div class="kicker">INICIO DE SESIÓN</div>
+          <h2>DJ / Administrador</h2>
+          <p class="sub">Acceso privado al sistema Zona Zero.</p>
+        </div>
+
+        <form class="form" id="loginForm" autocomplete="off">
+          <label class="field">
+            <span>Usuario</span>
+            <div class="input-wrap">
+              <span class="icon" aria-hidden="true">👤</span>
+              <input id="username" name="username" maxlength="50" required placeholder="Nombre de usuario" />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Contraseña</span>
+            <div class="input-wrap">
+              <span class="icon" aria-hidden="true">🔒</span>
+              <input id="password" name="password" type="password" maxlength="80" required placeholder="Tu contraseña" />
+            </div>
+          </label>
+
+          <input type="hidden" id="next" value="/dj" />
+
+          <button class="btn" type="submit">
+            <span class="btn-text">Entrar</span>
+            <span class="btn-spin" aria-hidden="true"></span>
+          </button>
+
+          <div class="toast" id="toast"></div>
+        </form>
+
+        <div class="foot">
+          <span class="dot">•</span>
+          <span>Sistema protegido · Monitoreo activo</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const toast = document.getElementById("toast");
+    const showToast = (m) => toast.textContent = m;
+
+    const params = new URLSearchParams(window.location.search);
+    const nextInput = document.getElementById("next");
+    nextInput.value = params.get("next") || "/dj";
+
+    function resetLoginButton(){
+      const btn = document.querySelector("#loginForm .btn");
+      if(!btn) return;
+      btn.classList.remove("loading");
+      const txt = btn.querySelector(".btn-text");
+      if (txt) txt.textContent = btn.dataset.originalText || "Entrar";
+    }
+
+    window.addEventListener("pageshow", () => {
+      resetLoginButton();
+      showToast("");
+    });
+
+    window.addEventListener("pagehide", () => {
+      resetLoginButton();
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      showToast("");
+
+      const btn = form.querySelector(".btn");
+      const btnText = btn.querySelector(".btn-text");
+      if(!btn.dataset.originalText) btn.dataset.originalText = (btnText?.textContent || btn.textContent);
+
+      btn.classList.add("loading");
+      if (btnText) btnText.textContent = "Ingresando...";
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const next = nextInput.value;
+
+      try{
+        const res = await fetch("/auth/login", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ username, password, next })
+        });
+
+        const data = await res.json();
+
+        if(!data.ok){
+          resetLoginButton();
+          return showToast("Credenciales incorrectas.");
+        }
+
+        window.location.href = data.next || "/dj";
+      }catch{
+        resetLoginButton();
+        showToast("Credenciales incorrectas.");
+      }
+    });
+  </script>
+</body>
+</html>
