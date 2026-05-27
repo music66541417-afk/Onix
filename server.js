@@ -445,6 +445,10 @@ setInterval(() => {
 // =======================
 // Rutas páginas
 // =======================
+app.get("/", (req, res) =>
+  res.redirect("/qr")
+);
+
 app.get("/qr", (req, res) =>
   res.sendFile(process.cwd() + "/public/index.html")
 );
