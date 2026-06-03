@@ -912,3 +912,21 @@ body:not(.dj) input:focus{
   filter:
     drop-shadow(0 0 12px rgba(255,255,255,.06));
 }
+
+.contact-link-wrap{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:12px;
+}
+
+.contact-link{
+  text-decoration:none;
+  color:rgba(255,255,255,.55);
+  font-size:12px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.contact-link:hover{
+  color:rgba(37,211,102,.9);
+}

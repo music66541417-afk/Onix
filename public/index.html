@@ -10,48 +10,90 @@
   <div class="container">
     <div class="topbar">
 
-      <div>
-        <div class="title">Pide tu Canción</div>
-        <div class="muted">
-          Completa los datos y envía tu solicitud al DJ.
-        </div>
-      </div>
 
-      <span class="badge logo-badge">
-        <img src="/img/logo-qr.png" alt="Zona Zero">
-      </span>
-
-    </div>
-
-    <form class="form" id="requestForm" autocomplete="off">
-      <div>
-        <label for="table">Número de mesa</label>
-        <input id="table" name="table" inputmode="numeric" placeholder="Ej: 12" maxlength="2" required />
-      </div>
-
-      <div>
-        <label for="name">Tu Nombre</label>
-        <input id="name" name="name" placeholder="Ej: Esteban" maxlength="40" required />
-      </div>
-
-      <div>
-        <label for="artist">Artista / Cantante</label>
-        <input id="artist" name="artist" placeholder="Ej: Alejandro Fernández" maxlength="40" required />
-      </div>
-
-      <div>
-        <label for="song">Canción / Tema</label>
-        <input id="song" name="song" placeholder="Ej: Mátalas" maxlength="40" required />
-      </div>
-
-      <button class="btn" type="submit">Enviar solicitud</button>
-      <div class="toast" id="toast"></div>
-    </form>
-
-    <div class="toast muted" style="margin-top:14px;">
+  <div>
+    <div class="title">Pide tu Canción</div>
+    <div class="muted">
+      Completa los datos y envía tu solicitud al DJ.
     </div>
   </div>
 
+  <span class="badge logo-badge">
+    <img src="/img/logo-qr.png" alt="Zona Zero">
+  </span>
+
+</div>
+
+<form class="form" id="requestForm" autocomplete="off">
+
+  <div>
+    <label for="table">Número de mesa</label>
+    <input
+      id="table"
+      name="table"
+      inputmode="numeric"
+      placeholder="Ej: 12"
+      maxlength="2"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="name">Tu Nombre</label>
+    <input
+      id="name"
+      name="name"
+      placeholder="Ej: Esteban"
+      maxlength="40"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="artist">Artista / Cantante</label>
+    <input
+      id="artist"
+      name="artist"
+      placeholder="Ej: Alejandro Fernández"
+      maxlength="40"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="song">Canción / Tema</label>
+    <input
+      id="song"
+      name="song"
+      placeholder="Ej: Mátalas"
+      maxlength="40"
+      required
+    />
+  </div>
+
+  <button class="btn" type="submit">
+    Enviar solicitud
+  </button>
+
+  <div class="contact-link-wrap">
+    <a
+      href="https://api.whatsapp.com/send/?phone=56951855004&text=Hola+quiero+cotizar+un+karaoke&type=phone_number&app_absent=0"
+      target="_blank"
+      class="contact-link"
+    >
+      ¿Necesitas Karaoke App?
+    </a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+</form>
+
+<div class="toast muted" style="margin-top:14px;"></div>
+
+  </div>
+
   <script src="/user.js"></script>
+
 </body>
 </html>
