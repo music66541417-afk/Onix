@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ONIX Karaoke - Pantalla</title>
+
+  <link rel="stylesheet" href="/pantalla.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+<div class="tv-screen">
+
+  <!-- BARRA SUPERIOR CON TEXTO EN MOVIMIENTO -->
+  <div class="ticker">
+
+    <div class="ticker-icon">
+      ♫
+    </div>
+
+    <div class="ticker-window">
+      <div id="tickerText" class="ticker-text">
+        Bienvenidos a ONIX Karaoke
+      </div>
+    </div>
+
+  </div>
+
+  <main class="tv-main">
+
+    <!-- AHORA CANTANDO -->
+
+    <section class="now-playing">
+
+      <div class="section-title">
+        🎤 AHORA CANTANDO
+      </div>
+
+      <div class="now-content">
+
+        <div class="animation">
+
+          <div class="disc-wrapper">
+
+            <div class="disc"></div>
+
+            <div class="disc-center">
+
+              <img
+                src="/img/logo-local.png"
+                alt="Logo del Local"
+                class="disc-logo"
+              >
+
+            </div>
+
+          </div>
+
+          <div class="equalizer">
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+          </div>
+
+        </div>
+
+        <div class="song-info">
+
+          <div id="playerName" class="player-name">
+            Esperando cantante...
+          </div>
+
+          <div id="songTitle" class="song-title">
+            Sin reproducción
+          </div>
+
+          <div id="songArtist" class="song-artist">
+            Esperando al DJ...
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PRÓXIMOS TURNOS -->
+
+    <section class="queue">
+
+      <div class="queue-top">
+
+        <div>
+
+          <div class="section-title">
+            PRÓXIMOS TURNOS
+          </div>
+
+          <div class="queue-subtitle">
+            Orden de llegada
+          </div>
+
+        </div>
+
+        <div id="queueCount" class="queue-count">
+          0
+        </div>
+
+      </div>
+
+      <div id="queueList" class="queue-list">
+
+        <div class="queue-empty">
+          No hay solicitudes pendientes
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="/pantalla.js"></script>
+
+</body>
+</html>

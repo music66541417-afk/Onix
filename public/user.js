@@ -11,7 +11,7 @@ const songInput = document.getElementById("song");
 const MESA_MAX = 50;
 
 // ✅ Anti-spam: esperar 15s entre envíos
-const COOLDOWN_MS = 15000;
+const COOLDOWN_MS = 10000;
 let lastSentAt = 0;
 let cooldownTimer = null;
 

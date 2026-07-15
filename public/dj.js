@@ -9,6 +9,7 @@ const refreshBtn = document.getElementById("refreshBtn");
 const clearAllBtn = document.getElementById("clearAllBtn");
 
 const ordersBar = document.getElementById("ordersBar");
+const ordersStatus = document.getElementById("ordersStatus");
 const ordersDot = document.getElementById("ordersDot");
 const ordersLabel = document.getElementById("ordersLabel");
 
@@ -16,27 +17,62 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 const socket = io();
 
+let currentRequests = [];
+let currentPlayback = {
+  isPlaying: false,
+  requestId: null,
+  table: null,
+  name: null,
+  artist: null,
+  song: null,
+  startedAt: null,
+};
+
 let prevIds = new Set();
 let hasBootstrapped = false;
 let lastNewBadgeId = null;
 
 let pendingConfirmId = null;
 let confirmTimeout = null;
+let playbackBusy = false;
 
-refreshBtn?.addEventListener("click", () => location.reload());
+/* =========================================================
+   BOTONES SUPERIORES
+========================================================= */
+
+refreshBtn?.addEventListener("click", () => {
+  location.reload();
+});
 
 clearAllBtn?.addEventListener("click", async () => {
-  const ok = confirm("¿Seguro que quieres BORRAR TODAS las solicitudes?");
-  if (!ok) return;
+  const confirmed = confirm(
+    "¿Seguro que quieres BORRAR TODAS las solicitudes?"
+  );
+
+  if (!confirmed) return;
 
   clearAllBtn.disabled = true;
+
   const oldText = clearAllBtn.textContent;
   clearAllBtn.textContent = "Limpiando...";
 
   try {
-    await fetch("/api/requests", { method: "DELETE" });
-  } catch {
-    alert("No se pudo limpiar. Revisa conexión.");
+    const response = await fetch("/api/requests", {
+      method: "DELETE",
+    });
+
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok || !data?.ok) {
+      throw new Error(
+        data?.error || "No se pudo limpiar"
+      );
+    }
+  } catch (error) {
+    alert(
+      error?.message ||
+        "No se pudo limpiar. Revisa la conexión."
+    );
   } finally {
     clearAllBtn.disabled = false;
     clearAllBtn.textContent = oldText;
@@ -44,64 +80,125 @@ clearAllBtn?.addEventListener("click", async () => {
 });
 
 logoutBtn?.addEventListener("click", async () => {
-  const ok = confirm("¿Cerrar sesión del DJ?");
-  if (!ok) return;
+  const confirmed = confirm(
+    "¿Cerrar sesión del DJ?"
+  );
+
+  if (!confirmed) return;
 
   try {
-    await fetch("/auth/logout", { method: "POST" });
+    await fetch("/auth/logout", {
+      method: "POST",
+    });
   } catch {}
 
   location.href = "/login";
 });
 
-// Estado pedidos único: ahora viene como { enabled: true/false }
-socket.on("orders:status", (st) => {
-  const isOpen = !!st?.enabled;
+/* =========================================================
+   ESTADO DE PEDIDOS
+========================================================= */
+
+function applyOrdersStatus(status) {
+  const isOpen = !!status?.enabled;
+
+  if (ordersStatus) {
+    ordersStatus.classList.remove(
+      "open",
+      "closed"
+    );
+
+    ordersStatus.classList.add(
+      isOpen ? "open" : "closed"
+    );
+  }
 
   if (ordersDot) {
-    ordersDot.classList.remove("open", "closed");
-    ordersDot.classList.add(isOpen ? "open" : "closed");
+    ordersDot.classList.remove(
+      "open",
+      "closed"
+    );
+
+    ordersDot.classList.add(
+      isOpen ? "open" : "closed"
+    );
   }
 
   if (ordersBar) {
-    ordersBar.classList.remove("open", "closed");
-    ordersBar.classList.add(isOpen ? "open" : "closed");
-    ordersBar.title = isOpen ? "Pedidos abiertos" : "Pedidos cerrados";
+    ordersBar.classList.remove(
+      "open",
+      "closed"
+    );
+
+    ordersBar.classList.add(
+      isOpen ? "open" : "closed"
+    );
+
+    ordersBar.title = isOpen
+      ? "Pedidos abiertos"
+      : "Pedidos cerrados";
   }
 
-  if (ordersLabel) ordersLabel.textContent = "PEDIDOS";
-});
+  if (ordersLabel) {
+    ordersLabel.textContent = "PEDIDOS";
+  }
+}
+
+socket.on("orders:status", applyOrdersStatus);
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 function groupByTable(requests) {
-  const map = new Map();
+  const grouped = new Map();
 
-  for (const r of requests) {
-    if (!map.has(r.table)) map.set(r.table, []);
-    map.get(r.table).push(r);
+  for (const request of requests) {
+    if (!grouped.has(request.table)) {
+      grouped.set(request.table, []);
+    }
+
+    grouped
+      .get(request.table)
+      .push(request);
   }
 
-  return map;
+  return grouped;
 }
 
 function uniqueTablesInOrder(requests) {
   const seen = new Set();
-  const out = [];
+  const tables = [];
 
-  for (const r of requests) {
-    if (!seen.has(r.table)) {
-      seen.add(r.table);
-      out.push(r.table);
+  for (const request of requests) {
+    const table = String(request.table);
+
+    if (!seen.has(table)) {
+      seen.add(table);
+      tables.push(request.table);
     }
   }
 
-  return out;
+  return tables;
 }
 
 function formatDate(iso) {
   try {
-    const d = new Date(iso);
+    const date = new Date(iso);
 
-    const day = String(d.getDate()).padStart(2, "0");
+    const day = String(
+      date.getDate()
+    ).padStart(2, "0");
+
     const months = [
       "ENE",
       "FEB",
@@ -116,32 +213,76 @@ function formatDate(iso) {
       "NOV",
       "DIC",
     ];
-    const mon = months[d.getMonth()] || "";
 
-    const hh = String(d.getHours()).padStart(2, "0");
-    const mm = String(d.getMinutes()).padStart(2, "0");
+    const month =
+      months[date.getMonth()] || "";
 
-    return `${day} ${mon} ${hh}:${mm}`;
+    const hours = String(
+      date.getHours()
+    ).padStart(2, "0");
+
+    const minutes = String(
+      date.getMinutes()
+    ).padStart(2, "0");
+
+    return `${day} ${month} ${hours}:${minutes}`;
   } catch {
-    return iso;
+    return String(iso ?? "");
   }
 }
 
-function getClientName(r) {
+function getClientName(request) {
   return (
-    r?.name ??
-    r?.client ??
-    r?.customer ??
-    r?.cliente ??
-    r?.persona ??
+    request?.name ??
+    request?.client ??
+    request?.customer ??
+    request?.cliente ??
+    request?.persona ??
     ""
   );
 }
 
-function render(requests) {
-  requests = Array.isArray(requests) ? requests : [];
+function isCurrentPlayback(requestId) {
+  return (
+    currentPlayback.isPlaying &&
+    String(currentPlayback.requestId) ===
+      String(requestId)
+  );
+}
 
-  const currentIds = new Set(requests.map((r) => r.id));
+function normalizePlayback(status) {
+  return {
+    isPlaying: !!status?.isPlaying,
+
+    requestId:
+      status?.requestId !== null &&
+      status?.requestId !== undefined
+        ? Number(status.requestId)
+        : null,
+
+    table: status?.table ?? null,
+    name: status?.name ?? null,
+    artist: status?.artist ?? null,
+    song: status?.song ?? null,
+    startedAt: status?.startedAt ?? null,
+  };
+}
+
+/* =========================================================
+   RENDER DEL PANEL DJ
+========================================================= */
+
+function render(requests) {
+  currentRequests = Array.isArray(requests)
+    ? requests
+    : [];
+
+  const currentIds = new Set(
+    currentRequests.map((request) =>
+      String(request.id)
+    )
+  );
+
   const newIdSet = new Set();
 
   if (!hasBootstrapped) {
@@ -149,144 +290,338 @@ function render(requests) {
     hasBootstrapped = true;
   } else {
     for (const id of currentIds) {
-      if (!prevIds.has(id)) newIdSet.add(id);
+      if (!prevIds.has(id)) {
+        newIdSet.add(id);
+      }
     }
+
     prevIds = currentIds;
   }
 
   if (countBadge) {
-    countBadge.textContent = `${requests.length} pendientes`;
+    countBadge.textContent =
+      `${currentRequests.length} pendientes`;
   }
 
   if (cards) {
     cards.innerHTML = "";
   }
 
-  if (pendingConfirmId && !currentIds.has(pendingConfirmId)) {
+  if (
+    pendingConfirmId &&
+    !currentIds.has(
+      String(pendingConfirmId)
+    )
+  ) {
     pendingConfirmId = null;
+
     clearTimeout(confirmTimeout);
     confirmTimeout = null;
   }
 
-  if (requests.length === 0) {
-    if (emptyMsg) emptyMsg.textContent = "No hay solicitudes pendientes.";
-    if (lastTables) lastTables.innerHTML = `<div>—</div>`;
+  if (!currentRequests.length) {
+    if (emptyMsg) {
+      emptyMsg.textContent =
+        "No hay solicitudes pendientes.";
+    }
+
+    if (lastTables) {
+      lastTables.innerHTML =
+        "<div>—</div>";
+    }
+
     return;
   }
 
-  if (emptyMsg) emptyMsg.textContent = "";
+  if (emptyMsg) {
+    emptyMsg.textContent = "";
+  }
 
-  const lastReq = requests[requests.length - 1];
-  const lastTable = lastReq?.table;
-  const lastReqId = lastReq?.id ?? null;
+  const lastRequest =
+    currentRequests[
+      currentRequests.length - 1
+    ];
 
-  const tablesOrder = uniqueTablesInOrder(requests);
-  const nextUpTable = tablesOrder[0];
-  const shouldShowRecien = !!(lastReqId && newIdSet.has(lastReqId));
+  const lastTable =
+    lastRequest?.table;
 
-  const firstNameByTable = new Map();
+  const lastRequestId =
+    lastRequest?.id ?? null;
 
-  for (const r of requests) {
-    const key = String(r.table);
-    if (!firstNameByTable.has(key)) {
-      firstNameByTable.set(key, getClientName(r));
+  const tablesOrder =
+    uniqueTablesInOrder(
+      currentRequests
+    );
+
+  const nextUpTable =
+    tablesOrder[0];
+
+  const shouldShowRecent =
+    !!(
+      lastRequestId &&
+      newIdSet.has(
+        String(lastRequestId)
+      )
+    );
+
+  const firstNameByTable =
+    new Map();
+
+  for (const request of currentRequests) {
+    const tableKey =
+      String(request.table);
+
+    if (
+      !firstNameByTable.has(
+        tableKey
+      )
+    ) {
+      firstNameByTable.set(
+        tableKey,
+        getClientName(request)
+      );
     }
   }
 
   if (lastTables) {
-    lastTables.innerHTML = tablesOrder
-      .map((t, i) => {
-        const name = firstNameByTable.get(String(t)) ?? "";
-        return `
-          <div>
-            <span>#${i + 1}</span>
-            <span>Mesa ${escapeHtml(t)}</span>
-            <span>${escapeHtml(name)}</span>
-          </div>
-        `;
-      })
-      .join("");
+    lastTables.innerHTML =
+      tablesOrder
+        .map((table, index) => {
+          const name =
+            firstNameByTable.get(
+              String(table)
+            ) ?? "";
+
+          return `
+            <div>
+              <span>#${index + 1}</span>
+              <span>Mesa ${escapeHtml(table)}</span>
+              <span>${escapeHtml(name)}</span>
+            </div>
+          `;
+        })
+        .join("");
   }
 
-  const grouped = groupByTable(requests);
+  const grouped =
+    groupByTable(
+      currentRequests
+    );
 
   for (const table of tablesOrder) {
-    const list = grouped.get(table) || [];
-    const hasNewForThisTable = list.some((r) => newIdSet.has(r.id));
+    const list =
+      grouped.get(table) || [];
+
+    const hasNewForTable =
+      list.some((request) =>
+        newIdSet.has(
+          String(request.id)
+        )
+      );
 
     let lastNewId = null;
 
-    for (let i = list.length - 1; i >= 0; i--) {
-      if (newIdSet.has(list[i].id)) {
-        lastNewId = list[i].id;
+    for (
+      let index = list.length - 1;
+      index >= 0;
+      index--
+    ) {
+      if (
+        newIdSet.has(
+          String(list[index].id)
+        )
+      ) {
+        lastNewId =
+          list[index].id;
+
         break;
       }
     }
 
-    const isLastTable = String(table) === String(lastTable);
-    const isNextUp = String(table) === String(nextUpTable);
-    const showRecienBadge = isLastTable && shouldShowRecien;
+    const isLastTable =
+      String(table) ===
+      String(lastTable);
 
-    const card = document.createElement("div");
+    const isNextUp =
+      String(table) ===
+      String(nextUpTable);
+
+    const showRecentBadge =
+      isLastTable &&
+      shouldShowRecent;
+
+    const card =
+      document.createElement("div");
 
     card.className =
       "card table-card" +
-      (hasNewForThisTable ? " flash-new" : "") +
-      (isNextUp ? " next-up" : "") +
-      (showRecienBadge ? " recien-card" : "");
+      (
+        hasNewForTable
+          ? " flash-new"
+          : ""
+      ) +
+      (
+        isNextUp
+          ? " next-up"
+          : ""
+      ) +
+      (
+        showRecentBadge
+          ? " recien-card"
+          : ""
+      );
 
     card.innerHTML = `
       <div class="row">
         <div class="title">
           Mesa ${escapeHtml(table)}
-          ${isNextUp ? `<span class="next-dot" aria-label="Siguiente"></span>` : ``}
+
+          ${
+            isNextUp
+              ? `
+                <span
+                  class="next-dot"
+                  aria-label="Siguiente"
+                ></span>
+              `
+              : ""
+          }
         </div>
 
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
           ${
             isLastTable
               ? `
-                <span class="status ultima ${
-                  showRecienBadge ? "ultima-new" : "ultima-faded"
-                }"
-                      data-lastbadge-id="${escapeHtml(lastReqId)}">
-                  ${showRecienBadge ? "Recién añadido" : "ÚLTIMA MESA"}
+                <span
+                  class="status ultima ${
+                    showRecentBadge
+                      ? "ultima-new"
+                      : "ultima-faded"
+                  }"
+                  data-lastbadge-id="${escapeHtml(lastRequestId)}"
+                >
+                  ${
+                    showRecentBadge
+                      ? "Recién añadido"
+                      : "ÚLTIMA MESA"
+                  }
                 </span>
               `
-              : ``
+              : ""
           }
         </div>
       </div>
 
       <div class="song-list">
         ${list
-          .map((r, idx) => {
-            const isLastNew = r.id === lastNewId;
-            const confirmClass = pendingConfirmId === r.id ? " confirm" : "";
-            const client = getClientName(r);
+          .map((request, index) => {
+            const isLastNew =
+              String(request.id) ===
+              String(lastNewId);
+
+            const isPlaying =
+              isCurrentPlayback(
+                request.id
+              );
+
+            const confirmClass =
+              String(pendingConfirmId) ===
+              String(request.id)
+                ? " confirm"
+                : "";
+
+            const client =
+              getClientName(request);
 
             return `
-              <div class="song-item ${isLastNew ? "new-song" : ""}">
-                <div class="song-client">${escapeHtml(client)}</div>
+              <div
+                class="song-item ${
+                  isLastNew
+                    ? "new-song"
+                    : ""
+                } ${
+                  isPlaying
+                    ? "is-playing"
+                    : ""
+                }"
+                data-request-id="${escapeHtml(request.id)}"
+              >
+                ${
+                  isPlaying
+                    ? `
+                      <div class="playing-badge">
+                        AHORA SONANDO
+                      </div>
+                    `
+                    : ""
+                }
 
-                <div class="song-line">
-                  <div class="song-meta"><b>Canción:</b> ${escapeHtml(
-                    r.song
-                  )}</div>
-                  <span class="song-index">#${idx + 1}</span>
+                <div class="song-client">
+                  ${escapeHtml(client)}
                 </div>
 
-                <div class="song-meta"><b>Artista:</b> ${escapeHtml(
-                  r.artist
-                )}</div>
+                <div class="song-line">
+                  <div class="song-meta">
+                    <b>Canción:</b>
+                    ${escapeHtml(request.song)}
+                  </div>
+
+                  <span class="song-index">
+                    #${index + 1}
+                  </span>
+                </div>
+
+                <div class="song-meta">
+                  <b>Artista:</b>
+                  ${escapeHtml(request.artist)}
+                </div>
 
                 <div class="song-footer">
-                  <div class="song-time">${escapeHtml(
-                    formatDate(r.createdAt)
-                  )}</div>
-                  <button class="icon-btn played-btn${confirmClass}" 
-                          data-id="${escapeHtml(r.id)}" 
-                          title="Marcar como reproducida">✓</button>
+                  <div class="song-time">
+                    ${escapeHtml(
+                      formatDate(
+                        request.createdAt
+                      )
+                    )}
+                  </div>
+
+                  <div class="song-actions">
+                    <button
+                      class="icon-btn playback-btn ${
+                        isPlaying
+                          ? "active"
+                          : ""
+                      }"
+                      data-id="${escapeHtml(request.id)}"
+                      type="button"
+                      title="${
+                        isPlaying
+                          ? "Detener en pantalla"
+                          : "Mostrar en pantalla"
+                      }"
+                      aria-label="${
+                        isPlaying
+                          ? "Detener reproducción"
+                          : "Iniciar reproducción"
+                      }"
+                    >
+                      ${
+                        isPlaying
+                          ? "■"
+                          : "▶"
+                      }
+                    </button>
+
+                    <button
+                      class="icon-btn played-btn${confirmClass}"
+                      data-id="${escapeHtml(request.id)}"
+                      type="button"
+                      title="Finalizar y guardar en historial"
+                      aria-label="Finalizar canción"
+                    >
+                      ✓
+                    </button>
+                  </div>
                 </div>
               </div>
             `;
@@ -294,131 +629,413 @@ function render(requests) {
           .join("")}
       </div>
 
-      <div class="muted">Total en esta mesa: <b>${list.length}</b></div>
+      <div class="muted">
+        Total en esta mesa:
+        <b>${list.length}</b>
+      </div>
     `;
 
     cards?.appendChild(card);
   }
 
-  if (shouldShowRecien && lastReqId && lastNewBadgeId !== lastReqId) {
-    lastNewBadgeId = lastReqId;
+  if (
+    shouldShowRecent &&
+    lastRequestId &&
+    lastNewBadgeId !==
+      lastRequestId
+  ) {
+    lastNewBadgeId =
+      lastRequestId;
 
     setTimeout(() => {
-      const sel = `[data-lastbadge-id="${CSS.escape(String(lastReqId))}"]`;
-      const el = document.querySelector(sel);
-      if (!el) return;
+      const selector =
+        `[data-lastbadge-id="${CSS.escape(
+          String(lastRequestId)
+        )}"]`;
 
-      el.textContent = "ÚLTIMA MESA";
-      el.classList.remove("ultima-new");
-      el.classList.add("ultima-faded");
+      const badge =
+        document.querySelector(
+          selector
+        );
 
-      el.closest(".table-card")?.classList.remove("recien-card");
+      if (!badge) return;
+
+      badge.textContent =
+        "ÚLTIMA MESA";
+
+      badge.classList.remove(
+        "ultima-new"
+      );
+
+      badge.classList.add(
+        "ultima-faded"
+      );
+
+      badge
+        .closest(".table-card")
+        ?.classList.remove(
+          "recien-card"
+        );
     }, 4000);
   }
 }
 
-cards?.addEventListener("click", async (e) => {
-  const btn = e.target.closest(".played-btn");
-  if (!btn) return;
+/* =========================================================
+   INICIAR O DETENER REPRODUCCIÓN EN LA TV
+========================================================= */
 
-  const id = btn.getAttribute("data-id");
-  if (!id) return;
+async function startPlayback(
+  requestId,
+  button
+) {
+  if (playbackBusy) return;
 
-  if (pendingConfirmId === id) {
-    clearTimeout(confirmTimeout);
-    confirmTimeout = null;
-    pendingConfirmId = null;
+  playbackBusy = true;
 
-    btn.disabled = true;
-    btn.classList.remove("confirm");
-    btn.textContent = "⏱️";
+  const oldText =
+    button.textContent;
 
-    try {
-      const res = await fetch(`/api/requests/${id}`, { method: "DELETE" });
+  button.disabled = true;
+  button.textContent = "…";
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error || `Error ${res.status}`);
+  try {
+    const response = await fetch(
+      `/api/playback/start/${encodeURIComponent(requestId)}`,
+      {
+        method: "POST",
       }
+    );
 
-      const listRes = await fetch("/api/requests");
-      const listData = await listRes.json().catch(() => null);
+    const data =
+      await response
+        .json()
+        .catch(() => null);
 
-      if (listRes.ok && listData?.ok) {
-        render(listData.requests || []);
-      }
-    } catch (err) {
-      btn.disabled = false;
-      btn.textContent = "✓";
-      alert(
-        err?.message ||
-          "No se pudo marcar como reproducida. Revisa conexión."
+    if (
+      !response.ok ||
+      !data?.ok
+    ) {
+      throw new Error(
+        data?.error ||
+          "No se pudo iniciar la reproducción"
       );
     }
 
-    return;
+    currentPlayback =
+      normalizePlayback(
+        data.playback
+      );
+
+    render(currentRequests);
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = oldText;
+
+    alert(
+      error?.message ||
+        "No se pudo enviar la canción a la pantalla."
+    );
+  } finally {
+    playbackBusy = false;
   }
+}
 
-  pendingConfirmId = id;
+async function stopPlayback(button) {
+  if (playbackBusy) return;
 
-  document.querySelectorAll(".played-btn.confirm").forEach((b) => {
-    if (b !== btn) b.classList.remove("confirm");
-  });
+  playbackBusy = true;
 
-  btn.classList.add("confirm");
+  const oldText =
+    button.textContent;
 
-  clearTimeout(confirmTimeout);
+  button.disabled = true;
+  button.textContent = "…";
 
-  confirmTimeout = setTimeout(() => {
-    if (pendingConfirmId === id) pendingConfirmId = null;
-    btn.classList.remove("confirm");
-  }, 2500);
-});
+  try {
+    const response = await fetch(
+      "/api/playback/stop",
+      {
+        method: "POST",
+      }
+    );
 
-socket.on("requests:update", (requests) => render(requests));
+    const data =
+      await response
+        .json()
+        .catch(() => null);
+
+    if (
+      !response.ok ||
+      !data?.ok
+    ) {
+      throw new Error(
+        data?.error ||
+          "No se pudo detener la reproducción"
+      );
+    }
+
+    currentPlayback =
+      normalizePlayback(
+        data.playback
+      );
+
+    render(currentRequests);
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = oldText;
+
+    alert(
+      error?.message ||
+        "No se pudo detener la pantalla."
+    );
+  } finally {
+    playbackBusy = false;
+  }
+}
+
+/* =========================================================
+   CLIC EN BOTONES DE CADA CANCIÓN
+========================================================= */
+
+cards?.addEventListener(
+  "click",
+  async (event) => {
+    const playbackButton =
+      event.target.closest(
+        ".playback-btn"
+      );
+
+    if (playbackButton) {
+      const requestId =
+        playbackButton.getAttribute(
+          "data-id"
+        );
+
+      if (!requestId) return;
+
+      if (
+        isCurrentPlayback(
+          requestId
+        )
+      ) {
+        await stopPlayback(
+          playbackButton
+        );
+      } else {
+        await startPlayback(
+          requestId,
+          playbackButton
+        );
+      }
+
+      return;
+    }
+
+    const playedButton =
+      event.target.closest(
+        ".played-btn"
+      );
+
+    if (!playedButton) return;
+
+    const requestId =
+      playedButton.getAttribute(
+        "data-id"
+      );
+
+    if (!requestId) return;
+
+    if (
+      String(pendingConfirmId) ===
+      String(requestId)
+    ) {
+      clearTimeout(
+        confirmTimeout
+      );
+
+      confirmTimeout = null;
+      pendingConfirmId = null;
+
+      playedButton.disabled = true;
+      playedButton.classList.remove(
+        "confirm"
+      );
+
+      playedButton.textContent =
+        "⏱";
+
+      try {
+        const response = await fetch(
+          `/api/requests/${encodeURIComponent(requestId)}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        const data =
+          await response
+            .json()
+            .catch(() => null);
+
+        if (
+          !response.ok ||
+          !data?.ok
+        ) {
+          throw new Error(
+            data?.error ||
+              `Error ${response.status}`
+          );
+        }
+      } catch (error) {
+        playedButton.disabled =
+          false;
+
+        playedButton.textContent =
+          "✓";
+
+        alert(
+          error?.message ||
+            "No se pudo marcar como reproducida."
+        );
+      }
+
+      return;
+    }
+
+    pendingConfirmId =
+      requestId;
+
+    document
+      .querySelectorAll(
+        ".played-btn.confirm"
+      )
+      .forEach((button) => {
+        if (
+          button !==
+          playedButton
+        ) {
+          button.classList.remove(
+            "confirm"
+          );
+        }
+      });
+
+    playedButton.classList.add(
+      "confirm"
+    );
+
+    clearTimeout(
+      confirmTimeout
+    );
+
+    confirmTimeout =
+      setTimeout(() => {
+        if (
+          String(pendingConfirmId) ===
+          String(requestId)
+        ) {
+          pendingConfirmId =
+            null;
+        }
+
+        playedButton.classList.remove(
+          "confirm"
+        );
+      }, 2500);
+  }
+);
+
+/* =========================================================
+   SOCKET.IO
+========================================================= */
+
+socket.on(
+  "requests:update",
+  (requests) => {
+    render(requests);
+  }
+);
+
+socket.on(
+  "playback:update",
+  (status) => {
+    currentPlayback =
+      normalizePlayback(status);
+
+    render(currentRequests);
+  }
+);
+
+/* =========================================================
+   CARGA INICIAL
+========================================================= */
 
 async function loadInitialRequests() {
   try {
-    const r = await fetch("/api/requests");
-    const j = await r.json();
+    const response =
+      await fetch(
+        "/api/requests",
+        {
+          cache: "no-store",
+        }
+      );
 
-    if (j.ok) {
-      render(j.requests || []);
+    const data =
+      await response.json();
+
+    if (data.ok) {
+      render(
+        data.requests || []
+      );
+    }
+  } catch {}
+}
+
+async function loadInitialPlayback() {
+  try {
+    const response =
+      await fetch(
+        "/api/playback",
+        {
+          cache: "no-store",
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (data.ok) {
+      currentPlayback =
+        normalizePlayback(
+          data.playback
+        );
+
+      render(currentRequests);
     }
   } catch {}
 }
 
 async function loadInitialOrdersStatus() {
   try {
-    const r = await fetch("/api/orders-status");
-    const j = await r.json();
+    const response =
+      await fetch(
+        "/api/orders-status",
+        {
+          cache: "no-store",
+        }
+      );
 
-    if (j.ok) {
-      socket.emit("orders:status", j.ordersOpen);
-      const isOpen = !!j.ordersOpen?.enabled;
+    const data =
+      await response.json();
 
-      if (ordersDot) {
-        ordersDot.classList.remove("open", "closed");
-        ordersDot.classList.add(isOpen ? "open" : "closed");
-      }
-
-      if (ordersBar) {
-        ordersBar.classList.remove("open", "closed");
-        ordersBar.classList.add(isOpen ? "open" : "closed");
-        ordersBar.title = isOpen ? "Pedidos abiertos" : "Pedidos cerrados";
-      }
+    if (data.ok) {
+      applyOrdersStatus(
+        data.ordersOpen
+      );
     }
   } catch {}
 }
 
-function escapeHtml(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
 loadInitialRequests();
+loadInitialPlayback();
 loadInitialOrdersStatus();

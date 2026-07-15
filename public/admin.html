@@ -363,8 +363,7 @@
 
           <div style="display:flex; align-items:center; gap:10px;">
             <button class="hist-btn" id="histBtn1" type="button">🕘 Historial</button>
-            <button class="hist-btn" id="raffleBtn1" type="button">🏆 Ruleta</button>
-
+            
             <label class="switch" title="Abrir/Cerrar pedidos">
               <input type="checkbox" id="toggle1" checked>
               <span class="slider"></span>
@@ -476,54 +475,6 @@
           </thead>
           <tbody id="histBody"></tbody>
         </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="raffleOverlay"></div>
-
-  <div class="modal raffle-modal" id="raffleModal" role="dialog" aria-modal="true">
-    <div class="modal-head raffle-head">
-      <div class="modal-actions">
-        <input class="select mono raffle-date-only" id="raffleDate" type="date" />
-        <button class="closeX" id="raffleCloseBtn" type="button">Cerrar</button>
-      </div>
-    </div>
-
-    <div class="modal-body">
-      <div class="statusline" id="raffleStatus" style="display:none;"></div>
-
-      <div class="raffle-grid">
-        <div class="raffle-left">
-          <div class="wheel-wrap">
-            <div class="wheel-pointer" aria-hidden="true"></div>
-            <canvas id="wheelCanvas" width="420" height="420"></canvas>
-          </div>
-
-          <div class="raffle-actions">
-            <button class="btn raffle-spin-big" id="raffleSpinBtn" type="button">Girar 🎉</button>
-          </div>
-
-          <div class="participants-table-wrap">
-            <div class="raffle-block-title">👤 Participantes</div>
-            <table class="tablelist" style="margin-top:10px;">
-              <thead>
-                <tr><th>Nombre</th><th class="right">Cantó</th></tr>
-              </thead>
-              <tbody id="participantsBody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="raffle-right">
-          <div class="winners-title">🏆 Ganadores del día</div>
-          <table class="tablelist winners-table" style="margin-top:10px;">
-            <thead>
-              <tr><th>Hora</th><th>Nombre</th><th></th></tr>
-            </thead>
-            <tbody id="winnersBody"></tbody>
-          </table>
-        </div>
       </div>
     </div>
   </div>

@@ -20,9 +20,12 @@
          TOP BAR
     ======================== -->
     <div class="topbar">
-      <div>
+      <div class="dj-title-status">
         <div class="title">🎧 Panel DJ</div>
-        <div class="muted"></div>
+        <div class="dj-orders-status open" id="ordersStatus" aria-live="polite">
+          <span class="orders-dot open" id="ordersDot"></span>
+          <span id="ordersLabel"></span>
+        </div>
       </div>
 
       <div class="top-actions">
@@ -68,14 +71,18 @@
   </div>
 
   <!-- =======================
-       FRANJA INFERIOR PEDIDOS
+       BOTÓN RULETA
   ======================== -->
-  <div class="orders-strip open" id="ordersBar" aria-live="polite">
-    <div class="orders-strip-inner">
-      <span class="orders-dot open" id="ordersDot"></span>
-      <span id="ordersLabel">PEDIDOS</span>
-    </div>
-  </div>
+  <a
+    href="/ruleta"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="dj-raffle-button"
+    id="rafflePageBtn"
+    title="Abrir ruleta en otra pestaña"
+  >
+    🏆 Ruleta
+  </a>
 
   <!-- =======================
        SCRIPTS

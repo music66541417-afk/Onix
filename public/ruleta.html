@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Ruleta Karaoke</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/ruleta.css">
+</head>
+
+<body class="raffle-page">
+
+  <main class="raffle-shell">
+
+    <!-- =======================
+         ENCABEZADO
+    ======================== -->
+    <header class="raffle-topbar">
+      <div class="raffle-brand">
+        <div class="raffle-kicker">KARAOKE</div>
+        <h1>🎉 RULETA DE LA SUERTE 🎉</h1>
+        <p>Participantes y ganadores de la noche</p>
+      </div>
+
+      <div class="raffle-top-actions">
+        <div class="raffle-connection" id="raffleConnection">
+          <span class="raffle-connection-dot"></span>
+          <span id="raffleConnectionText">Conectando…</span>
+        </div>
+
+        <label class="raffle-date-box" for="raffleDate">
+          <span>Fecha</span>
+          <input id="raffleDate" type="date" />
+        </label>
+
+        <button
+          class="raffle-control-btn"
+          id="fullscreenBtn"
+          type="button"
+          title="Pantalla completa"
+        >
+          ⛶ Pantalla completa
+        </button>
+
+        <button
+          class="raffle-control-btn"
+          id="backDjBtn"
+          type="button"
+          title="Volver al panel DJ"
+        >
+          ← Panel DJ
+        </button>
+      </div>
+    </header>
+
+    <!-- =======================
+         ESTADO GENERAL
+    ======================== -->
+    <div
+      class="raffle-status"
+      id="raffleStatus"
+      role="status"
+      aria-live="polite"
+      style="display:none;"
+    ></div>
+
+    <!-- =======================
+         CONTENIDO PRINCIPAL
+    ======================== -->
+    <section class="raffle-layout">
+
+      <!-- =======================
+           RULETA
+      ======================== -->
+      <div class="raffle-main-panel">
+
+        <div class="raffle-wheel-section">
+
+          <div class="wheel-wrap">
+
+            <div
+              class="wheel-pointer"
+              aria-hidden="true"
+            ></div>
+
+            <canvas
+              id="wheelCanvas"
+              width="620"
+              height="620"
+              aria-label="Ruleta de participantes"
+            ></canvas>
+
+            <div class="wheel-center">
+              <img src="/img/onix-logo.png" alt="Onix">
+            </div>
+
+          </div>
+
+          <div class="raffle-main-actions">
+            <button
+              class="raffle-spin-btn"
+              id="raffleSpinBtn"
+              type="button"
+            >
+              <span class="raffle-spin-icon">🎉</span>
+              <span>Girar ruleta</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- =======================
+             PARTICIPANTES
+        ======================== -->
+        <div class="raffle-list-panel participants-panel">
+
+          <div class="raffle-section-head">
+            <div>
+              <div class="raffle-section-title">👤 Participantes</div>
+              <div class="raffle-section-sub">
+                
+              </div>
+            </div>
+
+            <span
+              class="raffle-count-badge"
+              id="participantsCount"
+            >
+              0
+            </span>
+          </div>
+
+          <div class="raffle-table-wrap">
+            <table class="raffle-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Mesa</th>
+                  <th class="right">Cantó</th>
+                </tr>
+              </thead>
+
+              <tbody id="participantsBody">
+                <tr>
+                  <td colspan="3" class="raffle-empty">
+                    Cargando participantes…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =======================
+           GANADORES
+      ======================== -->
+      <aside class="raffle-side-panel">
+
+        <div class="raffle-list-panel winners-panel">
+
+          <div class="raffle-section-head">
+            <div>
+              <div class="raffle-section-title">🏆 Ganadores del día</div>
+              <div class="raffle-section-sub">
+                
+              </div>
+            </div>
+
+            <span
+              class="raffle-count-badge"
+              id="winnersCount"
+            >
+              0
+            </span>
+          </div>
+
+          <div class="raffle-table-wrap">
+            <table class="raffle-table winners-table">
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Ganador</th>
+                  <th>Mesa</th>
+                </tr>
+              </thead>
+
+              <tbody id="winnersBody">
+                <tr>
+                  <td colspan="3" class="raffle-empty">
+                    Cargando ganadores…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </main>
+
+  <!-- =======================
+       PANTALLA DEL GANADOR
+  ======================== -->
+  <div
+    class="winner-overlay"
+    id="winnerOverlay"
+    aria-hidden="true"
+  >
+    <div class="winner-celebration">
+
+      <button
+        class="winner-close"
+        id="winnerCloseBtn"
+        type="button"
+        aria-label="Cerrar resultado"
+      >
+        ×
+      </button>
+
+      <div class="winner-crown">🏆</div>
+
+      <div class="winner-label">
+        GANADOR
+      </div>
+
+      <div
+        class="winner-name"
+        id="winnerName"
+      >
+        —
+      </div>
+
+      <div
+        class="winner-table"
+        id="winnerTable"
+      >
+        Mesa —
+      </div>
+
+      <button
+        class="winner-continue-btn"
+        id="winnerContinueBtn"
+        type="button"
+      >
+        Continuar
+      </button>
+
+    </div>
+  </div>
+
+  <!-- =======================
+       SCRIPTS
+  ======================== -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/ruleta.js"></script>
+
+</body>
+</html>

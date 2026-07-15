@@ -54,7 +54,7 @@ a{ color: inherit; }
 }
 
 .dj .container{
-  padding-bottom: 64px;
+  padding-bottom: 16px;
 }
 
 .topbar{
@@ -887,8 +887,6 @@ body:not(.dj) input:focus{
     inset 0 0 0 1px rgba(255,255,255,.06) !important;
 }
 
-
-
 .logo-badge{
   padding:0;
   min-width:auto;
@@ -929,4 +927,751 @@ body:not(.dj) input:focus{
 
 .contact-link:hover{
   color:rgba(37,211,102,.9);
+}
+
+/* =========================================================
+   TEMA BAR DE ÓNIX — NEGRO + ROSA NEÓN
+   Se agrega al final para sobrescribir el tema anterior
+========================================================= */
+
+:root{
+  --border: rgba(255, 0, 110, .55);
+  --bg: #030004;
+  --card: rgba(10, 0, 8, .82);
+  --text: #ffffff;
+  --muted: rgba(255,255,255,.72);
+
+  --danger: #ff2b63;
+  --ok: #ff2aa3;
+
+  --accent1: #ff006e;
+  --accent2: #8a003c;
+  --accent3: #ff4da6;
+  --glow: rgba(255, 0, 110, .38);
+
+  --gold-1: rgba(255, 40, 150, .95);
+  --gold-2: rgba(255, 0, 110, .42);
+
+  --btn-bg: rgba(20, 0, 14, .72);
+  --btn-bg2: rgba(0, 0, 0, .92);
+}
+
+body{
+  color:var(--text);
+
+  background-image:
+    radial-gradient(1100px 620px at 12% 0%, rgba(255,0,110,.28), transparent 58%),
+    radial-gradient(900px 560px at 88% 14%, rgba(255,35,145,.20), transparent 60%),
+    radial-gradient(850px 520px at 50% 110%, rgba(150,0,70,.20), transparent 62%),
+    linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.88)),
+    url("/img/zona-bg.jpg");
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+
+/* CONTENEDORES PRINCIPALES */
+
+.topbar,
+.requests-area,
+.panel,
+.card,
+body:not(.dj) .form{
+  background:
+    linear-gradient(180deg, rgba(18,0,12,.82), rgba(0,0,0,.90));
+  border-color:rgba(255,0,110,.40);
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.62),
+    0 0 26px rgba(255,0,110,.10),
+    inset 0 0 0 1px rgba(255,255,255,.035);
+}
+
+.topbar{
+  border-color:rgba(255,0,110,.34);
+}
+
+/* TITULOS */
+
+.title,
+.h2,
+.requests-area .h2,
+.panel .h2{
+  color:#ffffff;
+  text-shadow:
+    0 0 8px rgba(255,255,255,.15),
+    0 0 14px rgba(255,0,110,.28);
+}
+
+.requests-area .h2,
+.panel .h2{
+  color:#ff4da6;
+}
+
+.requests-area .h2::before,
+.panel .h2::before{
+  background:linear-gradient(180deg,#ff4da6,#ff006e);
+  box-shadow:0 0 12px rgba(255,0,110,.65);
+}
+
+/* BOTONES */
+
+.btn,
+.hist-btn,
+.closeX{
+  border-color:rgba(255,0,110,.55) !important;
+  background:
+    linear-gradient(180deg, rgba(34,0,22,.82), rgba(0,0,0,.96)) !important;
+  color:#ffffff;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.58),
+    0 0 14px rgba(255,0,110,.12),
+    inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+.btn:hover,
+.hist-btn:hover,
+.closeX:hover{
+  border-color:#ff4da6 !important;
+  box-shadow:
+    0 16px 34px rgba(0,0,0,.66),
+    0 0 22px rgba(255,0,110,.34),
+    inset 0 0 0 1px rgba(255,255,255,.06) !important;
+}
+
+/* FORMULARIO */
+
+body:not(.dj) label{
+  color:rgba(255,255,255,.82);
+}
+
+body:not(.dj) input{
+  background:rgba(0,0,0,.68);
+  border-color:rgba(255,0,110,.48);
+  color:#ffffff;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+}
+
+body:not(.dj) input::placeholder{
+  color:rgba(255,255,255,.38);
+}
+
+body:not(.dj) input:focus{
+  border-color:#ff4da6;
+  box-shadow:
+    0 0 0 3px rgba(255,0,110,.15),
+    0 0 18px rgba(255,0,110,.16);
+}
+
+/* TARJETAS DEL DJ */
+
+.table-card{
+  background:
+    linear-gradient(180deg, rgba(16,0,11,.84), rgba(0,0,0,.94));
+  border-color:rgba(255,0,110,.34);
+}
+
+.song-item{
+  background:rgba(255,255,255,.035);
+  border-color:rgba(255,0,110,.18);
+}
+
+.song-item.new-song{
+  box-shadow:0 0 18px rgba(255,0,110,.16);
+}
+
+.song-item.new-song .song-client,
+.song-item.new-song .song-meta b{
+  color:#ff4da6;
+  text-shadow:0 0 9px rgba(255,0,110,.55);
+}
+
+.song-index{
+  color:#ff77bd;
+  background:rgba(255,0,110,.12);
+  border-color:rgba(255,0,110,.36);
+}
+
+/* BADGES Y ESTADOS */
+
+.status.ultima{
+  background:linear-gradient(180deg,#ff4da6,#9b0047);
+  border-color:rgba(255,77,166,.85);
+  box-shadow:0 0 14px rgba(255,0,110,.28);
+}
+
+.status.ultima-faded{
+  color:#ff77bd;
+  background:rgba(255,0,110,.10);
+  border-color:rgba(255,0,110,.35);
+}
+
+.badge{
+  border-color:rgba(255,0,110,.38);
+  background:rgba(0,0,0,.58);
+}
+
+/* BOTÓN DE CONFIRMACIÓN */
+
+.icon-btn{
+  border-color:rgba(255,77,166,.92);
+  background:rgba(255,0,110,.26);
+  color:#ffffff;
+  box-shadow:0 0 12px rgba(255,0,110,.16);
+}
+
+.icon-btn:hover{
+  box-shadow:0 0 16px rgba(255,0,110,.34);
+}
+
+.icon-btn.confirm{
+  border-color:#ff4da6;
+  background:rgba(255,0,110,.34);
+}
+
+/* FRANJA INFERIOR */
+
+.orders-strip{
+  background:rgba(0,0,0,.90);
+  border-top-color:rgba(255,0,110,.36);
+  box-shadow:
+    0 -12px 28px rgba(0,0,0,.68),
+    0 -2px 18px rgba(255,0,110,.12);
+}
+
+.orders-dot.open,
+.orders-dot.closed{
+  background:#ff2aa3;
+  box-shadow:0 0 10px rgba(255,42,163,.75);
+}
+
+/* SELECTS */
+
+.select{
+  border-color:rgba(255,0,110,.42) !important;
+  background:linear-gradient(180deg,rgba(24,0,16,.78),rgba(0,0,0,.92)) !important;
+}
+
+.select:focus{
+  border-color:#ff4da6 !important;
+  box-shadow:
+    0 0 0 3px rgba(255,0,110,.14),
+    0 0 18px rgba(255,0,110,.16) !important;
+}
+
+/* LINK DE CONTACTO */
+
+.contact-link{
+  color:rgba(255,255,255,.62);
+}
+
+.contact-link:hover{
+  color:#ff4da6;
+  text-shadow:0 0 10px rgba(255,0,110,.45);
+}
+
+/* LOGO */
+
+.logo-badge img{
+  filter:
+    drop-shadow(0 0 8px rgba(255,255,255,.10))
+    drop-shadow(0 0 16px rgba(255,0,110,.22));
+}
+
+/* RULETA Y MODALES */
+
+.modal{
+  background:rgba(5,0,4,.97);
+  border-color:rgba(255,0,110,.45);
+  box-shadow:
+    0 26px 90px rgba(0,0,0,.72),
+    0 0 28px rgba(255,0,110,.14);
+}
+
+.modal-head{
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,0,110,.18), transparent 42%);
+}
+
+#wheelCanvas{
+  border-color:rgba(255,0,110,.55);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.03) inset,
+    0 0 34px rgba(255,0,110,.18),
+    0 20px 54px rgba(0,0,0,.58);
+}
+
+.winner-badge{
+  border-color:rgba(255,0,110,.52);
+  background:rgba(255,0,110,.12);
+  color:#ffd7ec;
+}
+
+/* SCROLLBAR */
+
+.song-list{
+  scrollbar-color:rgba(255,0,110,.55) transparent;
+}
+
+.song-list::-webkit-scrollbar-thumb{
+  background:rgba(255,0,110,.48);
+}
+
+/* EFECTOS */
+
+@keyframes pulseBlue{
+  0%{
+    box-shadow:0 0 0 rgba(255,0,110,0);
+    border-color:rgba(255,0,110,.24);
+  }
+  20%{
+    box-shadow:0 0 24px rgba(255,0,110,.48);
+    border-color:rgba(255,77,166,.72);
+  }
+  50%{
+    box-shadow:0 0 0 rgba(255,0,110,0);
+    border-color:rgba(255,0,110,.24);
+  }
+  80%{
+    box-shadow:0 0 24px rgba(255,0,110,.48);
+    border-color:rgba(255,77,166,.72);
+  }
+  100%{
+    box-shadow:0 0 0 rgba(255,0,110,0);
+    border-color:rgba(255,0,110,.24);
+  }
+}
+
+@keyframes recienBorder{
+  0%{
+    box-shadow:0 0 0 2px rgba(255,0,110,.07);
+    border-color:rgba(255,0,110,.30);
+  }
+  50%{
+    box-shadow:0 0 0 2px rgba(255,0,110,.28), 0 0 20px rgba(255,0,110,.24);
+    border-color:rgba(255,77,166,.78);
+  }
+  100%{
+    box-shadow:0 0 0 2px rgba(255,0,110,.07);
+    border-color:rgba(255,0,110,.30);
+  }
+}
+
+/* =========================================================
+   AJUSTES FINALES DEL PANEL DJ
+   - Botón ticket verde
+   - Sin franja inferior
+   - Estado PEDIDOS junto a PANEL DJ
+========================================================= */
+
+/* Oculta completamente la franja inferior de pedidos */
+.dj .orders-strip{
+  display:none !important;
+}
+
+/* Título del panel y estado de pedidos en la misma línea */
+.dj-title-status{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+/* Contenedor del estado PEDIDOS */
+.dj-orders-status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 11px;
+  border-radius:999px;
+
+  background:rgba(0,0,0,.52);
+  border:1px solid rgba(255,255,255,.10);
+
+  color:rgba(255,255,255,.90);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.9px;
+  line-height:1;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.025),
+    0 8px 18px rgba(0,0,0,.35);
+}
+
+/* La luz no necesita margen extra dentro del nuevo indicador */
+.dj-orders-status .orders-dot{
+  margin-right:0 !important;
+}
+
+/* Pedidos abiertos: luz y texto verde */
+.dj-orders-status.open{
+  color:#00e0a4;
+  border-color:rgba(0,224,164,.42);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,224,164,.05),
+    0 0 14px rgba(0,224,164,.12);
+}
+
+.dj-orders-status.open .orders-dot{
+  background:#00e0a4 !important;
+  box-shadow:0 0 10px rgba(0,224,164,.82) !important;
+}
+
+/* Pedidos cerrados: luz y texto rojo */
+.dj-orders-status.closed{
+  color:#ff4d6d;
+  border-color:rgba(255,77,109,.46);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,77,109,.05),
+    0 0 14px rgba(255,77,109,.12);
+}
+
+.dj-orders-status.closed .orders-dot{
+  background:#ff4d6d !important;
+  box-shadow:0 0 10px rgba(255,77,109,.78) !important;
+}
+
+/* Botón ticket siempre verde */
+.dj .icon-btn,
+.dj .played-btn{
+  border:1.5px solid rgba(0,224,164,.98) !important;
+  background:rgba(0,224,164,.34) !important;
+  color:#effff9 !important;
+  box-shadow:0 0 12px rgba(0,224,164,.18) !important;
+}
+
+.dj .icon-btn:hover,
+.dj .played-btn:hover{
+  border-color:#00f0b0 !important;
+  background:rgba(0,224,164,.46) !important;
+  box-shadow:0 0 17px rgba(0,224,164,.38) !important;
+}
+
+/* En el primer clic sigue verde y parpadea */
+.dj .icon-btn.confirm,
+.dj .played-btn.confirm{
+  border-color:#00f0b0 !important;
+  background:rgba(0,224,164,.54) !important;
+  color:#ffffff !important;
+  animation:pulseConfirmGreen 1s infinite !important;
+}
+
+@keyframes pulseConfirmGreen{
+  0%{
+    box-shadow:0 0 0 0 rgba(0,224,164,.58);
+  }
+  70%{
+    box-shadow:0 0 0 7px rgba(0,224,164,0);
+  }
+  100%{
+    box-shadow:0 0 0 0 rgba(0,224,164,0);
+  }
+}
+
+@media (max-width:700px){
+  .dj .topbar{
+    align-items:flex-start;
+  }
+
+  .dj-title-status{
+    width:100%;
+  }
+
+  .dj-orders-status{
+    padding:6px 9px;
+  }
+}
+
+/* =========================================================
+   AJUSTE FINAL EXCLUSIVO DEL PANEL DJ
+   - Fondo grande de solicitudes totalmente opaco
+   - Botón/ticket verde
+   - PEDIDOS sin botón/cápsula: solo luz + texto
+   - Sin franja inferior
+========================================================= */
+
+.dj .orders-strip{
+  display:none !important;
+}
+
+.dj .container{
+  padding-bottom:16px !important;
+}
+
+.dj .requests-area{
+  background:#090006 !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+.dj .dj-title-status{
+  display:flex !important;
+  align-items:center !important;
+  gap:14px !important;
+  flex-wrap:wrap !important;
+}
+
+.dj .dj-orders-status{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:7px !important;
+  padding:0 !important;
+  border:none !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:rgba(255,255,255,.88) !important;
+  font-size:11px !important;
+  font-weight:900 !important;
+  letter-spacing:.9px !important;
+  line-height:1 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+
+.dj .dj-orders-status.open,
+.dj .dj-orders-status.closed{
+  padding:0 !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:rgba(255,255,255,.88) !important;
+}
+
+.dj .dj-orders-status .orders-dot{
+  margin-right:0 !important;
+}
+
+.dj .dj-orders-status.open .orders-dot{
+  background:#00e0a4 !important;
+  box-shadow:0 0 10px rgba(0,224,164,.85) !important;
+}
+
+.dj .dj-orders-status.closed .orders-dot{
+  background:#ff4d6d !important;
+  box-shadow:0 0 10px rgba(255,77,109,.82) !important;
+}
+
+.dj .icon-btn,
+.dj .played-btn{
+  border:1.5px solid rgba(0,224,164,.98) !important;
+  background:rgba(0,224,164,.34) !important;
+  color:#effff9 !important;
+  box-shadow:0 0 12px rgba(0,224,164,.18) !important;
+}
+
+.dj .icon-btn:hover,
+.dj .played-btn:hover{
+  border-color:#00f0b0 !important;
+  background:rgba(0,224,164,.46) !important;
+  box-shadow:0 0 17px rgba(0,224,164,.38) !important;
+}
+
+.dj .icon-btn.confirm,
+.dj .played-btn.confirm{
+  border-color:#00f0b0 !important;
+  background:rgba(0,224,164,.54) !important;
+  color:#ffffff !important;
+  animation:pulseConfirmGreen 1s infinite !important;
+}
+
+@keyframes pulseConfirmGreen{
+  0%{
+    box-shadow:0 0 0 0 rgba(0,224,164,.58);
+  }
+  70%{
+    box-shadow:0 0 0 7px rgba(0,224,164,0);
+  }
+  100%{
+    box-shadow:0 0 0 0 rgba(0,224,164,0);
+  }
+}
+
+@media (max-width:700px){
+  .dj .topbar{
+    align-items:flex-start;
+  }
+
+  .dj .dj-title-status{
+    width:100%;
+  }
+}
+
+/* =========================================================
+   BOTÓN RULETA DEL PANEL DJ
+   - Se mantiene fijo abajo a la derecha
+   - Abre /ruleta en otra pestaña desde el HTML
+========================================================= */
+
+.dj-raffle-button{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:1000;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+
+  min-width:132px;
+  min-height:48px;
+  padding:12px 18px;
+
+  border:1.5px solid rgba(255,0,110,.78);
+  border-radius:16px;
+
+  background:
+    linear-gradient(180deg, rgba(45,0,30,.96), rgba(7,0,5,.98));
+
+  color:#ffffff;
+  text-decoration:none;
+  text-transform:uppercase;
+
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.8px;
+
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.68),
+    0 0 22px rgba(255,0,110,.26),
+    inset 0 0 0 1px rgba(255,255,255,.055);
+
+  transition:
+    transform .14s ease,
+    filter .14s ease,
+    border-color .14s ease,
+    box-shadow .14s ease;
+}
+
+.dj-raffle-button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+  border-color:#ff4da6;
+
+  box-shadow:
+    0 19px 42px rgba(0,0,0,.72),
+    0 0 28px rgba(255,0,110,.42),
+    inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+.dj-raffle-button:active{
+  transform:translateY(0);
+  filter:brightness(.98);
+}
+
+.dj-raffle-button:focus-visible{
+  outline:none;
+  box-shadow:
+    0 0 0 3px rgba(255,77,166,.24),
+    0 19px 42px rgba(0,0,0,.72),
+    0 0 28px rgba(255,0,110,.42);
+}
+
+@media (max-width:700px){
+  .dj-raffle-button{
+    right:14px;
+    bottom:14px;
+    min-width:118px;
+    min-height:44px;
+    padding:10px 15px;
+    border-radius:14px;
+    font-size:12px;
+  }
+}
+
+/* Quitar pestañita izquierda en Resumen diario y Top canciones */
+.stats-grid .panel .h2{
+  padding-left:0 !important;
+}
+
+.stats-grid .panel .h2::before{
+  display:none !important;
+  content:none !important;
+}
+
+/* =========================================================
+   REPRODUCCIÓN EN PANTALLA TV - PANEL DJ
+========================================================= */
+
+.song-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.playback-btn{
+  border:1.5px solid rgba(255,0,110,.9) !important;
+  background:rgba(255,0,110,.24) !important;
+  color:#fff !important;
+  box-shadow:0 0 12px rgba(255,0,110,.18) !important;
+}
+
+.playback-btn:hover{
+  border-color:#ff4da6 !important;
+  background:rgba(255,0,110,.38) !important;
+  box-shadow:0 0 17px rgba(255,0,110,.38) !important;
+}
+
+.playback-btn.active{
+  border-color:#ff4da6 !important;
+  background:linear-gradient(180deg,#ff4da6,#9b0047) !important;
+  color:#fff !important;
+  box-shadow:
+    0 0 0 2px rgba(255,0,110,.08),
+    0 0 20px rgba(255,0,110,.48) !important;
+  animation:playbackPulse 1.2s ease-in-out infinite;
+}
+
+.song-item.is-playing{
+  position:relative;
+  border-color:rgba(255,77,166,.82) !important;
+  background:
+    linear-gradient(180deg,rgba(40,0,27,.58),rgba(8,0,6,.92)) !important;
+  box-shadow:
+    0 0 0 1px rgba(255,0,110,.14) inset,
+    0 0 22px rgba(255,0,110,.24);
+}
+
+.playing-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  margin-bottom:7px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,77,166,.72);
+  background:rgba(255,0,110,.16);
+  color:#ffd8eb;
+  font-size:9px;
+  font-weight:1000;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  box-shadow:0 0 12px rgba(255,0,110,.18);
+}
+
+.song-item.is-playing .song-client{
+  color:#ff4da6 !important;
+  text-shadow:0 0 10px rgba(255,0,110,.48);
+}
+
+.song-item.is-playing .song-meta b{
+  color:#ff77bd !important;
+}
+
+@keyframes playbackPulse{
+  0%,100%{
+    box-shadow:
+      0 0 0 0 rgba(255,0,110,.3),
+      0 0 14px rgba(255,0,110,.28);
+  }
+
+  50%{
+    box-shadow:
+      0 0 0 5px rgba(255,0,110,0),
+      0 0 24px rgba(255,0,110,.52);
+  }
 }

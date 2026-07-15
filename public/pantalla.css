@@ -1,0 +1,723 @@
+:root{
+  --bg:#030004;
+  --panel:#080007;
+  --panel-soft:#0d000a;
+  --border:rgba(255,0,110,.42);
+  --pink:#ff006e;
+  --pink-light:#ff4da6;
+  --pink-dark:#8a003c;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,.66);
+  --green:#00e0a4;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  color:var(--text);
+  font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(900px 500px at 15% 0%,rgba(255,0,110,.24),transparent 58%),
+    radial-gradient(700px 480px at 90% 15%,rgba(255,77,166,.16),transparent 60%),
+    linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.88)),
+    url("/img/zona-bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+.tv-screen{
+  width:100vw;
+  height:100vh;
+  padding:12px;
+  display:grid;
+  grid-template-rows:46px minmax(0,1fr);
+  gap:10px;
+}
+
+.now-playing,
+.queue,
+.ticker{
+  border:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(14,0,10,.96),rgba(0,0,0,.98));
+  box-shadow:
+    0 14px 36px rgba(0,0,0,.65),
+    0 0 22px rgba(255,0,110,.10),
+    inset 0 0 0 1px rgba(255,255,255,.025);
+}
+
+.ticker{
+  min-width:0;
+  height:46px;
+  border-radius:14px;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  align-items:center;
+  overflow:hidden;
+}
+
+.ticker-icon{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-right:1px solid rgba(255,255,255,.07);
+  background:#0a0008;
+  color:var(--pink-light);
+  font-size:18px;
+  font-weight:1000;
+}
+
+.ticker-window{
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.ticker-text{
+  display:inline-block;
+  padding-left:100%;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  animation:tickerMove 18s linear infinite;
+}
+
+.tv-main{
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
+  gap:10px;
+}
+
+.now-playing,
+.queue{
+  min-height:0;
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.now-playing{
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+}
+
+.section-title{
+  color:var(--pink-light);
+  font-size:13px;
+  font-weight:1000;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  text-shadow:0 0 12px rgba(255,0,110,.3);
+}
+
+.now-content{
+  min-height:0;
+  flex:1;
+  display:grid;
+  grid-template-columns:minmax(220px,.8fr) minmax(0,1.2fr);
+  gap:18px;
+  align-items:center;
+  padding-top:8px;
+}
+
+.animation{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+}
+
+.disc-wrapper{
+  position:relative;
+  width:min(29vw,250px);
+  aspect-ratio:1/1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.disc{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid rgba(255,77,166,.64);
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(255,255,255,.035) 0 2px,
+      rgba(0,0,0,.10) 3px 7px
+    ),
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,77,166,.24),
+      rgba(0,0,0,.96) 60%
+    );
+  box-shadow:
+    0 0 36px rgba(255,0,110,.28),
+    0 24px 50px rgba(0,0,0,.66),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  animation:spinDisc 6s linear infinite;
+}
+
+.disc::before,
+.disc::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.disc::before{
+  width:72%;
+  height:72%;
+  left:14%;
+  top:14%;
+}
+
+.disc::after{
+  width:48%;
+  height:48%;
+  left:26%;
+  top:26%;
+}
+
+.disc-center{
+  position:relative;
+  z-index:5;
+  width:34%;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid rgba(255,77,166,.82);
+  background:#050004;
+  box-shadow:
+    0 0 20px rgba(255,0,110,.45),
+    0 0 0 2px rgba(255,255,255,.04);
+}
+
+.disc-logo{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+.equalizer{
+  height:42px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:6px;
+}
+
+.equalizer span{
+  width:7px;
+  min-height:8px;
+  border-radius:999px 999px 2px 2px;
+  background:linear-gradient(180deg,var(--pink-light),var(--pink-dark));
+  box-shadow:0 0 10px rgba(255,0,110,.4);
+  animation:eqMove .75s ease-in-out infinite alternate;
+}
+
+.equalizer span:nth-child(2){
+  animation-delay:.12s;
+}
+
+.equalizer span:nth-child(3){
+  animation-delay:.24s;
+}
+
+.equalizer span:nth-child(4){
+  animation-delay:.08s;
+}
+
+.equalizer span:nth-child(5){
+  animation-delay:.32s;
+}
+
+.equalizer span:nth-child(6){
+  animation-delay:.18s;
+}
+
+.equalizer span:nth-child(7){
+  animation-delay:.4s;
+}
+
+.song-info{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+.player-name{
+  max-width:100%;
+  font-size:clamp(22px,3vw,46px);
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.03em;
+  text-transform:uppercase;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.player-table{
+  margin-top:8px;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,0,110,.44);
+  background:rgba(255,0,110,.1);
+  color:#ffd9ea;
+  font-size:12px;
+  font-weight:900;
+}
+
+.song-title{
+  max-width:100%;
+  margin-top:20px;
+  color:var(--pink-light);
+  font-size:clamp(26px,4vw,54px);
+  line-height:1.02;
+  font-weight:1000;
+  letter-spacing:-.035em;
+  text-transform:uppercase;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-shadow:0 0 18px rgba(255,0,110,.3);
+}
+
+.song-artist{
+  max-width:100%;
+  margin-top:10px;
+  color:var(--muted);
+  font-size:clamp(15px,2vw,25px);
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.queue{
+  display:flex;
+  flex-direction:column;
+}
+
+.queue-top{
+  min-height:68px;
+  padding:13px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  background:#0a0008;
+}
+
+.queue-subtitle{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.queue-count{
+  min-width:38px;
+  height:38px;
+  padding:0 10px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,0,110,.46);
+  background:rgba(255,0,110,.1);
+  color:#ffd9ec;
+  font-size:13px;
+  font-weight:1000;
+}
+
+.queue-list{
+  min-height:0;
+  flex:1;
+  overflow:hidden;
+  padding:8px 10px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.queue-item{
+  min-height:54px;
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.065);
+  background:rgba(255,255,255,.025);
+}
+
+.queue-item:first-child{
+  border-color:rgba(255,0,110,.32);
+  background:rgba(255,0,110,.08);
+  box-shadow:inset 0 0 0 1px rgba(255,0,110,.04);
+}
+
+.queue-position{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.72);
+  border:1px solid rgba(255,0,110,.38);
+  font-size:11px;
+  font-weight:1000;
+}
+
+.queue-main{
+  min-width:0;
+}
+
+.queue-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:13px;
+  font-weight:1000;
+  text-transform:uppercase;
+}
+
+.queue-song{
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.queue-table{
+  padding:5px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,0,110,.28);
+  background:rgba(255,0,110,.07);
+  color:#ffb5d7;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.queue-empty{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+}
+
+/* -----------------------------
+   ESTADO SIN REPRODUCCIÓN
+------------------------------ */
+
+body:not(.playing) .disc{
+  animation-play-state:paused;
+  opacity:.55;
+  filter:saturate(.65);
+}
+
+body:not(.playing) .equalizer span{
+  animation-play-state:paused;
+  height:8px;
+  opacity:.4;
+}
+
+/* -----------------------------
+   ANIMACIONES
+------------------------------ */
+
+@keyframes spinDisc{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+@keyframes eqMove{
+  from{
+    height:9px;
+  }
+  to{
+    height:40px;
+  }
+}
+
+@keyframes tickerMove{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-100%);
+  }
+}
+
+/* -----------------------------
+   TV 32"
+------------------------------ */
+
+@media (max-width:900px){
+
+  .tv-screen{
+    padding:8px;
+    grid-template-rows:42px minmax(0,1fr);
+    gap:8px;
+  }
+
+  .tv-main{
+    grid-template-columns:minmax(0,1.2fr) minmax(250px,.8fr);
+    gap:8px;
+  }
+
+  .now-content{
+    grid-template-columns:minmax(170px,.7fr) minmax(0,1.3fr);
+    gap:12px;
+  }
+
+  .disc-wrapper{
+    width:min(27vw,200px);
+  }
+
+  .song-title{
+    margin-top:14px;
+  }
+
+  .queue-item{
+    min-height:48px;
+    padding:6px 8px;
+  }
+
+  .ticker-text{
+    font-size:12px;
+  }
+
+}
+
+/* -----------------------------
+   TV BAJA (720p)
+------------------------------ */
+
+@media (max-height:650px){
+
+  .tv-screen{
+    grid-template-rows:40px minmax(0,1fr);
+  }
+
+  .now-playing{
+    padding:10px;
+  }
+
+  .disc-wrapper{
+    width:min(24vw,170px);
+  }
+
+  .equalizer{
+    height:30px;
+  }
+
+  .equalizer span{
+    width:6px;
+  }
+
+  @keyframes eqMove{
+    from{
+      height:7px;
+    }
+    to{
+      height:28px;
+    }
+  }
+
+  .queue-top{
+    min-height:56px;
+    padding:9px 11px;
+  }
+
+  .queue-list{
+    gap:5px;
+    padding:6px 8px;
+  }
+
+  .queue-item{
+    min-height:42px;
+  }
+
+}
+
+/* -----------------------------
+   LOGO DEL LOCAL
+------------------------------ */
+
+.disc-center{
+  overflow:hidden;
+}
+
+.disc-logo{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+/* =========================================================
+   LISTA DE TURNOS MÁS ANGOSTA Y SUTIL
+========================================================= */
+
+.tv-main{
+  grid-template-columns:minmax(0,1fr) clamp(270px,24vw,360px);
+  gap:10px;
+}
+
+.queue{
+  background:rgba(2,0,2,.92);
+  border-color:rgba(255,0,110,.28);
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.58),
+    0 0 14px rgba(255,0,110,.06);
+}
+
+.queue-top{
+  min-height:58px;
+  padding:10px 12px;
+  background:rgba(5,0,4,.92);
+}
+
+.queue-top .section-title{
+  font-size:11px;
+  letter-spacing:.1em;
+}
+
+.queue-subtitle{
+  margin-top:2px;
+  font-size:8px;
+  opacity:.7;
+}
+
+.queue-count{
+  min-width:32px;
+  height:32px;
+  padding:0 8px;
+  font-size:11px;
+}
+
+.queue-list{
+  padding:7px;
+  gap:5px;
+}
+
+.queue-item{
+  min-height:43px;
+  grid-template-columns:27px minmax(0,1fr) auto;
+  gap:7px;
+  padding:6px 7px;
+  border-radius:9px;
+  border-color:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.018);
+}
+
+.queue-item:first-child{
+  border-color:rgba(255,0,110,.22);
+  background:rgba(255,0,110,.055);
+  box-shadow:none;
+}
+
+.queue-position{
+  width:25px;
+  height:25px;
+  font-size:9px;
+  border-color:rgba(255,0,110,.28);
+}
+
+.queue-name{
+  font-size:10px;
+  letter-spacing:.02em;
+}
+
+.queue-song{
+  margin-top:2px;
+  font-size:8px;
+  color:rgba(255,255,255,.48);
+}
+
+.queue-table{
+  padding:4px 6px;
+  font-size:8px;
+  border-color:rgba(255,0,110,.22);
+  background:rgba(255,0,110,.045);
+  color:rgba(255,180,215,.85);
+}
+
+/* ===== Letras más grandes en la lista de turnos ===== */
+
+.queue-name{
+    font-size:16px;
+    font-weight:900;
+    line-height:1.15;
+}
+
+.queue-song{
+    font-size:13px;
+    color:rgba(255,255,255,.72);
+    margin-top:3px;
+}
+
+.queue-position{
+    width:34px;
+    height:34px;
+    font-size:14px;
+    font-weight:900;
+}
+
+.queue-table{
+    font-size:12px;
+    padding:5px 10px;
+}
+
+.queue-top .section-title{
+    font-size:20px;
+}
+
+.queue-subtitle{
+    font-size:11px;
+}
+
+.queue-count{
+    width:40px;
+    height:40px;
+    font-size:16px;
+}
