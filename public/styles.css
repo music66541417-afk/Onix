@@ -1675,3 +1675,302 @@ body:not(.dj) input:focus{
       0 0 24px rgba(255,0,110,.52);
   }
 }
+/* =========================================================
+   COLA MANUAL DEL DJ + FOTO OPCIONAL QR
+========================================================= */
+
+.dj .grid{
+  grid-template-columns:minmax(0,1fr) clamp(330px,27vw,430px) !important;
+}
+
+.dj .panel{
+  min-width:0;
+  padding:18px 14px;
+}
+
+.queue-help{
+  margin:-2px 0 12px;
+  color:rgba(255,255,255,.48);
+  font-size:11px;
+  line-height:1.35;
+}
+
+.dj-queue-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:calc(100vh - 190px);
+  overflow-y:auto;
+  padding-right:4px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,0,110,.48) transparent;
+}
+
+.dj-queue-item{
+  display:grid !important;
+  grid-template-columns:20px 32px minmax(0,1fr) !important;
+  align-items:center !important;
+  gap:9px !important;
+  padding:9px 10px !important;
+  border-radius:13px !important;
+  border:1px solid rgba(255,0,110,.22) !important;
+  background:rgba(255,255,255,.025) !important;
+  cursor:grab;
+  user-select:none;
+  transition:transform .12s ease, border-color .12s ease, background .12s ease, opacity .12s ease;
+}
+
+.dj-queue-item:first-child{
+  border-color:rgba(255,77,166,.58) !important;
+  background:rgba(255,0,110,.10) !important;
+  box-shadow:0 0 16px rgba(255,0,110,.10);
+}
+
+.dj-queue-item:active{
+  cursor:grabbing;
+}
+
+.dj-queue-item.dragging{
+  opacity:.42;
+  transform:scale(.985);
+}
+
+.dj-queue-item.drag-over{
+  border-color:#ff4da6 !important;
+  background:rgba(255,0,110,.14) !important;
+}
+
+.dj-queue-handle{
+  color:rgba(255,255,255,.40);
+  font-size:18px;
+  font-weight:900;
+  line-height:1;
+  text-align:center;
+}
+
+.dj-queue-position{
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  border:1px solid rgba(255,0,110,.40);
+  background:rgba(0,0,0,.70);
+  color:#fff;
+  font-size:11px;
+  font-weight:1000;
+}
+
+.dj-queue-content{
+  min-width:0;
+}
+
+.dj-queue-name{
+  color:#fff;
+  font-size:13px;
+  font-weight:1000;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.dj-queue-song{
+  margin-top:3px;
+  color:#ff77bd;
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.dj-queue-meta{
+  margin-top:3px;
+  color:rgba(255,255,255,.52);
+  font-size:10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.queue-photo-badge{
+  margin-left:5px;
+  font-size:11px;
+}
+
+.dj-queue-empty{
+  padding:20px 8px;
+  text-align:center;
+  color:rgba(255,255,255,.48);
+  font-size:12px;
+}
+
+.photo-upload-block{
+  display:block;
+}
+
+.optional-text{
+  color:rgba(255,255,255,.42);
+  font-weight:600;
+  font-size:11px;
+}
+
+.photo-help{
+  margin-top:6px;
+  color:rgba(255,255,255,.46);
+  font-size:10px;
+  line-height:1.4;
+}
+
+#photo{
+  padding:10px !important;
+  cursor:pointer;
+}
+
+#photo::file-selector-button{
+  margin-right:10px;
+  padding:7px 10px;
+  border:1px solid rgba(255,0,110,.42);
+  border-radius:9px;
+  background:rgba(255,0,110,.14);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.photo-preview-wrap{
+  margin-top:10px;
+  padding:10px;
+  border:1px solid rgba(255,0,110,.25);
+  border-radius:12px;
+  background:rgba(0,0,0,.38);
+}
+
+.photo-preview-wrap[hidden]{
+  display:none !important;
+}
+
+.photo-preview{
+  display:block;
+  width:100%;
+  max-height:230px;
+  object-fit:contain;
+  border-radius:10px;
+  background:#050005;
+}
+
+.photo-remove-btn{
+  width:100%;
+  margin-top:8px;
+  padding:8px 10px;
+  border:1px solid rgba(255,77,109,.42);
+  border-radius:10px;
+  background:rgba(255,77,109,.10);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+@media (max-width:950px){
+  .dj .grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .dj-queue-list{
+    max-height:480px;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE DJ 2026-08-29
+   - Sidebar de canciones más angosto y pegado a la derecha
+   - Hasta 4 mesas por fila sin esconderse bajo el sidebar
+========================================================= */
+.dj .container{
+  max-width:1600px !important;
+  padding-left:14px !important;
+  padding-right:14px !important;
+}
+
+.dj .grid{
+  grid-template-columns:minmax(0,1fr) clamp(260px,19vw,310px) !important;
+  gap:14px !important;
+  align-items:start;
+}
+
+.dj .requests-area{
+  min-width:0 !important;
+  overflow:hidden !important;
+  padding:24px 20px !important;
+}
+
+.dj .cards{
+  min-width:0 !important;
+  width:100% !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:12px !important;
+}
+
+.dj .table-card{
+  min-width:0 !important;
+  width:100% !important;
+}
+
+.dj .panel{
+  min-width:0 !important;
+  width:100% !important;
+  padding:16px 12px !important;
+}
+
+.dj .dj-queue-item{
+  grid-template-columns:17px 28px minmax(0,1fr) !important;
+  gap:7px !important;
+  padding:8px !important;
+}
+
+.dj .dj-queue-position{
+  width:27px !important;
+  height:27px !important;
+  font-size:10px !important;
+}
+
+.dj .dj-queue-name{
+  font-size:12px !important;
+}
+
+.dj .dj-queue-song{
+  font-size:11px !important;
+}
+
+.dj .dj-queue-meta{
+  font-size:9px !important;
+}
+
+@media (max-width:1350px){
+  .dj .cards{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width:1050px){
+  .dj .grid{
+    grid-template-columns:minmax(0,1fr) 260px !important;
+  }
+
+  .dj .cards{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width:800px){
+  .dj .grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .dj .cards{
+    grid-template-columns:1fr !important;
+  }
+}

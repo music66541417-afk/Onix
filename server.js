@@ -46,8 +46,20 @@ async function ensureProjectTables() {
         name TEXT NOT NULL,
         artist TEXT NOT NULL,
         song TEXT NOT NULL,
+        queue_position BIGINT,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+    `);
+
+    await pool.query(`
+      ALTER TABLE requests
+      ADD COLUMN IF NOT EXISTS queue_position BIGINT;
+    `);
+
+    await pool.query(`
+      UPDATE requests
+      SET queue_position = id
+      WHERE queue_position IS NULL;
     `);
 
     await pool.query(`
@@ -236,7 +248,7 @@ const io = new Server(server, {
 });
 
 app.disable("x-powered-by");
-app.use(express.json({ limit: "200kb" }));
+app.use(express.json({ limit: "25mb" }));
 
 /* =========================================================
    SESIONES GUARDADAS EN POSTGRESQL
@@ -462,6 +474,58 @@ function requireRaffleAccess(
 }
 
 /* =========================================================
+   FOTOS TEMPORALES DE SOLICITUDES
+
+   - Se guardan SOLO en memoria RAM.
+   - No se guardan en PostgreSQL ni en disco.
+   - Se eliminan al finalizar/borrar la solicitud.
+   - Si Railway reinicia, desaparecen automáticamente.
+========================================================= */
+
+const requestPhotos = new Map();
+
+function parseTemporaryPhoto(dataUrl) {
+  const text = String(dataUrl || "");
+
+  if (!text) {
+    return null;
+  }
+
+  const match = text.match(
+    /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/
+  );
+
+  if (!match) {
+    throw new Error(
+      "Foto inválida. Usa JPG, PNG o WEBP."
+    );
+  }
+
+  const mime = match[1];
+  const buffer = Buffer.from(match[2], "base64");
+
+  if (!buffer.length) {
+    throw new Error("La foto está vacía.");
+  }
+
+  const MAX_PHOTO_BYTES = 20 * 1024 * 1024;
+
+  if (buffer.length > MAX_PHOTO_BYTES) {
+    throw new Error(
+      "La foto supera el máximo de 20 MB."
+    );
+  }
+
+  return { mime, buffer };
+}
+
+function temporaryPhotoUrl(requestId) {
+  return requestPhotos.has(Number(requestId))
+    ? `/api/request-photo/${Number(requestId)}`
+    : null;
+}
+
+/* =========================================================
    SOLICITUDES: CONVERSIÓN Y CONSULTAS
 ========================================================= */
 
@@ -472,6 +536,12 @@ function rowToRequest(row) {
     name: row.name,
     artist: row.artist,
     song: row.song,
+    queuePosition:
+      row.queue_position !== null &&
+      row.queue_position !== undefined
+        ? Number(row.queue_position)
+        : Number(row.id),
+    hasPhoto: requestPhotos.has(Number(row.id)),
     createdAt: row.created_at,
     status: "Pendiente",
   };
@@ -485,9 +555,11 @@ async function getRequests() {
       name,
       artist,
       song,
+      queue_position,
       created_at
     FROM requests
     ORDER BY
+      queue_position ASC NULLS LAST,
       id ASC;
   `);
 
@@ -503,6 +575,7 @@ async function getRequestById(id) {
         name,
         artist,
         song,
+        queue_position,
         created_at
       FROM requests
       WHERE id = $1
@@ -561,6 +634,7 @@ function emptyPlayback() {
     name: null,
     artist: null,
     song: null,
+    photoUrl: null,
     requestedAt: null,
     startedAt: null,
     updatedAt: null,
@@ -595,6 +669,12 @@ function rowToPlayback(row) {
 
     song:
       row.song ?? null,
+
+    photoUrl:
+      row.request_id !== null &&
+      row.request_id !== undefined
+        ? temporaryPhotoUrl(row.request_id)
+        : null,
 
     requestedAt:
       row.requested_at ?? null,
@@ -1357,6 +1437,26 @@ app.post(
 );
 
 /* =========================================================
+   FOTO TEMPORAL DE UNA SOLICITUD
+========================================================= */
+
+app.get(
+  "/api/request-photo/:id",
+  (req, res) => {
+    const requestId = Number(req.params.id);
+    const photo = requestPhotos.get(requestId);
+
+    if (!photo) {
+      return res.status(404).end();
+    }
+
+    res.setHeader("Cache-Control", "no-store");
+    res.type(photo.mime);
+    return res.send(photo.buffer);
+  }
+);
+
+/* =========================================================
    API PÚBLICA DE LA PANTALLA
 
    Devuelve:
@@ -2081,6 +2181,19 @@ app.post(
         req.body.song
       ).trim();
 
+    let temporaryPhoto = null;
+
+    try {
+      temporaryPhoto = parseTemporaryPhoto(
+        req.body?.photo
+      );
+    } catch (error) {
+      return res.status(400).json({
+        ok: false,
+        error: error.message,
+      });
+    }
+
     const cooldownKey =
       `mesa:${table}`;
 
@@ -2111,13 +2224,18 @@ app.post(
               table_no,
               name,
               artist,
-              song
+              song,
+              queue_position
             )
             VALUES (
               $1,
               $2,
               $3,
-              $4
+              $4,
+              COALESCE(
+                (SELECT MAX(queue_position) + 1 FROM requests),
+                1
+              )
             )
             RETURNING
               id,
@@ -2125,6 +2243,7 @@ app.post(
               name,
               artist,
               song,
+              queue_position,
               created_at;
           `,
           [
@@ -2134,6 +2253,17 @@ app.post(
             song,
           ]
         );
+
+      const requestId = Number(
+        result.rows[0].id
+      );
+
+      if (temporaryPhoto) {
+        requestPhotos.set(
+          requestId,
+          temporaryPhoto
+        );
+      }
 
       const item =
         rowToRequest(
@@ -2159,6 +2289,72 @@ app.post(
           error:
             error.message,
         });
+    }
+  }
+);
+
+/* =========================================================
+   REORDENAR COLA DESDE EL PANEL DJ
+========================================================= */
+
+app.post(
+  "/api/requests/reorder",
+  requireDjAccess,
+  async (req, res) => {
+    const ids = Array.isArray(req.body?.ids)
+      ? req.body.ids.map(Number)
+      : [];
+
+    if (
+      !ids.length ||
+      ids.some(
+        (id) =>
+          !Number.isInteger(id) || id <= 0
+      ) ||
+      new Set(ids).size !== ids.length
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "Orden inválido",
+      });
+    }
+
+    const client = await pool.connect();
+
+    try {
+      await client.query("BEGIN");
+
+      for (let index = 0; index < ids.length; index++) {
+        await client.query(
+          `
+            UPDATE requests
+            SET queue_position = $1
+            WHERE id = $2;
+          `,
+          [index + 1, ids[index]]
+        );
+      }
+
+      await client.query("COMMIT");
+      const queue = await emitRequests();
+
+      // Evento explícito para la TV. requests:update ya mantiene
+      // compatibilidad con el resto de las pantallas.
+      io.emit("queue:order", queue);
+
+      return res.json({
+        ok: true,
+        queue,
+      });
+    } catch (error) {
+      await client.query("ROLLBACK").catch(() => {});
+
+      return res.status(500).json({
+        ok: false,
+        error: error.message,
+      });
+    } finally {
+      client.release();
     }
   }
 );
@@ -2251,6 +2447,10 @@ app.delete(
           requestId
         );
 
+        requestPhotos.delete(
+          requestId
+        );
+
         return res.json({
           ok: true,
           playedLogged:
@@ -2279,6 +2479,10 @@ app.delete(
       });
 
       await clearPlaybackIfRequestMatches(
+        requestId
+      );
+
+      requestPhotos.delete(
         requestId
       );
 
@@ -2322,6 +2526,8 @@ app.delete(
       await pool.query(
         "DELETE FROM requests;"
       );
+
+      requestPhotos.clear();
 
       await clearPlaybackStatus();
       await emitRequests();

@@ -71,6 +71,23 @@
     />
   </div>
 
+  <div class="photo-upload-block">
+    <label for="photo">Sube tu foto de perfil <span class="optional-text">(opcional)</span></label>
+    <input
+      id="photo"
+      name="photo"
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+    />
+    <div class="photo-help">
+      Si subes una foto, aparecerá en el disco mientras estés cantando. Máximo 5 MB.
+    </div>
+    <div id="photoPreviewWrap" class="photo-preview-wrap" hidden>
+      <img id="photoPreview" class="photo-preview" alt="Vista previa de la foto">
+      <button id="removePhotoBtn" class="photo-remove-btn" type="button">Quitar foto</button>
+    </div>
+  </div>
+
   <button class="btn" type="submit">
     Enviar solicitud
   </button>

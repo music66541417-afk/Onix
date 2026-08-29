@@ -685,15 +685,15 @@ body:not(.playing) .equalizer span{
 /* ===== Letras más grandes en la lista de turnos ===== */
 
 .queue-name{
-    font-size:16px;
+    font-size:20px;
     font-weight:900;
     line-height:1.15;
 }
 
 .queue-song{
-    font-size:13px;
+    font-size:15px;
     color:rgba(255,255,255,.72);
-    margin-top:3px;
+    margin-top:4px;
 }
 
 .queue-position{
@@ -704,8 +704,8 @@ body:not(.playing) .equalizer span{
 }
 
 .queue-table{
-    font-size:12px;
-    padding:5px 10px;
+    font-size:14px;
+    padding:7px 12px;
 }
 
 .queue-top .section-title{
@@ -720,4 +720,149 @@ body:not(.playing) .equalizer span{
     width:40px;
     height:40px;
     font-size:16px;
+}
+
+/* =========================================================
+   AJUSTES NUEVOS: PANEL DERECHO MÁS GRANDE + FOTO DEL CANTANTE
+========================================================= */
+
+/*
+  El panel "PRÓXIMOS TURNOS" crece hacia la izquierda.
+  En pantallas grandes ocupa aprox. 40% del ancho, con un
+  mínimo de 560px y un máximo de 720px.
+*/
+.tv-main{
+  grid-template-columns:minmax(0,1fr) clamp(560px,40vw,720px) !important;
+  gap:10px;
+}
+
+/* Tocadisco un poco más grande */
+.disc-wrapper{
+  width:min(31vw,320px);
+}
+
+/* Lista de próximas canciones */
+.queue-top{
+  min-height:72px;
+  padding:12px 16px;
+}
+
+.queue-list{
+  padding:10px 12px 12px;
+  gap:7px;
+}
+
+.queue-item{
+  min-height:58px;
+  grid-template-columns:38px minmax(0,1fr) auto;
+  gap:10px;
+  padding:9px 11px;
+  border-radius:12px;
+}
+
+.queue-position{
+  width:34px;
+  height:34px;
+  font-size:14px;
+}
+
+.queue-name{
+  font-size:17px;
+}
+
+.queue-song{
+  font-size:13px;
+}
+
+.queue-table{
+  font-size:12px;
+  padding:6px 10px;
+}
+
+.queue-top .section-title{
+  font-size:21px;
+}
+
+.queue-subtitle{
+  font-size:11px;
+}
+
+/* Foto temporal sobre el centro del tocadisco */
+.disc-center{
+  transition:
+    width .22s ease,
+    box-shadow .22s ease,
+    border-radius .22s ease;
+}
+
+.disc-center.has-photo{
+  width:66%;
+  border-width:3px;
+  box-shadow:
+    0 0 30px rgba(255,0,110,.52),
+    0 0 0 2px rgba(255,255,255,.05);
+}
+
+.disc-center.has-photo .disc-logo{
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Pantallas medianas */
+@media (max-width:1200px){
+  .tv-main{
+    grid-template-columns:minmax(0,1fr) clamp(470px,42vw,580px) !important;
+  }
+
+  .disc-wrapper{
+    width:min(29vw,280px);
+  }
+}
+
+/* TV / navegador más angosto */
+@media (max-width:950px){
+  .tv-main{
+    grid-template-columns:minmax(0,1fr) clamp(390px,44vw,500px) !important;
+  }
+
+  .now-content{
+    grid-template-columns:minmax(170px,.75fr) minmax(0,1.25fr);
+    gap:12px;
+  }
+
+  .disc-wrapper{
+    width:min(27vw,230px);
+  }
+
+  .queue-name{
+    font-size:15px;
+  }
+
+  .queue-song{
+    font-size:12px;
+  }
+}
+
+/* TV baja / 720p */
+@media (max-height:650px){
+  .tv-main{
+    grid-template-columns:minmax(0,1fr) clamp(430px,40vw,540px) !important;
+  }
+
+  .disc-wrapper{
+    width:min(25vw,210px);
+  }
+
+  .queue-item{
+    min-height:46px;
+    padding:6px 8px;
+  }
+
+  .queue-name{
+    font-size:14px;
+  }
+
+  .queue-song{
+    font-size:11px;
+  }
 }

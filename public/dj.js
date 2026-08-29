@@ -35,6 +35,8 @@ let lastNewBadgeId = null;
 let pendingConfirmId = null;
 let confirmTimeout = null;
 let playbackBusy = false;
+let draggedQueueId = null;
+let reorderBusy = false;
 
 /* =========================================================
    BOTONES SUPERIORES
@@ -268,6 +270,147 @@ function normalizePlayback(status) {
   };
 }
 
+async function saveQueueOrder(ids) {
+  if (reorderBusy) return;
+
+  // Si hay una canción sonando, no aparece en la lista arrastrable.
+  // La enviamos primero para mantener posiciones únicas en el servidor.
+  const currentId =
+    currentPlayback.isPlaying && currentPlayback.requestId
+      ? Number(currentPlayback.requestId)
+      : null;
+
+  const orderedIds = currentId
+    ? [currentId, ...ids.filter((id) => Number(id) !== currentId)]
+    : ids;
+
+  reorderBusy = true;
+
+  try {
+    const response = await fetch(
+      "/api/requests/reorder",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ids: orderedIds }),
+      }
+    );
+
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok || !data?.ok) {
+      throw new Error(data?.error || "No se pudo cambiar el orden");
+    }
+
+    // Actualización inmediata en el DJ; el servidor además emite
+    // requests:update / queue:order a la pantalla TV.
+    if (Array.isArray(data.queue)) {
+      currentRequests = data.queue;
+    }
+  } catch (error) {
+    alert(error?.message || "No se pudo guardar el nuevo orden.");
+    loadInitialRequests();
+  } finally {
+    reorderBusy = false;
+  }
+}
+
+function enableQueueDragAndDrop() {
+  if (!lastTables) return;
+
+  const items = [
+    ...lastTables.querySelectorAll(".dj-queue-item"),
+  ];
+
+  for (const item of items) {
+    item.addEventListener("dragstart", (event) => {
+      draggedQueueId = item.dataset.requestId || null;
+      item.classList.add("dragging");
+
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", draggedQueueId || "");
+      }
+    });
+
+    item.addEventListener("dragend", () => {
+      item.classList.remove("dragging");
+      draggedQueueId = null;
+
+      lastTables
+        .querySelectorAll(".drag-over")
+        .forEach((el) => el.classList.remove("drag-over"));
+    });
+
+    item.addEventListener("dragover", (event) => {
+      event.preventDefault();
+
+      if (!draggedQueueId || item.dataset.requestId === draggedQueueId) {
+        return;
+      }
+
+      item.classList.add("drag-over");
+
+      const dragged = lastTables.querySelector(
+        `.dj-queue-item[data-request-id="${CSS.escape(String(draggedQueueId))}"]`
+      );
+
+      if (!dragged) return;
+
+      const rect = item.getBoundingClientRect();
+      const placeAfter = event.clientY > rect.top + rect.height / 2;
+
+      lastTables.insertBefore(
+        dragged,
+        placeAfter ? item.nextSibling : item
+      );
+    });
+
+    item.addEventListener("dragleave", () => {
+      item.classList.remove("drag-over");
+    });
+
+    item.addEventListener("drop", async (event) => {
+      event.preventDefault();
+      item.classList.remove("drag-over");
+
+      const ids = [
+        ...lastTables.querySelectorAll(".dj-queue-item"),
+      ].map((el) => Number(el.dataset.requestId));
+
+      await saveQueueOrder(ids);
+    });
+  }
+
+  // También permite soltar al final del panel, no solo sobre otra canción.
+  lastTables.ondragover = (event) => {
+    event.preventDefault();
+  };
+
+  lastTables.ondrop = async (event) => {
+    if (event.target.closest(".dj-queue-item")) return;
+    event.preventDefault();
+
+    const dragged = draggedQueueId
+      ? lastTables.querySelector(
+          `.dj-queue-item[data-request-id="${CSS.escape(String(draggedQueueId))}"]`
+        )
+      : null;
+
+    if (dragged) {
+      lastTables.appendChild(dragged);
+    }
+
+    const ids = [
+      ...lastTables.querySelectorAll(".dj-queue-item"),
+    ].map((el) => Number(el.dataset.requestId));
+
+    await saveQueueOrder(ids);
+  };
+}
+
 /* =========================================================
    RENDER DEL PANEL DJ
 ========================================================= */
@@ -276,6 +419,12 @@ function render(requests) {
   currentRequests = Array.isArray(requests)
     ? requests
     : [];
+
+  // El orden de la cola lo decide el DJ.
+  // Las tarjetas grandes mantienen su estructura histórica.
+  const mainRequests = [...currentRequests].sort(
+    (a, b) => Number(a.id) - Number(b.id)
+  );
 
   const currentIds = new Set(
     currentRequests.map((request) =>
@@ -338,8 +487,8 @@ function render(requests) {
   }
 
   const lastRequest =
-    currentRequests[
-      currentRequests.length - 1
+    mainRequests[
+      mainRequests.length - 1
     ];
 
   const lastTable =
@@ -350,7 +499,7 @@ function render(requests) {
 
   const tablesOrder =
     uniqueTablesInOrder(
-      currentRequests
+      mainRequests
     );
 
   const nextUpTable =
@@ -367,7 +516,7 @@ function render(requests) {
   const firstNameByTable =
     new Map();
 
-  for (const request of currentRequests) {
+  for (const request of mainRequests) {
     const tableKey =
       String(request.table);
 
@@ -384,28 +533,55 @@ function render(requests) {
   }
 
   if (lastTables) {
-    lastTables.innerHTML =
-      tablesOrder
-        .map((table, index) => {
-          const name =
-            firstNameByTable.get(
-              String(table)
-            ) ?? "";
+    const queueItems = currentRequests.filter(
+      (request) => !isCurrentPlayback(request.id)
+    );
+
+    if (!queueItems.length) {
+      lastTables.innerHTML = `
+        <div class="dj-queue-empty">
+          No hay canciones pendientes
+        </div>
+      `;
+    } else {
+      lastTables.innerHTML = queueItems
+        .map((request, index) => {
+          const client = getClientName(request);
+          const photoBadge = request.hasPhoto
+            ? `<span class="queue-photo-badge" title="Incluye foto">📷</span>`
+            : "";
 
           return `
-            <div>
-              <span>#${index + 1}</span>
-              <span>Mesa ${escapeHtml(table)}</span>
-              <span>${escapeHtml(name)}</span>
+            <div
+              class="dj-queue-item"
+              draggable="true"
+              data-request-id="${escapeHtml(request.id)}"
+            >
+              <div class="dj-queue-handle" title="Arrastrar">⋮⋮</div>
+              <div class="dj-queue-position">${index + 1}</div>
+              <div class="dj-queue-content">
+                <div class="dj-queue-name">
+                  ${escapeHtml(client || "Sin nombre")} ${photoBadge}
+                </div>
+                <div class="dj-queue-song">
+                  ${escapeHtml(request.song || "Sin canción")}
+                </div>
+                <div class="dj-queue-meta">
+                  ${escapeHtml(request.artist || "")} · Mesa ${escapeHtml(request.table ?? "—")}
+                </div>
+              </div>
             </div>
           `;
         })
         .join("");
+
+      enableQueueDragAndDrop();
+    }
   }
 
   const grouped =
     groupByTable(
-      currentRequests
+      mainRequests
     );
 
   for (const table of tablesOrder) {

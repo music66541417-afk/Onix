@@ -7,6 +7,8 @@ const playerName = document.getElementById("playerName");
 const playerTable = document.getElementById("playerTable");
 const songTitle = document.getElementById("songTitle");
 const songArtist = document.getElementById("songArtist");
+const discImage = document.getElementById("discImage");
+const discCenter = document.querySelector(".disc-center");
 
 const queueCount = document.getElementById("queueCount");
 const queueList = document.getElementById("queueList");
@@ -19,6 +21,7 @@ let playback = {
   name: null,
   artist: null,
   song: null,
+  photoUrl: null,
   requestedAt: null,
   startedAt: null,
   updatedAt: null,
@@ -94,6 +97,7 @@ function normalizePlayback(value) {
     name: value?.name ?? null,
     artist: value?.artist ?? null,
     song: value?.song ?? null,
+    photoUrl: value?.photoUrl ?? null,
     requestedAt: value?.requestedAt ?? null,
     startedAt: value?.startedAt ?? null,
     updatedAt: value?.updatedAt ?? null,
@@ -108,6 +112,27 @@ function renderPlayback() {
   document.body.classList.toggle(
     "playing",
     !!isPlaying
+  );
+
+  const defaultDiscImage =
+    discImage?.dataset?.defaultSrc ||
+    "/img/logo-local.png";
+
+  const activePhoto =
+    isPlaying && playback.photoUrl
+      ? `${playback.photoUrl}?v=${encodeURIComponent(playback.updatedAt || Date.now())}`
+      : null;
+
+  if (discImage) {
+    discImage.src = activePhoto || defaultDiscImage;
+    discImage.alt = activePhoto
+      ? `Foto de ${playback.name || "cantante"}`
+      : "Logo del Local";
+  }
+
+  discCenter?.classList.toggle(
+    "has-photo",
+    !!activePhoto
   );
 
   if (!isPlaying) {
@@ -362,6 +387,20 @@ socket.on(
 
 socket.on(
   "requests:update",
+  (rows) => {
+    requests =
+      Array.isArray(rows)
+        ? rows
+        : [];
+
+    renderQueue();
+  }
+);
+
+// El DJ puede cambiar manualmente el orden arrastrando canciones.
+// Este evento fuerza la actualización inmediata de PRÓXIMOS TURNOS.
+socket.on(
+  "queue:order",
   (rows) => {
     requests =
       Array.isArray(rows)
