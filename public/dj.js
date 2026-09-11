@@ -35,8 +35,19 @@ let lastNewBadgeId = null;
 let pendingConfirmId = null;
 let confirmTimeout = null;
 let playbackBusy = false;
-let draggedQueueId = null;
 let reorderBusy = false;
+
+let freshQueueDrag = {
+  active: false,
+  item: null,
+  ghost: null,
+  offsetY: 0,
+  moved: false,
+  startY: 0,
+};
+
+let pendingRequestsWhileDragging = null;
+let pendingPlaybackRender = false;
 
 /* =========================================================
    BOTONES SUPERIORES
@@ -317,99 +328,227 @@ async function saveQueueOrder(ids) {
   }
 }
 
-function enableQueueDragAndDrop() {
-  if (!lastTables) return;
+function resetFreshQueueDrag() {
+  const state = freshQueueDrag;
 
-  const items = [
-    ...lastTables.querySelectorAll(".dj-queue-item"),
-  ];
+  state.ghost?.remove();
 
-  for (const item of items) {
-    item.addEventListener("dragstart", (event) => {
-      draggedQueueId = item.dataset.requestId || null;
-      item.classList.add("dragging");
-
-      if (event.dataTransfer) {
-        event.dataTransfer.effectAllowed = "move";
-        event.dataTransfer.setData("text/plain", draggedQueueId || "");
-      }
-    });
-
-    item.addEventListener("dragend", () => {
-      item.classList.remove("dragging");
-      draggedQueueId = null;
-
-      lastTables
-        .querySelectorAll(".drag-over")
-        .forEach((el) => el.classList.remove("drag-over"));
-    });
-
-    item.addEventListener("dragover", (event) => {
-      event.preventDefault();
-
-      if (!draggedQueueId || item.dataset.requestId === draggedQueueId) {
-        return;
-      }
-
-      item.classList.add("drag-over");
-
-      const dragged = lastTables.querySelector(
-        `.dj-queue-item[data-request-id="${CSS.escape(String(draggedQueueId))}"]`
-      );
-
-      if (!dragged) return;
-
-      const rect = item.getBoundingClientRect();
-      const placeAfter = event.clientY > rect.top + rect.height / 2;
-
-      lastTables.insertBefore(
-        dragged,
-        placeAfter ? item.nextSibling : item
-      );
-    });
-
-    item.addEventListener("dragleave", () => {
-      item.classList.remove("drag-over");
-    });
-
-    item.addEventListener("drop", async (event) => {
-      event.preventDefault();
-      item.classList.remove("drag-over");
-
-      const ids = [
-        ...lastTables.querySelectorAll(".dj-queue-item"),
-      ].map((el) => Number(el.dataset.requestId));
-
-      await saveQueueOrder(ids);
-    });
+  if (state.item) {
+    state.item.classList.remove("fresh-drag-source");
+    state.item.style.visibility = "";
   }
 
-  // También permite soltar al final del panel, no solo sobre otra canción.
-  lastTables.ondragover = (event) => {
-    event.preventDefault();
-  };
+  document.body.classList.remove("fresh-queue-dragging");
 
-  lastTables.ondrop = async (event) => {
-    if (event.target.closest(".dj-queue-item")) return;
-    event.preventDefault();
-
-    const dragged = draggedQueueId
-      ? lastTables.querySelector(
-          `.dj-queue-item[data-request-id="${CSS.escape(String(draggedQueueId))}"]`
-        )
-      : null;
-
-    if (dragged) {
-      lastTables.appendChild(dragged);
-    }
-
-    const ids = [
-      ...lastTables.querySelectorAll(".dj-queue-item"),
-    ].map((el) => Number(el.dataset.requestId));
-
-    await saveQueueOrder(ids);
+  freshQueueDrag = {
+    active: false,
+    item: null,
+    ghost: null,
+    offsetY: 0,
+    moved: false,
+    startY: 0,
   };
 }
+
+function renumberFreshQueue() {
+  if (!lastTables) return;
+
+  lastTables
+    .querySelectorAll(".dj-fresh-item")
+    .forEach((item, index) => {
+      const number = item.querySelector(".dj-fresh-position");
+
+      if (number) {
+        number.textContent = String(index + 1);
+      }
+    });
+}
+
+function beginFreshQueueDrag(event) {
+  if (!lastTables) return;
+
+  const handle = event.target.closest(".dj-fresh-handle");
+
+  if (!handle || !lastTables.contains(handle)) {
+    return;
+  }
+
+  if (event.button !== undefined && event.button !== 0) {
+    return;
+  }
+
+  const item = handle.closest(".dj-fresh-item");
+  if (!item) return;
+
+  event.preventDefault();
+
+  const rect = item.getBoundingClientRect();
+  const ghost = item.cloneNode(true);
+
+  ghost.classList.add("dj-fresh-ghost");
+  ghost.style.position = "fixed";
+  ghost.style.left = `${rect.left}px`;
+  ghost.style.top = `${rect.top}px`;
+  ghost.style.width = `${rect.width}px`;
+  ghost.style.height = `${rect.height}px`;
+  ghost.style.pointerEvents = "none";
+  ghost.style.zIndex = "99999";
+
+  document.body.appendChild(ghost);
+
+  item.classList.add("fresh-drag-source");
+  item.style.visibility = "hidden";
+
+  freshQueueDrag = {
+    active: true,
+    item,
+    ghost,
+    offsetY: event.clientY - rect.top,
+    moved: false,
+    startY: event.clientY,
+  };
+
+  document.body.classList.add("fresh-queue-dragging");
+}
+
+function moveFreshQueueDrag(event) {
+  const state = freshQueueDrag;
+
+  if (
+    !state.active ||
+    !state.item ||
+    !state.ghost ||
+    !lastTables
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (Math.abs(event.clientY - state.startY) > 3) {
+    state.moved = true;
+  }
+
+  state.ghost.style.top =
+    `${event.clientY - state.offsetY}px`;
+
+  const underPointer =
+    document.elementFromPoint(
+      event.clientX,
+      event.clientY
+    );
+
+  const target =
+    underPointer?.closest(".dj-fresh-item");
+
+  if (
+    target &&
+    target !== state.item &&
+    lastTables.contains(target)
+  ) {
+    const rect =
+      target.getBoundingClientRect();
+
+    const after =
+      event.clientY >
+      rect.top + rect.height / 2;
+
+    lastTables.insertBefore(
+      state.item,
+      after
+        ? target.nextSibling
+        : target
+    );
+
+    renumberFreshQueue();
+    return;
+  }
+
+  const listRect =
+    lastTables.getBoundingClientRect();
+
+  if (event.clientY < listRect.top + 8) {
+    lastTables.prepend(state.item);
+    renumberFreshQueue();
+  } else if (event.clientY > listRect.bottom - 8) {
+    lastTables.appendChild(state.item);
+    renumberFreshQueue();
+  }
+}
+
+async function finishFreshQueueDrag(event, save = true) {
+  const state = freshQueueDrag;
+
+  if (
+    !state.active ||
+    !state.item ||
+    !lastTables
+  ) {
+    return;
+  }
+
+  event?.preventDefault?.();
+
+  const shouldSave = save && state.moved;
+
+  resetFreshQueueDrag();
+
+  if (shouldSave) {
+    const ids = [
+      ...lastTables.querySelectorAll(".dj-fresh-item"),
+    ].map((item) =>
+      Number(item.dataset.requestId)
+    );
+
+    await saveQueueOrder(ids);
+  }
+
+  if (Array.isArray(pendingRequestsWhileDragging)) {
+    const pending = pendingRequestsWhileDragging;
+    pendingRequestsWhileDragging = null;
+    render(pending);
+  } else if (pendingPlaybackRender) {
+    pendingPlaybackRender = false;
+    render(currentRequests);
+  }
+}
+
+lastTables?.addEventListener(
+  "pointerdown",
+  beginFreshQueueDrag
+);
+
+document.addEventListener(
+  "pointermove",
+  moveFreshQueueDrag,
+  { passive: false }
+);
+
+document.addEventListener(
+  "pointerup",
+  (event) => {
+    finishFreshQueueDrag(event, true);
+  },
+  { passive: false }
+);
+
+document.addEventListener(
+  "pointercancel",
+  (event) => {
+    finishFreshQueueDrag(event, false);
+  },
+  { passive: false }
+);
+
+window.addEventListener(
+  "blur",
+  () => {
+    if (freshQueueDrag.active) {
+      finishFreshQueueDrag(null, false);
+    }
+  }
+);
+
 
 /* =========================================================
    RENDER DEL PANEL DJ
@@ -533,51 +672,70 @@ function render(requests) {
   }
 
   if (lastTables) {
-    const queueItems = currentRequests.filter(
-      (request) => !isCurrentPlayback(request.id)
-    );
+    const queueItems =
+      currentRequests.filter(
+        (request) =>
+          !isCurrentPlayback(request.id)
+      );
 
     if (!queueItems.length) {
       lastTables.innerHTML = `
-        <div class="dj-queue-empty">
+        <div class="dj-fresh-empty">
           No hay canciones pendientes
         </div>
       `;
     } else {
-      lastTables.innerHTML = queueItems
-        .map((request, index) => {
-          const client = getClientName(request);
-          const photoBadge = request.hasPhoto
-            ? `<span class="queue-photo-badge" title="Incluye foto">📷</span>`
-            : "";
+      lastTables.innerHTML =
+        queueItems
+          .map((request, index) => {
+            const client =
+              getClientName(request) ||
+              "Sin nombre";
 
-          return `
-            <div
-              class="dj-queue-item"
-              draggable="true"
-              data-request-id="${escapeHtml(request.id)}"
-            >
-              <div class="dj-queue-handle" title="Arrastrar">⋮⋮</div>
-              <div class="dj-queue-position">${index + 1}</div>
-              <div class="dj-queue-content">
-                <div class="dj-queue-name">
-                  ${escapeHtml(client || "Sin nombre")} ${photoBadge}
+            const photoBadge =
+              request.hasPhoto
+                ? `<span class="dj-fresh-photo" title="Incluye foto">📷</span>`
+                : "";
+
+            return `
+              <div
+                class="dj-fresh-item"
+                data-request-id="${escapeHtml(request.id)}"
+              >
+                <button
+                  class="dj-fresh-handle"
+                  type="button"
+                  title="Arrastrar"
+                  aria-label="Mover canción"
+                >
+                  ⋮⋮
+                </button>
+
+                <div class="dj-fresh-position">
+                  ${index + 1}
                 </div>
-                <div class="dj-queue-song">
-                  ${escapeHtml(request.song || "Sin canción")}
-                </div>
-                <div class="dj-queue-meta">
-                  ${escapeHtml(request.artist || "")} · Mesa ${escapeHtml(request.table ?? "—")}
+
+                <div class="dj-fresh-content">
+                  <div class="dj-fresh-name">
+                    ${escapeHtml(client)}
+                    ${photoBadge}
+                  </div>
+
+                  <div class="dj-fresh-song">
+                    ${escapeHtml(request.song || "Sin canción")}
+                  </div>
+
+                  <div class="dj-fresh-meta">
+                    ${escapeHtml(request.artist || "Sin artista")} · Mesa ${escapeHtml(request.table ?? "—")}
+                  </div>
                 </div>
               </div>
-            </div>
-          `;
-        })
-        .join("");
-
-      enableQueueDragAndDrop();
+            `;
+          })
+          .join("");
     }
   }
+
 
   const grouped =
     groupByTable(
@@ -1128,6 +1286,14 @@ cards?.addEventListener(
 socket.on(
   "requests:update",
   (requests) => {
+    if (freshQueueDrag.active) {
+      pendingRequestsWhileDragging =
+        Array.isArray(requests)
+          ? requests
+          : [];
+      return;
+    }
+
     render(requests);
   }
 );
@@ -1137,6 +1303,11 @@ socket.on(
   (status) => {
     currentPlayback =
       normalizePlayback(status);
+
+    if (freshQueueDrag.active) {
+      pendingPlaybackRender = true;
+      return;
+    }
 
     render(currentRequests);
   }

@@ -7,24 +7,23 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/login.css">
 </head>
-
 <body>
   <main class="shell">
     <section class="left">
       <div class="left-overlay">
         <div class="welcome">
-          <div class="brand-pill">Onix Restobar • Karaoke System</div>
-          <h1>Onix Karaoke</h1>
-          <p>Gestión en tiempo real de solicitudes, mesas y estadísticas.</p>
+          <div class="brand-pill">ONIX Restobar</div>
+          <h1>Karaoke <span>System</span></h1>
+          <p>Gestión simple y en tiempo real.</p>
 
           <div class="bullets">
-            <div class="b">⚡ En vivo en tiempo real</div>
-            <div class="b">🧾 Registro de actividad</div>
-            <div class="b">🎤 Control de karaoke</div>
+            <div class="b">⚡ Solicitudes en vivo</div>
+            <div class="b">🎧 Control DJ</div>
+            <div class="b">📊 Estadísticas</div>
           </div>
         </div>
       </div>
@@ -33,9 +32,9 @@
     <section class="right">
       <div class="card">
         <div class="card-head">
-          <div class="kicker">INICIO DE SESIÓN</div>
+          <div class="kicker">ACCESO</div>
           <h2>DJ / Administrador</h2>
-          <p class="sub">Acceso privado al sistema Onix Restobar.</p>
+          <p class="sub">Ingresa tus credenciales</p>
         </div>
 
         <form class="form" id="loginForm" autocomplete="off">
@@ -43,7 +42,7 @@
             <span>Usuario</span>
             <div class="input-wrap">
               <span class="icon" aria-hidden="true">👤</span>
-              <input id="username" name="username" maxlength="50" required placeholder="Nombre de usuario" />
+              <input id="username" name="username" maxlength="50" required placeholder="Nombre de usuario" autocomplete="username" />
             </div>
           </label>
 
@@ -51,7 +50,7 @@
             <span>Contraseña</span>
             <div class="input-wrap">
               <span class="icon" aria-hidden="true">🔒</span>
-              <input id="password" name="password" type="password" maxlength="80" required placeholder="Tu contraseña" />
+              <input id="password" name="password" type="password" maxlength="80" required placeholder="Tu contraseña" autocomplete="current-password" />
             </div>
           </label>
 
@@ -67,7 +66,7 @@
 
         <div class="foot">
           <span class="dot">•</span>
-          <span>Sistema protegido · Monitoreo activo</span>
+          <span>Sistema protegido</span>
         </div>
       </div>
     </section>

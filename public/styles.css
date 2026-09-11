@@ -1,4 +1,4 @@
-html, body { overflow-x: hidden; }
+html, body{ overflow-x: hidden; }
 
 :root{
   --border: rgba(255,45,85,.28);
@@ -153,9 +153,7 @@ a{ color: inherit; }
   .grid{ grid-template-columns: 1fr; }
 }
 
-.requests-area,
-.panel,
-.card{
+.requests-area, .panel, .card{
   border:1px solid rgba(255,45,85,.14);
   border-radius:18px;
   background: rgba(0,0,0,0.62);
@@ -291,9 +289,7 @@ a{ color: inherit; }
   gap:8px;
 }
 
-.dj .title,
-.dj .table-card .title,
-.dj .status.ultima{
+.dj .title, .dj .table-card .title, .dj .status.ultima{
   letter-spacing: .8px;
   text-transform: uppercase;
   line-height: 1.1;
@@ -325,9 +321,9 @@ a{ color: inherit; }
 }
 
 @keyframes pulseNext{
-  0%   { opacity: .35; transform: scale(.92); }
-  50%  { opacity: .90; transform: scale(1);   }
-  100% { opacity: .35; transform: scale(.92); }
+  0%{ opacity: .35; transform: scale(.92); }
+  50%{ opacity: .90; transform: scale(1);   }
+  100%{ opacity: .35; transform: scale(.92); }
 }
 
 .status.ultima{
@@ -384,23 +380,23 @@ a{ color: inherit; }
 }
 
 @keyframes pulseBlue {
-  0%   {
+  0%{
     box-shadow: 0 0 0 rgba(255,45,85,0);
     border-color: rgba(255,45,85,0.18);
   }
-  20%  {
+  20%{
     box-shadow: 0 0 18px rgba(255,45,85,0.45);
     border-color: rgba(255,45,85,0.55);
   }
-  50%  {
+  50%{
     box-shadow: 0 0 0 rgba(255,45,85,0);
     border-color: rgba(255,45,85,0.18);
   }
-  80%  {
+  80%{
     box-shadow: 0 0 18px rgba(255,45,85,0.45);
     border-color: rgba(255,45,85,0.55);
   }
-  100% {
+  100%{
     box-shadow: 0 0 0 rgba(255,45,85,0);
     border-color: rgba(255,45,85,0.18);
   }
@@ -434,72 +430,28 @@ a{ color: inherit; }
   text-shadow: 0 1px 0 rgba(0,0,0,0.6);
 }
 
-.song-item.new-song .song-meta b {
+.song-item.new-song .song-meta b{
   color: rgb(255, 77, 109);
   text-shadow: 0 0 8px rgba(255,45,85,0.55);
 }
 
-.song-item .song-meta b {
+.song-item .song-meta b{
   color: rgba(255, 255, 255, 0.72);
 }
 
-.song-item.new-song .song-meta {
+.song-item.new-song .song-meta{
   color: var(--text);
 }
 
-#lastTables > div{
-  display:flex;
-  align-items:center;
-  gap:12px;
 
-  padding: 6px 12px;
-  border-radius: 999px;
 
-  background: rgba(255,255,255,0.035);
-  border: none;
 
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.045);
-}
 
-#lastTables > div span:first-child{
-  min-width: 26px;
-  height: 26px;
-  border-radius: 999px;
 
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
 
-  font-size: 11px;
-  font-weight: 900;
 
-  color: rgba(255,255,255,0.92);
-  background: rgba(0,0,0,0.66);
-  border: 1px solid rgba(255,45,85,0.42);
 
-  flex: 0 0 auto;
-}
 
-#lastTables > div span:nth-child(2){
-  font-size: 12.5px;
-  font-weight: 800;
-  color: rgba(255,77,109,0.9);
-  letter-spacing: .3px;
-}
-
-#lastTables > div span:last-child{
-  margin-left:auto;
-  font-size: 13px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.95);
-  letter-spacing: .2px;
-}
-
-#lastTables > div:first-child{
-  background: rgba(255,45,85,0.10);
-  box-shadow: inset 0 0 0 1px rgba(255,45,85,0.18);
-}
 
 .table-card.next-up{
   border-color: rgba(255,45,85,.18) !important;
@@ -518,9 +470,9 @@ a{ color: inherit; }
 }
 
 @keyframes ultimaBlink{
-  0%   { opacity: .55; }
-  50%  { opacity: 1; }
-  100% { opacity: .55; }
+  0%{ opacity: .55; }
+  50%{ opacity: 1; }
+  100%{ opacity: .55; }
 }
 
 .table-card.recien-card{
@@ -581,9 +533,9 @@ a{ color: inherit; }
 }
 
 @keyframes pulseConfirmYellow{
-  0%   { box-shadow: 0 0 0 0 rgba(255,45,85,.45); }
-  70%  { box-shadow: 0 0 0 6px rgba(255,45,85,0); }
-  100% { box-shadow: 0 0 0 0 rgba(255,45,85,0); }
+  0%{ box-shadow: 0 0 0 0 rgba(255,45,85,.45); }
+  70%{ box-shadow: 0 0 0 6px rgba(255,45,85,0); }
+  100%{ box-shadow: 0 0 0 0 rgba(255,45,85,0); }
 }
 
 .orders-dot{
@@ -607,9 +559,9 @@ a{ color: inherit; }
 }
 
 @keyframes pulseOrders{
-  0%   { opacity: .35; transform: scale(.92); }
-  50%  { opacity: 1;   transform: scale(1);   }
-  100% { opacity: .35; transform: scale(.92); }
+  0%{ opacity: .35; transform: scale(.92); }
+  50%{ opacity: 1;   transform: scale(1);   }
+  100%{ opacity: .35; transform: scale(.92); }
 }
 
 .top-actions .btn{
@@ -622,8 +574,7 @@ a{ color: inherit; }
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
 }
 
-.requests-area .h2,
-.panel .h2{
+.requests-area .h2, .panel .h2{
   position: relative;
   padding-left: 14px;
   font-size: 16px;
@@ -633,8 +584,7 @@ a{ color: inherit; }
   text-transform: uppercase;
 }
 
-.requests-area .h2::before,
-.panel .h2::before{
+.requests-area .h2::before, .panel .h2::before{
   content: "";
   position: absolute;
   left: 0;
@@ -713,9 +663,9 @@ a{ color: inherit; }
 }
 
 @keyframes microPop{
-  0%   { transform: scale(0.995); }
-  60%  { transform: scale(1.01); }
-  100% { transform: scale(1); }
+  0%{ transform: scale(0.995); }
+  60%{ transform: scale(1.01); }
+  100%{ transform: scale(1); }
 }
 
 .song-item.new-song{
@@ -765,8 +715,7 @@ body:not(.dj) input:focus{
     0 10px 26px rgba(0,0,0,0.45);
 }
 
-.dj .table-card,
-.dj .table-card.next-up{
+.dj .table-card, .dj .table-card.next-up{
   border-color: rgba(255,45,85,0.18) !important;
   box-shadow:
     0 18px 50px rgba(0,0,0,.48),
@@ -974,11 +923,7 @@ body{
 
 /* CONTENEDORES PRINCIPALES */
 
-.topbar,
-.requests-area,
-.panel,
-.card,
-body:not(.dj) .form{
+.topbar, .requests-area, .panel, .card, body:not(.dj) .form{
   background:
     linear-gradient(180deg, rgba(18,0,12,.82), rgba(0,0,0,.90));
   border-color:rgba(255,0,110,.40);
@@ -994,32 +939,25 @@ body:not(.dj) .form{
 
 /* TITULOS */
 
-.title,
-.h2,
-.requests-area .h2,
-.panel .h2{
+.title, .h2, .requests-area .h2, .panel .h2{
   color:#ffffff;
   text-shadow:
     0 0 8px rgba(255,255,255,.15),
     0 0 14px rgba(255,0,110,.28);
 }
 
-.requests-area .h2,
-.panel .h2{
+.requests-area .h2, .panel .h2{
   color:#ff4da6;
 }
 
-.requests-area .h2::before,
-.panel .h2::before{
+.requests-area .h2::before, .panel .h2::before{
   background:linear-gradient(180deg,#ff4da6,#ff006e);
   box-shadow:0 0 12px rgba(255,0,110,.65);
 }
 
 /* BOTONES */
 
-.btn,
-.hist-btn,
-.closeX{
+.btn, .hist-btn, .closeX{
   border-color:rgba(255,0,110,.55) !important;
   background:
     linear-gradient(180deg, rgba(34,0,22,.82), rgba(0,0,0,.96)) !important;
@@ -1030,9 +968,7 @@ body:not(.dj) .form{
     inset 0 0 0 1px rgba(255,255,255,.05);
 }
 
-.btn:hover,
-.hist-btn:hover,
-.closeX:hover{
+.btn:hover, .hist-btn:hover, .closeX:hover{
   border-color:#ff4da6 !important;
   box-shadow:
     0 16px 34px rgba(0,0,0,.66),
@@ -1081,8 +1017,7 @@ body:not(.dj) input:focus{
   box-shadow:0 0 18px rgba(255,0,110,.16);
 }
 
-.song-item.new-song .song-client,
-.song-item.new-song .song-meta b{
+.song-item.new-song .song-client, .song-item.new-song .song-meta b{
   color:#ff4da6;
   text-shadow:0 0 9px rgba(255,0,110,.55);
 }
@@ -1140,8 +1075,7 @@ body:not(.dj) input:focus{
     0 -2px 18px rgba(255,0,110,.12);
 }
 
-.orders-dot.open,
-.orders-dot.closed{
+.orders-dot.open, .orders-dot.closed{
   background:#ff2aa3;
   box-shadow:0 0 10px rgba(255,42,163,.75);
 }
@@ -1334,24 +1268,21 @@ body:not(.dj) input:focus{
 }
 
 /* Botón ticket siempre verde */
-.dj .icon-btn,
-.dj .played-btn{
+.dj .icon-btn, .dj .played-btn{
   border:1.5px solid rgba(0,224,164,.98) !important;
   background:rgba(0,224,164,.34) !important;
   color:#effff9 !important;
   box-shadow:0 0 12px rgba(0,224,164,.18) !important;
 }
 
-.dj .icon-btn:hover,
-.dj .played-btn:hover{
+.dj .icon-btn:hover, .dj .played-btn:hover{
   border-color:#00f0b0 !important;
   background:rgba(0,224,164,.46) !important;
   box-shadow:0 0 17px rgba(0,224,164,.38) !important;
 }
 
 /* En el primer clic sigue verde y parpadea */
-.dj .icon-btn.confirm,
-.dj .played-btn.confirm{
+.dj .icon-btn.confirm, .dj .played-btn.confirm{
   border-color:#00f0b0 !important;
   background:rgba(0,224,164,.54) !important;
   color:#ffffff !important;
@@ -1431,8 +1362,7 @@ body:not(.dj) input:focus{
   text-shadow:none !important;
 }
 
-.dj .dj-orders-status.open,
-.dj .dj-orders-status.closed{
+.dj .dj-orders-status.open, .dj .dj-orders-status.closed{
   padding:0 !important;
   border:none !important;
   background:transparent !important;
@@ -1454,23 +1384,20 @@ body:not(.dj) input:focus{
   box-shadow:0 0 10px rgba(255,77,109,.82) !important;
 }
 
-.dj .icon-btn,
-.dj .played-btn{
+.dj .icon-btn, .dj .played-btn{
   border:1.5px solid rgba(0,224,164,.98) !important;
   background:rgba(0,224,164,.34) !important;
   color:#effff9 !important;
   box-shadow:0 0 12px rgba(0,224,164,.18) !important;
 }
 
-.dj .icon-btn:hover,
-.dj .played-btn:hover{
+.dj .icon-btn:hover, .dj .played-btn:hover{
   border-color:#00f0b0 !important;
   background:rgba(0,224,164,.46) !important;
   box-shadow:0 0 17px rgba(0,224,164,.38) !important;
 }
 
-.dj .icon-btn.confirm,
-.dj .played-btn.confirm{
+.dj .icon-btn.confirm, .dj .played-btn.confirm{
   border-color:#00f0b0 !important;
   background:rgba(0,224,164,.54) !important;
   color:#ffffff !important;
@@ -1663,7 +1590,7 @@ body:not(.dj) input:focus{
 }
 
 @keyframes playbackPulse{
-  0%,100%{
+  0%, 100%{
     box-shadow:
       0 0 0 0 rgba(255,0,110,.3),
       0 0 14px rgba(255,0,110,.28);
@@ -1675,302 +1602,2250 @@ body:not(.dj) input:focus{
       0 0 24px rgba(255,0,110,.52);
   }
 }
+
+
 /* =========================================================
-   COLA MANUAL DEL DJ + FOTO OPCIONAL QR
+   ONIX DJ PRO — REDISEÑO ELEGANTE / PROFESIONAL
+   Solo afecta al panel DJ.
 ========================================================= */
 
-.dj .grid{
-  grid-template-columns:minmax(0,1fr) clamp(330px,27vw,430px) !important;
+body.dj.dj-pro{
+  --dj-bg:#08090d;
+  --dj-panel:#111218;
+  --dj-panel-2:#15161d;
+  --dj-line:rgba(255,255,255,.075);
+  --dj-line-strong:rgba(255,255,255,.12);
+  --dj-text:#f5f6f8;
+  --dj-muted:rgba(245,246,248,.54);
+  --dj-pink:#ff3e83;
+  --dj-pink-soft:#ff78a8;
+  --dj-green:#26d9a7;
+
+  font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(900px 440px at 15% -10%, rgba(255,62,131,.11), transparent 58%),
+    radial-gradient(700px 420px at 100% 0%, rgba(255,62,131,.06), transparent 62%),
+    linear-gradient(180deg,#090a0e 0%,#07080b 100%);
+  background-attachment:fixed;
 }
 
-.dj .panel{
-  min-width:0;
-  padding:18px 14px;
+.dj-pro .container{
+  width:min(100% - 34px, 1560px);
+  max-width:none;
+  margin:0 auto;
+  padding:22px 0 28px !important;
 }
 
-.queue-help{
-  margin:-2px 0 12px;
-  color:rgba(255,255,255,.48);
-  font-size:11px;
+.dj-pro .topbar, .dj-pro .requests-area, .dj-pro .panel, .dj-pro .card{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+.dj-pro .dj-pro-topbar{
+  min-height:88px;
+  padding:18px 20px;
+  border-radius:18px;
+  border:1px solid var(--dj-line) !important;
+  background:rgba(17,18,24,.96) !important;
+  box-shadow:
+    0 18px 46px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+.dj-pro .dj-title-status{
+  gap:18px !important;
+}
+
+.dj-pro .dj-brand-block{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.dj-pro .dj-eyebrow{
+  color:var(--dj-pink-soft);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.22em;
+  line-height:1;
+}
+
+.dj-pro .topbar .title{
+  font-family:"Inter",system-ui,sans-serif !important;
+  font-size:26px !important;
+  font-weight:900 !important;
+  letter-spacing:-.03em !important;
+  text-transform:none !important;
+  color:var(--dj-text) !important;
+  text-shadow:none !important;
+}
+
+.dj-pro .dj-orders-status, .dj-pro .dj-orders-status.open, .dj-pro .dj-orders-status.closed{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  min-height:34px;
+  padding:0 12px !important;
+  border-radius:999px !important;
+  border:1px solid var(--dj-line) !important;
+  background:#0d0e13 !important;
+  color:rgba(255,255,255,.72) !important;
+  font-size:10px !important;
+  font-weight:900 !important;
+  letter-spacing:.11em !important;
+}
+
+.dj-pro .dj-orders-status .orders-dot{
+  width:8px;
+  height:8px;
+}
+
+.dj-pro .top-actions{
+  gap:8px;
+}
+
+.dj-pro .badge.dj-count-badge{
+  min-height:38px;
+  padding:0 13px;
+  border:1px solid rgba(255,62,131,.17) !important;
+  background:rgba(255,62,131,.065) !important;
+  color:rgba(255,255,255,.78);
+  font-size:12px;
+  font-weight:800;
+}
+
+.dj-pro .btn.dj-action{
+  min-height:38px;
+  padding:0 14px;
+  border-radius:10px;
+  border:1px solid var(--dj-line) !important;
+  background:#0d0e13 !important;
+  color:rgba(255,255,255,.80) !important;
+  box-shadow:none !important;
+  font-family:"Inter",system-ui,sans-serif;
+  font-size:12px;
+  font-weight:800;
+}
+
+.dj-pro .btn.dj-action:hover{
+  border-color:rgba(255,255,255,.16) !important;
+  background:#14151b !important;
+  color:#fff !important;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(0,0,0,.20) !important;
+}
+
+.dj-pro .btn-danger.dj-action{
+  border-color:rgba(255,77,109,.16) !important;
+  color:#ff899d !important;
+  background:rgba(255,77,109,.055) !important;
+}
+
+.dj-pro .dj-pro-grid{
+  grid-template-columns:minmax(0,1fr) 230px;
+  gap:14px;
+  margin-top:14px;
+}
+
+.dj-pro .dj-pro-section{
+  border:1px solid var(--dj-line) !important;
+  border-radius:18px;
+  background:rgba(17,18,24,.97) !important;
+  box-shadow:
+    0 16px 40px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.02) !important;
+}
+
+.dj-pro .dj-pro-section{
+  min-height:520px;
+  padding:20px !important;
+}
+
+
+
+.dj-pro .section-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.dj-pro .section-head.compact{
+  margin-bottom:12px;
+}
+
+.dj-pro .section-kicker{
+  margin-bottom:5px;
+  color:var(--dj-muted);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.18em;
+}
+
+.dj-pro .requests-area .h2, .dj-pro .panel .h2{
+  margin:0;
+  padding:0 !important;
+  color:var(--dj-text) !important;
+  font-family:"Inter",system-ui,sans-serif;
+  font-size:18px !important;
+  font-weight:900 !important;
+  letter-spacing:-.015em !important;
+  text-transform:none !important;
+  text-shadow:none !important;
+}
+
+.dj-pro .requests-area .h2::before, .dj-pro .panel .h2::before{
+  display:none !important;
+  content:none !important;
+}
+
+/* TARJETAS DE MESAS */
+
+.dj-pro .cards{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+
+.dj-pro .table-card, .dj-pro .table-card.next-up{
+  min-height:280px;
+  padding:15px;
+  border-radius:15px;
+  border:1px solid var(--dj-line) !important;
+  background:#0d0e13 !important;
+  box-shadow:none !important;
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    background .16s ease !important;
+}
+
+.dj-pro .table-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,255,255,.13) !important;
+  background:#101117 !important;
+}
+
+.dj-pro .table-card .title{
+  font-family:"Inter",system-ui,sans-serif !important;
+  color:#ffffff;
+  font-size:18px !important;
+  font-weight:900 !important;
+  letter-spacing:-.02em !important;
+  text-transform:none !important;
+}
+
+.dj-pro .next-dot{
+  width:7px;
+  height:7px;
+  background:var(--dj-green);
+  box-shadow:0 0 10px rgba(38,217,167,.40);
+}
+
+.dj-pro .status.ultima, .dj-pro .status.ultima-faded{
+  padding:4px 7px;
+  border-radius:7px;
+  border:1px solid rgba(255,62,131,.16) !important;
+  background:rgba(255,62,131,.06) !important;
+  color:#ff8db6 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  font-size:8px !important;
+  letter-spacing:.08em !important;
+}
+
+/* ITEMS DE CANCIONES */
+
+.dj-pro .song-list{
+  gap:8px;
+  max-height:265px;
+  padding-right:4px;
+}
+
+.dj-pro .song-item{
+  padding:11px 12px;
+  border-radius:11px;
+  border:1px solid rgba(255,255,255,.055) !important;
+  background:#13141a !important;
+  box-shadow:none !important;
+}
+
+.dj-pro .song-item:hover{
+  border-color:rgba(255,255,255,.10) !important;
+  background:#17181f !important;
+}
+
+.dj-pro .song-client{
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.2;
+}
+
+.dj-pro .song-meta{
+  color:rgba(255,255,255,.62);
+  font-size:12px;
   line-height:1.35;
 }
 
-.dj-queue-list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  max-height:calc(100vh - 190px);
-  overflow-y:auto;
-  padding-right:4px;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,0,110,.48) transparent;
+.dj-pro .song-item .song-meta b{
+  color:rgba(255,255,255,.40) !important;
+  font-weight:700;
 }
 
-.dj-queue-item{
-  display:grid !important;
-  grid-template-columns:20px 32px minmax(0,1fr) !important;
-  align-items:center !important;
-  gap:9px !important;
-  padding:9px 10px !important;
-  border-radius:13px !important;
-  border:1px solid rgba(255,0,110,.22) !important;
-  background:rgba(255,255,255,.025) !important;
-  cursor:grab;
-  user-select:none;
-  transition:transform .12s ease, border-color .12s ease, background .12s ease, opacity .12s ease;
+.dj-pro .song-index{
+  padding:3px 7px;
+  border:0 !important;
+  border-radius:7px;
+  background:rgba(255,255,255,.045);
+  color:rgba(255,255,255,.44);
+  font-size:9px;
+  box-shadow:none;
 }
 
-.dj-queue-item:first-child{
-  border-color:rgba(255,77,166,.58) !important;
-  background:rgba(255,0,110,.10) !important;
-  box-shadow:0 0 16px rgba(255,0,110,.10);
+.dj-pro .song-time{
+  color:rgba(255,255,255,.34);
+  font-size:9px;
 }
 
-.dj-queue-item:active{
-  cursor:grabbing;
+.dj-pro .song-item.new-song{
+  border-color:rgba(255,62,131,.18) !important;
+  background:linear-gradient(180deg,rgba(255,62,131,.055),#13141a) !important;
+  box-shadow:none !important;
 }
 
-.dj-queue-item.dragging{
-  opacity:.42;
-  transform:scale(.985);
+.dj-pro .song-item.new-song .song-client{
+  color:#fff !important;
+  text-shadow:none !important;
 }
 
-.dj-queue-item.drag-over{
-  border-color:#ff4da6 !important;
-  background:rgba(255,0,110,.14) !important;
+.dj-pro .song-item.new-song .song-meta b{
+  color:var(--dj-pink-soft) !important;
+  text-shadow:none !important;
 }
 
-.dj-queue-handle{
-  color:rgba(255,255,255,.40);
-  font-size:18px;
-  font-weight:900;
-  line-height:1;
-  text-align:center;
+/* BOTONES PLAY / COMPLETAR */
+
+.dj-pro .song-actions{
+  gap:6px;
 }
 
-.dj-queue-position{
-  width:30px;
-  height:30px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  border:1px solid rgba(255,0,110,.40);
-  background:rgba(0,0,0,.70);
-  color:#fff;
-  font-size:11px;
-  font-weight:1000;
-}
-
-.dj-queue-content{
-  min-width:0;
-}
-
-.dj-queue-name{
-  color:#fff;
-  font-size:13px;
-  font-weight:1000;
-  text-transform:uppercase;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.dj-queue-song{
-  margin-top:3px;
-  color:#ff77bd;
-  font-size:12px;
-  font-weight:900;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.dj-queue-meta{
-  margin-top:3px;
-  color:rgba(255,255,255,.52);
-  font-size:10px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.queue-photo-badge{
-  margin-left:5px;
+.dj-pro .icon-btn, .dj-pro .played-btn, .dj-pro .playback-btn{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.09) !important;
+  background:#0b0c10 !important;
+  color:rgba(255,255,255,.78) !important;
+  box-shadow:none !important;
   font-size:11px;
 }
 
-.dj-queue-empty{
-  padding:20px 8px;
-  text-align:center;
-  color:rgba(255,255,255,.48);
-  font-size:12px;
+.dj-pro .playback-btn:hover{
+  border-color:rgba(255,62,131,.28) !important;
+  color:#ff86af !important;
+  background:rgba(255,62,131,.065) !important;
+  box-shadow:none !important;
 }
 
-.photo-upload-block{
-  display:block;
+.dj-pro .played-btn:hover, .dj-pro .icon-btn:hover{
+  border-color:rgba(38,217,167,.26) !important;
+  color:#72e7c6 !important;
+  background:rgba(38,217,167,.06) !important;
+  box-shadow:none !important;
 }
 
-.optional-text{
-  color:rgba(255,255,255,.42);
-  font-weight:600;
-  font-size:11px;
+.dj-pro .played-btn.confirm, .dj-pro .icon-btn.confirm{
+  border-color:rgba(38,217,167,.42) !important;
+  background:rgba(38,217,167,.12) !important;
+  color:#8ff0d4 !important;
+  animation:none !important;
 }
 
-.photo-help{
-  margin-top:6px;
-  color:rgba(255,255,255,.46);
-  font-size:10px;
-  line-height:1.4;
+.dj-pro .playback-btn.active{
+  border-color:rgba(255,62,131,.42) !important;
+  background:rgba(255,62,131,.12) !important;
+  color:#ff9abd !important;
+  box-shadow:none !important;
+  animation:none !important;
 }
 
-#photo{
-  padding:10px !important;
-  cursor:pointer;
+.dj-pro .song-item.is-playing{
+  border-color:rgba(255,62,131,.20) !important;
+  background:linear-gradient(180deg,rgba(255,62,131,.06),#13141a) !important;
+  box-shadow:inset 3px 0 0 rgba(255,62,131,.65) !important;
 }
 
-#photo::file-selector-button{
-  margin-right:10px;
-  padding:7px 10px;
-  border:1px solid rgba(255,0,110,.42);
-  border-radius:9px;
-  background:rgba(255,0,110,.14);
-  color:#fff;
-  font-weight:800;
-  cursor:pointer;
+.dj-pro .playing-badge{
+  margin-bottom:6px;
+  padding:3px 6px;
+  border:0;
+  border-radius:6px;
+  background:rgba(255,62,131,.09);
+  color:#ff92b8;
+  font-size:8px;
+  letter-spacing:.08em;
+  box-shadow:none;
 }
 
-.photo-preview-wrap{
-  margin-top:10px;
-  padding:10px;
-  border:1px solid rgba(255,0,110,.25);
-  border-radius:12px;
-  background:rgba(0,0,0,.38);
-}
+/* PANEL DERECHO */
 
-.photo-preview-wrap[hidden]{
+
+
+
+
+
+
+
+
+
+
+
+
+/* QUITA ELEMENTOS ANTIGUOS DEL DJ */
+.dj-pro .orders-strip, .dj-pro .dj-raffle-button{
   display:none !important;
 }
 
-.photo-preview{
-  display:block;
-  width:100%;
-  max-height:230px;
-  object-fit:contain;
-  border-radius:10px;
-  background:#050005;
-}
+/* RESPONSIVE */
 
-.photo-remove-btn{
-  width:100%;
-  margin-top:8px;
-  padding:8px 10px;
-  border:1px solid rgba(255,77,109,.42);
-  border-radius:10px;
-  background:rgba(255,77,109,.10);
-  color:#fff;
-  font-weight:800;
-  cursor:pointer;
-}
-
-@media (max-width:950px){
-  .dj .grid{
-    grid-template-columns:1fr !important;
-  }
-
-  .dj-queue-list{
-    max-height:480px;
-  }
-}
-
-
-/* =========================================================
-   AJUSTE DJ 2026-08-29
-   - Sidebar de canciones más angosto y pegado a la derecha
-   - Hasta 4 mesas por fila sin esconderse bajo el sidebar
-========================================================= */
-.dj .container{
-  max-width:1600px !important;
-  padding-left:14px !important;
-  padding-right:14px !important;
-}
-
-.dj .grid{
-  grid-template-columns:minmax(0,1fr) clamp(260px,19vw,310px) !important;
-  gap:14px !important;
-  align-items:start;
-}
-
-.dj .requests-area{
-  min-width:0 !important;
-  overflow:hidden !important;
-  padding:24px 20px !important;
-}
-
-.dj .cards{
-  min-width:0 !important;
-  width:100% !important;
-  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-  gap:12px !important;
-}
-
-.dj .table-card{
-  min-width:0 !important;
-  width:100% !important;
-}
-
-.dj .panel{
-  min-width:0 !important;
-  width:100% !important;
-  padding:16px 12px !important;
-}
-
-.dj .dj-queue-item{
-  grid-template-columns:17px 28px minmax(0,1fr) !important;
-  gap:7px !important;
-  padding:8px !important;
-}
-
-.dj .dj-queue-position{
-  width:27px !important;
-  height:27px !important;
-  font-size:10px !important;
-}
-
-.dj .dj-queue-name{
-  font-size:12px !important;
-}
-
-.dj .dj-queue-song{
-  font-size:11px !important;
-}
-
-.dj .dj-queue-meta{
-  font-size:9px !important;
-}
-
-@media (max-width:1350px){
-  .dj .cards{
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+@media (max-width:1380px){
+  .dj-pro .cards{
+    grid-template-columns:repeat(3,minmax(0,1fr));
   }
 }
 
 @media (max-width:1050px){
-  .dj .grid{
-    grid-template-columns:minmax(0,1fr) 260px !important;
+  .dj-pro .dj-pro-grid{
+    grid-template-columns:1fr;
   }
 
-  .dj .cards{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  
+
+  
+}
+
+@media (max-width:760px){
+  .dj-pro .container{
+    width:min(100% - 20px, 1560px);
+    padding-top:10px !important;
+  }
+
+  .dj-pro .dj-pro-topbar{
+    align-items:flex-start;
+    gap:14px;
+  }
+
+  .dj-pro .top-actions{
+    width:100%;
+  }
+
+  .dj-pro .cards{
+    grid-template-columns:1fr;
+  }
+
+  
+
+  .dj-pro .dj-pro-section{
+    padding:14px !important;
   }
 }
 
-@media (max-width:800px){
-  .dj .grid{
-    grid-template-columns:1fr !important;
+/* =========================================================
+   ONIX DJ PRO — ESCALA GRANDE / MEJOR LEGIBILIDAD
+========================================================= */
+
+.dj-pro .container{
+  width:min(100% - 42px, 1660px);
+  padding:26px 0 34px !important;
+}
+
+.dj-pro .dj-pro-topbar{
+  min-height:104px;
+  padding:22px 24px;
+  border-radius:21px;
+}
+
+.dj-pro .dj-brand-block{
+  gap:6px;
+}
+
+.dj-pro .dj-eyebrow{
+  font-size:12px;
+  letter-spacing:.20em;
+}
+
+.dj-pro .topbar .title{
+  font-size:32px !important;
+}
+
+.dj-pro .dj-orders-status, .dj-pro .dj-orders-status.open, .dj-pro .dj-orders-status.closed{
+  min-height:40px;
+  padding:0 15px !important;
+  font-size:12px !important;
+}
+
+.dj-pro .dj-orders-status .orders-dot{
+  width:10px;
+  height:10px;
+}
+
+.dj-pro .top-actions{
+  gap:10px;
+}
+
+.dj-pro .badge.dj-count-badge{
+  min-height:44px;
+  padding:0 16px;
+  font-size:14px;
+}
+
+.dj-pro .btn.dj-action{
+  min-height:44px;
+  padding:0 17px;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.dj-pro .dj-pro-grid{
+  grid-template-columns:minmax(0,1fr) 280px;
+  gap:18px;
+  margin-top:18px;
+}
+
+.dj-pro .dj-pro-section{
+  border-radius:21px;
+}
+
+.dj-pro .dj-pro-section{
+  min-height:590px;
+  padding:26px !important;
+}
+
+
+
+.dj-pro .section-head{
+  margin-bottom:20px;
+}
+
+.dj-pro .section-kicker{
+  margin-bottom:7px;
+  font-size:11px;
+}
+
+.dj-pro .requests-area .h2, .dj-pro .panel .h2{
+  font-size:23px !important;
+}
+
+.dj-pro .cards{
+  gap:16px;
+}
+
+.dj-pro .table-card, .dj-pro .table-card.next-up{
+  min-height:340px;
+  padding:19px;
+  border-radius:18px;
+}
+
+.dj-pro .table-card .title{
+  font-size:23px !important;
+}
+
+.dj-pro .next-dot{
+  width:9px;
+  height:9px;
+}
+
+.dj-pro .status.ultima, .dj-pro .status.ultima-faded{
+  padding:5px 9px;
+  border-radius:8px;
+  font-size:10px !important;
+}
+
+.dj-pro .song-list{
+  gap:10px;
+  max-height:315px;
+  padding-right:5px;
+}
+
+.dj-pro .song-item{
+  padding:14px 15px;
+  border-radius:13px;
+}
+
+.dj-pro .song-client{
+  font-size:18px;
+}
+
+.dj-pro .song-meta{
+  font-size:15px;
+  line-height:1.42;
+}
+
+.dj-pro .song-index{
+  padding:4px 9px;
+  border-radius:8px;
+  font-size:11px;
+}
+
+.dj-pro .song-time{
+  font-size:11px;
+}
+
+.dj-pro .song-footer{
+  margin-top:6px;
+}
+
+.dj-pro .song-actions{
+  gap:8px;
+}
+
+.dj-pro .icon-btn, .dj-pro .played-btn, .dj-pro .playback-btn{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  font-size:14px;
+}
+
+.dj-pro .playing-badge{
+  margin-bottom:8px;
+  padding:4px 8px;
+  border-radius:7px;
+  font-size:10px;
+}
+
+.dj-pro .table-card > .muted{
+  margin-top:8px;
+  font-size:13px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+.dj-pro #emptyMsg{
+  font-size:14px;
+}
+
+@media (max-width:1380px){
+  .dj-pro .cards{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media (max-width:1050px){
+  .dj-pro .dj-pro-grid{
+    grid-template-columns:1fr;
   }
 
-  .dj .cards{
+  
+}
+
+@media (max-width:760px){
+  .dj-pro .container{
+    width:min(100% - 20px,1660px);
+    padding-top:12px !important;
+  }
+
+  .dj-pro .dj-pro-topbar{
+    min-height:auto;
+    padding:18px;
+  }
+
+  .dj-pro .topbar .title{
+    font-size:27px !important;
+  }
+
+  .dj-pro .dj-pro-section{
+    padding:18px !important;
+  }
+
+  .dj-pro .table-card, .dj-pro .table-card.next-up{
+    min-height:310px;
+  }
+}
+
+
+
+/* =========================================================
+   DJ ONIX — AJUSTE MÁS JUVENIL / TRANSPARENTE
+   Más fondo visible, más glassmorphism y acentos vivos
+========================================================= */
+
+body.dj.dj-pro{
+  background:
+    radial-gradient(900px 460px at 12% 0%, rgba(255,62,131,.18), transparent 58%),
+    radial-gradient(760px 420px at 100% 0%, rgba(140,95,255,.12), transparent 58%),
+    radial-gradient(820px 460px at 50% 100%, rgba(0,186,255,.08), transparent 62%),
+    linear-gradient(180deg, rgba(6,7,10,.55), rgba(7,8,12,.76)),
+    url("/img/fondo-dj.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+body.dj.dj-pro::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(600px 260px at 20% 8%, rgba(255,62,131,.08), transparent 65%),
+    radial-gradient(460px 240px at 82% 18%, rgba(90,120,255,.07), transparent 65%);
+  z-index:0;
+}
+
+.dj-pro .container{
+  position:relative;
+  z-index:1;
+}
+
+.dj-pro .dj-pro-topbar{
+  background:linear-gradient(180deg, rgba(10,11,18,.62), rgba(8,9,15,.50)) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  box-shadow:
+    0 20px 44px rgba(0,0,0,.28),
+    0 0 0 1px rgba(255,255,255,.03) inset,
+    0 0 24px rgba(255,62,131,.08) !important;
+  backdrop-filter:blur(18px) saturate(130%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(130%) !important;
+}
+
+.dj-pro .dj-pro-section{
+  background:linear-gradient(180deg, rgba(10,11,18,.56), rgba(7,8,13,.42)) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  box-shadow:
+    0 22px 46px rgba(0,0,0,.24),
+    0 0 0 1px rgba(255,255,255,.02) inset,
+    0 0 18px rgba(255,62,131,.05) !important;
+  backdrop-filter:blur(18px) saturate(135%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(135%) !important;
+}
+
+
+
+.dj-pro .section-kicker{
+  color:rgba(255,176,208,.74);
+}
+
+.dj-pro .requests-area .h2, .dj-pro .panel .h2, .dj-pro .topbar .title{
+  text-shadow:0 0 18px rgba(255,255,255,.04);
+}
+
+.dj-pro .badge.dj-count-badge{
+  background:rgba(255,62,131,.11) !important;
+  border:1px solid rgba(255,120,168,.28) !important;
+  box-shadow:0 0 20px rgba(255,62,131,.09) inset !important;
+}
+
+.dj-pro .btn.dj-action{
+  background:linear-gradient(180deg, rgba(16,18,28,.66), rgba(10,12,20,.48)) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+}
+
+.dj-pro .btn.dj-action:hover{
+  background:linear-gradient(180deg, rgba(22,24,36,.78), rgba(13,15,24,.60)) !important;
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.24),
+    0 0 18px rgba(255,62,131,.10) !important;
+}
+
+.dj-pro .table-card, .dj-pro .table-card.next-up{
+  background:linear-gradient(180deg, rgba(11,13,22,.54), rgba(9,10,17,.38)) !important;
+  border:1px solid rgba(255,255,255,.09) !important;
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.18),
+    0 0 0 1px rgba(255,255,255,.02) inset !important;
+  backdrop-filter:blur(16px) saturate(130%) !important;
+  -webkit-backdrop-filter:blur(16px) saturate(130%) !important;
+}
+
+.dj-pro .table-card:hover{
+  border-color:rgba(255,120,168,.22) !important;
+  box-shadow:
+    0 16px 30px rgba(0,0,0,.22),
+    0 0 22px rgba(255,62,131,.09) !important;
+}
+
+.dj-pro .table-card .title{
+  color:#fff9fb !important;
+}
+
+.dj-pro .song-item{
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+}
+
+.dj-pro .song-item:hover{
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)) !important;
+  border-color:rgba(255,255,255,.12) !important;
+}
+
+.dj-pro .song-item.new-song{
+  background:
+    linear-gradient(180deg, rgba(255,62,131,.09), rgba(255,255,255,.02)) !important;
+  border-color:rgba(255,120,168,.20) !important;
+  box-shadow:0 0 18px rgba(255,62,131,.06) inset !important;
+}
+
+.dj-pro .song-client{
+  color:#ffffff;
+}
+
+.dj-pro .song-meta{
+  color:rgba(255,255,255,.70);
+}
+
+.dj-pro .song-index{
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.62);
+}
+
+.dj-pro .icon-btn, .dj-pro .played-btn, .dj-pro .playback-btn{
+  background:linear-gradient(180deg, rgba(18,20,30,.78), rgba(10,11,18,.60)) !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+}
+
+.dj-pro .playback-btn:hover{
+  box-shadow:0 0 16px rgba(255,62,131,.10) !important;
+}
+
+.dj-pro .played-btn:hover, .dj-pro .icon-btn:hover{
+  box-shadow:0 0 16px rgba(38,217,167,.10) !important;
+}
+
+.dj-pro .status.ultima, .dj-pro .status.ultima-faded{
+  background:rgba(255,62,131,.10) !important;
+  border:1px solid rgba(255,120,168,.20) !important;
+  color:#ff9ec0 !important;
+}
+
+
+
+
+
+.dj-pro .dj-orders-status, .dj-pro .dj-orders-status.open, .dj-pro .dj-orders-status.closed{
+  background:rgba(11,12,18,.58) !important;
+  border:1px solid rgba(255,255,255,.09) !important;
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+}
+
+.dj-pro .orders-dot.open{
+  box-shadow:0 0 14px rgba(38,217,167,.42);
+}
+
+.dj-pro .orders-dot.closed{
+  box-shadow:0 0 14px rgba(255,77,109,.42);
+}
+
+
+
+/* =========================================================
+   DJ ONIX — HUDS MENOS TRANSPARENTES
+   Mantiene el fondo visible, pero mejora contraste y lectura
+========================================================= */
+
+.dj-pro .dj-pro-topbar{
+  background:linear-gradient(
+    180deg,
+    rgba(11,12,18,.86),
+    rgba(8,9,14,.82)
+  ) !important;
+}
+
+.dj-pro .dj-pro-section{
+  background:linear-gradient(
+    180deg,
+    rgba(10,11,18,.84),
+    rgba(7,8,13,.80)
+  ) !important;
+}
+
+
+
+.dj-pro .table-card, .dj-pro .table-card.next-up{
+  background:linear-gradient(
+    180deg,
+    rgba(12,13,20,.88),
+    rgba(8,9,15,.84)
+  ) !important;
+}
+
+.dj-pro .song-item{
+  background:linear-gradient(
+    180deg,
+    rgba(22,23,31,.92),
+    rgba(16,17,24,.90)
+  ) !important;
+}
+
+.dj-pro .song-item.new-song{
+  background:linear-gradient(
+    180deg,
+    rgba(48,18,33,.94),
+    rgba(19,17,24,.92)
+  ) !important;
+}
+
+
+
+
+
+.dj-pro .dj-orders-status, .dj-pro .dj-orders-status.open, .dj-pro .dj-orders-status.closed{
+  background:rgba(11,12,18,.88) !important;
+}
+
+.dj-pro .btn.dj-action{
+  background:linear-gradient(
+    180deg,
+    rgba(18,20,29,.90),
+    rgba(11,12,19,.88)
+  ) !important;
+}
+
+.dj-pro .badge.dj-count-badge{
+  background:rgba(63,22,38,.90) !important;
+}
+
+.dj-pro .icon-btn, .dj-pro .played-btn, .dj-pro .playback-btn{
+  background:linear-gradient(
+    180deg,
+    rgba(20,21,30,.94),
+    rgba(11,12,18,.92)
+  ) !important;
+}
+
+
+
+/* =========================================================
+   DJ ONIX — PANEL DERECHO ROSADO NEÓN
+   Inspirado en la referencia enviada
+========================================================= */
+
+
+
+
+
+
+
+
+
+
+
+/* número del turno */
+
+
+/* "Mesa XX" más discreto */
+
+
+/* nombre del cliente */
+
+
+/* =========================================================
+   SI EL PANEL DERECHO TIENE FILAS DE CANCIÓN REORDENABLES
+   estas reglas dan el look rosado neón de la referencia
+========================================================= */
+
+.dj-pro .queue-item, .dj-pro .order-item, .dj-pro .sortable-item, .dj-pro [data-queue-item]{
+  border-color:rgba(255,45,135,.28) !important;
+}
+
+.dj-pro .queue-item:first-child, .dj-pro .order-item:first-child, .dj-pro .sortable-item:first-child, .dj-pro [data-queue-item]:first-child{
+  border-color:rgba(255,45,135,.76) !important;
+  box-shadow:
+    0 0 18px rgba(255,45,135,.14),
+    inset 0 0 0 1px rgba(255,105,170,.05) !important;
+}
+
+/* canción en rosa neón */
+.dj-pro .queue-song, .dj-pro .order-song, .dj-pro .song-name-right, .dj-pro [data-song-title]{
+  color:#ff4f9a !important;
+  font-weight:900 !important;
+  text-shadow:0 0 10px rgba(255,45,135,.24);
+}
+
+/* nombre/persona en blanco fuerte */
+.dj-pro .queue-name, .dj-pro .order-name{
+  color:#ffffff !important;
+  font-weight:900 !important;
+}
+
+/* acento superior del panel */
+
+
+
+
+/* =========================================================
+   ONIX — BORDES NEÓN EN TODOS LOS HUD + CANCIÓN ROSA
+========================================================= */
+
+body.dj.dj-pro{
+  --onix-neon:#ff2d87;
+  --onix-neon-soft:#ff6faf;
+  --onix-neon-line:rgba(255,45,135,.62);
+  --onix-neon-glow:rgba(255,45,135,.18);
+}
+
+/* Todos los HUD principales */
+.dj-pro .dj-pro-topbar, .dj-pro .dj-pro-section, .dj-pro .table-card, .dj-pro .table-card.next-up, .dj-pro .song-item, .dj-pro .badge.dj-count-badge, .dj-pro .btn.dj-action, .dj-pro .dj-orders-status, .dj-pro .icon-btn, .dj-pro .played-btn, .dj-pro .playback-btn{
+  border-color:var(--onix-neon-line) !important;
+}
+
+/* Glow elegante, no exagerado */
+.dj-pro .dj-pro-topbar, .dj-pro .dj-pro-section{
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.28),
+    0 0 18px var(--onix-neon-glow),
+    inset 0 0 0 1px rgba(255,255,255,.02) !important;
+}
+
+.dj-pro .table-card, .dj-pro .table-card.next-up{
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.20),
+    0 0 12px rgba(255,45,135,.08),
+    inset 0 0 0 1px rgba(255,255,255,.02) !important;
+}
+
+.dj-pro .song-item{
+  box-shadow:
+    0 0 10px rgba(255,45,135,.045),
+    inset 0 0 0 1px rgba(255,255,255,.015) !important;
+}
+
+/* Panel derecho: nueva estructura */
+
+
+
+
+
+
+
+
+
+
+/* ESTA ES LA CANCIÓN: ROSA NEÓN */
+
+
+
+
+/* títulos rosados de sección */
+.dj-pro .section-kicker, .dj-pro .dj-eyebrow{
+  color:#ff73b0 !important;
+  text-shadow:0 0 10px rgba(255,45,135,.20) !important;
+}
+
+/* hover */
+.dj-pro .table-card:hover, .dj-pro .song-item:hover, .dj-pro .btn.dj-action:hover{
+  border-color:rgba(255,45,135,.92) !important;
+}
+
+
+
+/* =========================================================
+   FIX PANEL DERECHO — MISMO LOOK DE LA REFERENCIA
+   Corrige conflicto de spans y deja nombre/canción/meta
+   como en la segunda imagen.
+========================================================= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* anular reglas viejas que estaban afectando spans internos */
+
+
+
+
+/* estado hover / primera fila */
+
+
+
+
+/* =========================================================
+   ONIX — COLORES HUD DEL ESTILO ANTIGUO
+   Recupera el negro/rojizo del CSS anterior, pero con
+   bordes más oscuros y menos llamativos.
+========================================================= */
+
+body.dj.dj-pro{
+  --hud-red-top: rgba(18,0,12,.86);
+  --hud-red-bottom: rgba(0,0,0,.92);
+
+  --card-red-top: rgba(16,0,11,.88);
+  --card-red-bottom: rgba(0,0,0,.95);
+
+  --song-red-top: rgba(35,8,24,.72);
+  --song-red-bottom: rgba(14,8,13,.88);
+
+  --border-main: rgba(255,45,105,.26);
+  --border-card: rgba(255,45,105,.24);
+  --border-song: rgba(255,45,105,.20);
+  --border-soft: rgba(255,45,105,.16);
+}
+
+/* Barra superior */
+.dj-pro .dj-pro-topbar{
+  background:
+    linear-gradient(
+      180deg,
+      var(--hud-red-top),
+      var(--hud-red-bottom)
+    ) !important;
+
+  border-color:var(--border-main) !important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.38),
+    0 0 12px rgba(255,0,90,.045),
+    inset 0 0 0 1px rgba(255,255,255,.025) !important;
+}
+
+/* HUD grande de solicitudes + HUD derecho */
+.dj-pro .dj-pro-section{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,0,12,.84),
+      rgba(0,0,0,.93)
+    ) !important;
+
+  border-color:var(--border-main) !important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.36),
+    0 0 10px rgba(255,0,90,.035),
+    inset 0 0 0 1px rgba(255,255,255,.02) !important;
+}
+
+/* Tarjetas de cada mesa */
+.dj-pro .table-card, .dj-pro .table-card.next-up{
+  background:
+    linear-gradient(
+      180deg,
+      var(--card-red-top),
+      var(--card-red-bottom)
+    ) !important;
+
+  border-color:var(--border-card) !important;
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.28),
+    inset 0 0 0 1px rgba(255,255,255,.018) !important;
+}
+
+.dj-pro .table-card:hover{
+  border-color:rgba(255,45,105,.34) !important;
+  box-shadow:
+    0 16px 32px rgba(0,0,0,.34),
+    0 0 12px rgba(255,45,105,.045) !important;
+}
+
+/* HUD interior de cada canción */
+.dj-pro .song-item{
+  background:
+    linear-gradient(
+      180deg,
+      var(--song-red-top),
+      var(--song-red-bottom)
+    ) !important;
+
+  border-color:var(--border-song) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.018) !important;
+}
+
+.dj-pro .song-item:hover{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(43,9,29,.78),
+      rgba(16,8,14,.91)
+    ) !important;
+
+  border-color:rgba(255,45,105,.28) !important;
+}
+
+/* Canción nueva: un poco más rojiza, sin neón exagerado */
+.dj-pro .song-item.new-song{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(58,10,34,.82),
+      rgba(18,8,15,.92)
+    ) !important;
+
+  border-color:rgba(255,45,105,.28) !important;
+
+  box-shadow:
+    inset 0 0 14px rgba(255,0,90,.035) !important;
+}
+
+/* Canción que está sonando */
+.dj-pro .song-item.is-playing{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(62,10,38,.86),
+      rgba(20,8,16,.94)
+    ) !important;
+
+  border-color:rgba(255,45,105,.34) !important;
+
+  box-shadow:
+    inset 3px 0 0 rgba(255,55,120,.70),
+    inset 0 0 0 1px rgba(255,255,255,.018) !important;
+}
+
+/* Panel derecho: misma paleta oscura rojiza */
+
+
+
+
+
+
+/* Mantener canción del panel derecho rosada, pero menos brillante */
+
+
+/* Círculo del número más oscuro */
+
+
+/* Bordes de botones y badges también más discretos */
+.dj-pro .badge.dj-count-badge{
+  border-color:rgba(255,45,105,.24) !important;
+  background:rgba(49,10,29,.72) !important;
+  box-shadow:none !important;
+}
+
+.dj-pro .btn.dj-action{
+  border-color:rgba(255,45,105,.16) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25,5,18,.80),
+      rgba(5,4,7,.92)
+    ) !important;
+  box-shadow:none !important;
+}
+
+.dj-pro .btn.dj-action:hover{
+  border-color:rgba(255,45,105,.30) !important;
+  box-shadow:0 8px 18px rgba(0,0,0,.24) !important;
+}
+
+/* Estado pedidos */
+.dj-pro .dj-orders-status, .dj-pro .dj-orders-status.open, .dj-pro .dj-orders-status.closed{
+  border-color:rgba(255,45,105,.14) !important;
+  background:rgba(7,5,8,.72) !important;
+  box-shadow:none !important;
+}
+
+/* Botones de acción dentro de canciones */
+.dj-pro .icon-btn, .dj-pro .played-btn, .dj-pro .playback-btn{
+  border-color:rgba(255,45,105,.22) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(27,7,20,.86),
+      rgba(8,6,9,.94)
+    ) !important;
+  box-shadow:none !important;
+}
+
+/* Badge última mesa más sobrio */
+.dj-pro .status.ultima, .dj-pro .status.ultima-faded{
+  border-color:rgba(255,45,105,.24) !important;
+  background:rgba(55,10,34,.62) !important;
+  color:#ff82ad !important;
+  box-shadow:none !important;
+}
+
+/* Quita el exceso de brillo general del tema neón anterior */
+.dj-pro .dj-pro-topbar, .dj-pro .dj-pro-section, .dj-pro .table-card, .dj-pro .song-item{
+  filter:none !important;
+}
+
+
+
+/* =========================================================
+   FIX — HUD INTERIOR DE CANCIONES COMO EL ESTILO ANTIGUO
+   Quita la "niebla" oscura dentro de cada mesa.
+========================================================= */
+
+/* Tarjetas interiores: vuelve al gris/plomo suave del CSS antiguo */
+.dj-pro .song-item, .dj-pro .song-item.new-song{
+  background:rgba(255,255,255,.035) !important;
+  background-image:none !important;
+
+  border:1px solid rgba(255,255,255,.07) !important;
+
+  box-shadow:none !important;
+  filter:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Al pasar el mouse: apenas más claro, sin oscurecer */
+.dj-pro .song-item:hover{
+  background:rgba(255,255,255,.05) !important;
+  border-color:rgba(255,255,255,.10) !important;
+  box-shadow:none !important;
+}
+
+/* Nombre de la persona bien blanco */
+.dj-pro .song-client{
+  color:rgba(255,255,255,.96) !important;
+  text-shadow:none !important;
+}
+
+/* Texto canción / artista más claro */
+.dj-pro .song-meta{
+  color:rgba(255,255,255,.82) !important;
+}
+
+/* Las palabras "Canción:" y "Artista:" quedan plomo claro */
+.dj-pro .song-item .song-meta b{
+  color:rgba(255,255,255,.58) !important;
+  text-shadow:none !important;
+}
+
+/* Fecha/hora más visible */
+.dj-pro .song-time{
+  color:rgba(255,255,255,.52) !important;
+}
+
+/* Número #1 / #2 */
+.dj-pro .song-index{
+  background:rgba(255,255,255,.07) !important;
+  border:1px solid rgba(255,255,255,.06) !important;
+  color:rgba(255,255,255,.58) !important;
+  text-shadow:none !important;
+  box-shadow:none !important;
+}
+
+/* La canción actualmente sonando mantiene el acento rosado,
+   pero sin poner una capa oscura encima */
+.dj-pro .song-item.is-playing{
+  background:rgba(255,255,255,.045) !important;
+  background-image:none !important;
+
+  border-color:rgba(255,62,131,.48) !important;
+
+  box-shadow:
+    inset 3px 0 0 rgba(255,62,131,.78),
+    0 0 12px rgba(255,62,131,.055) !important;
+}
+
+/* Ahora sonando: nombre rosado */
+.dj-pro .song-item.is-playing .song-client{
+  color:#ff5f9d !important;
+  text-shadow:0 0 8px rgba(255,45,105,.16) !important;
+}
+
+/* Mantener etiquetas del que está sonando legibles */
+.dj-pro .song-item.is-playing .song-meta{
+  color:rgba(255,255,255,.86) !important;
+}
+
+.dj-pro .song-item.is-playing .song-meta b{
+  color:rgba(255,255,255,.62) !important;
+  text-shadow:none !important;
+}
+
+/* Badge "AHORA SONANDO" */
+.dj-pro .playing-badge{
+  background:rgba(255,45,105,.12) !important;
+  border-color:rgba(255,45,105,.28) !important;
+  color:#ff9abc !important;
+  box-shadow:none !important;
+}
+
+/* =========================================================
+   AJUSTE PANEL DERECHO — NOMBRE BLANCO + CANCIÓN ROSA NEÓN
+   Basado en el estilo antiguo mostrado por el usuario
+========================================================= */
+
+/* Nombre de la persona: blanco claro y fuerte */
+
+
+/* Nombre de la canción: rosado neón más chillón */
+
+
+/* Artista + mesa: más discreto, como antes */
+
+
+/* La primera fila mantiene el mismo tratamiento, sin apagar el texto */
+
+
+
+
+
+
+/* =========================================================
+   PANEL DERECHO — DRAG ACTIVO + TEXTO 100% ROSADO NEÓN
+   Ajuste final solicitado
+========================================================= */
+
+
+
+
+
+
+
+/* Puntitos de arrastre */
+
+
+/* Número */
+
+
+/* Nombre de la persona: rosado neón completo */
+
+
+/* Canción: rosado neón más chillón */
+
+
+/* Artista + mesa: también rosado, un poco más suave */
+
+
+/* Evita que reglas antiguas vuelvan a poner textos blancos/grises */
+
+
+/* Visual de arrastre */
+
+/* =========================================================
+   PANEL DERECHO ONIX — NUEVO DESDE CERO
+========================================================= */
+
+body.dj.dj-pro .dj-fresh-panel{
+  position:relative !important;
+  min-width:0 !important;
+  padding:22px 18px !important;
+  border:1px solid rgba(255,45,105,.28) !important;
+  border-radius:21px !important;
+  background:linear-gradient(180deg,rgba(18,0,12,.86),rgba(0,0,0,.93)) !important;
+  box-shadow:0 18px 42px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.018) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-panel .section-head{
+  margin-bottom:16px !important;
+}
+
+body.dj.dj-pro .dj-fresh-panel .section-kicker{
+  margin:0 !important;
+  color:#ff5aa1 !important;
+  font-size:11px !important;
+  font-weight:900 !important;
+  letter-spacing:.16em !important;
+  text-shadow:0 0 8px rgba(255,45,105,.20) !important;
+}
+
+body.dj.dj-pro .dj-fresh-list{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  min-width:0 !important;
+  width:100% !important;
+}
+
+body.dj.dj-pro .dj-fresh-item{
+  display:grid !important;
+  grid-template-columns:18px 34px minmax(0,1fr) !important;
+  align-items:center !important;
+  gap:10px !important;
+  min-width:0 !important;
+  min-height:74px !important;
+  padding:11px 12px !important;
+  border:1px solid rgba(255,45,105,.22) !important;
+  border-radius:13px !important;
+  background:linear-gradient(180deg,rgba(28,7,20,.90),rgba(9,7,11,.95)) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.018) !important;
+  transform:none !important;
+  transition:border-color .14s ease,background .14s ease,opacity .14s ease !important;
+}
+
+body.dj.dj-pro .dj-fresh-item:first-child{
+  border-color:rgba(255,45,105,.36) !important;
+  background:linear-gradient(180deg,rgba(48,9,30,.92),rgba(15,6,12,.96)) !important;
+}
+
+body.dj.dj-pro .dj-fresh-item:hover{
+  border-color:rgba(255,45,105,.34) !important;
+  transform:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-handle{
+  width:18px !important;
+  height:34px !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:0 !important;
+  outline:0 !important;
+  background:transparent !important;
+  color:#ff2f92 !important;
+  font-size:17px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  cursor:grab !important;
+  user-select:none !important;
+  -webkit-user-select:none !important;
+  touch-action:none !important;
+  text-shadow:0 0 6px rgba(255,47,146,.34) !important;
+}
+
+body.dj.dj-pro .dj-fresh-handle:active,
+body.fresh-queue-dragging .dj-fresh-handle{
+  cursor:grabbing !important;
+}
+
+body.dj.dj-pro .dj-fresh-position{
+  width:34px !important;
+  height:34px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid rgba(255,45,105,.30) !important;
+  border-radius:50% !important;
+  background:#050205 !important;
+  color:#ff63aa !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+}
+
+body.dj.dj-pro .dj-fresh-content{
+  min-width:0 !important;
+}
+
+body.dj.dj-pro .dj-fresh-name{
+  color:#ff4fa0 !important;
+  font-size:13px !important;
+  font-weight:1000 !important;
+  line-height:1.08 !important;
+  text-transform:uppercase !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-shadow:0 0 5px rgba(255,47,146,.48),0 0 10px rgba(255,47,146,.15) !important;
+}
+
+body.dj.dj-pro .dj-fresh-song{
+  margin-top:4px !important;
+  color:#ff1490 !important;
+  font-size:13px !important;
+  font-weight:1000 !important;
+  line-height:1.08 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-shadow:0 0 6px rgba(255,20,144,.72),0 0 12px rgba(255,20,144,.24) !important;
+}
+
+body.dj.dj-pro .dj-fresh-meta{
+  margin-top:4px !important;
+  color:#ff80bc !important;
+  font-size:10px !important;
+  font-weight:700 !important;
+  line-height:1.15 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+body.dj.dj-pro .dj-fresh-photo{
+  margin-left:4px !important;
+  font-size:10px !important;
+}
+
+body.dj.dj-pro .dj-fresh-ghost{
+  opacity:.96 !important;
+  border:1px solid #ff4da6 !important;
+  background:linear-gradient(180deg,rgba(62,10,38,.98),rgba(15,6,12,.98)) !important;
+  box-shadow:0 16px 32px rgba(0,0,0,.46),0 0 18px rgba(255,45,105,.18) !important;
+  transform:scale(1.01) !important;
+}
+
+body.dj.dj-pro .dj-fresh-empty{
+  padding:24px 10px !important;
+  text-align:center !important;
+  color:rgba(255,255,255,.46) !important;
+  font-size:12px !important;
+}
+
+body.fresh-queue-dragging,
+body.fresh-queue-dragging *{
+  user-select:none !important;
+  -webkit-user-select:none !important;
+}
+
+@media (max-width:1050px){
+  body.dj.dj-pro .dj-fresh-panel{
+    order:-1 !important;
+  }
+
+  body.dj.dj-pro .dj-fresh-list{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width:760px){
+  body.dj.dj-pro .dj-fresh-list{
     grid-template-columns:1fr !important;
   }
+}
+
+/* =========================================================
+   PANEL DERECHO — SOLO CANCIÓN EN ROSADO NEÓN
+   Nombre, número, artista/mesa y manilla en blanco normal.
+========================================================= */
+
+body.dj.dj-pro .dj-fresh-handle{
+  color:rgba(255,255,255,.72) !important;
+  text-shadow:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-position{
+  color:#ffffff !important;
+  border-color:rgba(255,255,255,.18) !important;
+  text-shadow:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-name{
+  color:#ffffff !important;
+  text-shadow:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-song{
+  color:#ff1490 !important;
+  text-shadow:
+    0 0 6px rgba(255,20,144,.72),
+    0 0 12px rgba(255,20,144,.24) !important;
+}
+
+body.dj.dj-pro .dj-fresh-meta{
+  color:rgba(255,255,255,.62) !important;
+  text-shadow:none !important;
+}
+
+/* =========================================================
+   AJUSTES PANEL PRINCIPAL
+   - Número/título de mesa más opaco
+   - Valores enviados por formulario en blanco total
+   - Etiquetas "Canción:" y "Artista:" se mantienen suaves
+========================================================= */
+
+/* "Mesa 23", "Mesa 12", etc. más opaco */
+body.dj.dj-pro .table-card .title{
+  color:rgba(255,255,255,.72) !important;
+  text-shadow:none !important;
+}
+
+/* Texto que llega desde el formulario: canción y artista */
+body.dj.dj-pro .song-item .song-meta{
+  color:#ffffff !important;
+  opacity:1 !important;
+}
+
+/* Las etiquetas siguen más suaves */
+body.dj.dj-pro .song-item .song-meta b{
+  color:rgba(255,255,255,.58) !important;
+  opacity:1 !important;
+}
+
+/* =========================================================
+   AJUSTES BOTONES Y NÚMERO DE CANCIÓN
+   - Número (#1) rosado tenue
+   - Play azul muy tenue
+   - Check verde muy tenue
+========================================================= */
+
+/* Número pequeño arriba de los botones */
+body.dj.dj-pro .song-index{
+  color:rgba(255,120,185,.82) !important;
+  background:rgba(255,45,135,.08) !important;
+  border:1px solid rgba(255,45,135,.16) !important;
+  text-shadow:none !important;
+}
+
+/* Botón PLAY: azul muy tenue */
+body.dj.dj-pro .playback-btn{
+  border-color:rgba(90,160,255,.22) !important;
+  background:rgba(70,130,220,.07) !important;
+  color:rgba(175,210,255,.86) !important;
+  box-shadow:none !important;
+}
+
+body.dj.dj-pro .playback-btn:hover{
+  border-color:rgba(90,160,255,.32) !important;
+  background:rgba(70,130,220,.11) !important;
+  color:#d6e8ff !important;
+  box-shadow:0 0 10px rgba(80,145,255,.08) !important;
+}
+
+/* Botón CHECK: verde muy tenue */
+body.dj.dj-pro .played-btn{
+  border-color:rgba(60,210,160,.22) !important;
+  background:rgba(40,180,135,.07) !important;
+  color:rgba(165,235,210,.86) !important;
+  box-shadow:none !important;
+}
+
+body.dj.dj-pro .played-btn:hover{
+  border-color:rgba(60,210,160,.32) !important;
+  background:rgba(40,180,135,.11) !important;
+  color:#d8fff1 !important;
+  box-shadow:0 0 10px rgba(55,205,155,.08) !important;
+}
+
+/* Cuando está confirmado, sigue siendo verde pero sin exagerar */
+body.dj.dj-pro .played-btn.confirm{
+  border-color:rgba(60,210,160,.36) !important;
+  background:rgba(40,180,135,.13) !important;
+  color:#e3fff5 !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+
+/* Cuando está reproduciendo, azul un poco más visible */
+body.dj.dj-pro .playback-btn.active{
+  border-color:rgba(90,160,255,.38) !important;
+  background:rgba(70,130,220,.14) !important;
+  color:#e5f0ff !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+
+/* =========================================================
+   AJUSTES FINALES TOPBAR + PANEL DERECHO
+========================================================= */
+
+/* TOPBAR más angosta verticalmente */
+body.dj.dj-pro .dj-pro-topbar{
+  min-height:70px !important;
+  padding:12px 20px !important;
+  border-radius:18px !important;
+}
+
+/* Solo "Panel DJ" */
+body.dj.dj-pro .dj-title-status{
+  gap:0 !important;
+  align-items:center !important;
+}
+
+body.dj.dj-pro .dj-brand-block{
+  gap:0 !important;
+}
+
+body.dj.dj-pro .topbar .title{
+  font-size:30px !important;
+  line-height:1 !important;
+}
+
+/* Botones superiores un poco más compactos para acompañar el topbar */
+body.dj.dj-pro .badge.dj-count-badge,
+body.dj.dj-pro .btn.dj-action{
+  min-height:38px !important;
+}
+
+/* =========================================================
+   PANEL DERECHO
+   Solo el nombre de la canción queda rosado, SIN efecto neón
+========================================================= */
+
+body.dj.dj-pro .dj-fresh-song{
+  color:#ff5b9f !important;
+  text-shadow:none !important;
+}
+
+/* Nombre, número y meta permanecen blancos */
+body.dj.dj-pro .dj-fresh-name{
+  color:#ffffff !important;
+  text-shadow:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-position{
+  color:#ffffff !important;
+  border-color:rgba(255,255,255,.18) !important;
+  text-shadow:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-meta{
+  color:rgba(255,255,255,.62) !important;
+  text-shadow:none !important;
+}
+
+body.dj.dj-pro .dj-fresh-handle{
+  color:rgba(255,255,255,.68) !important;
+  text-shadow:none !important;
+}
+
+/* =========================================================
+   BOTÓN ✓
+   Primer clic = verde mucho más claro y visible
+========================================================= */
+
+body.dj.dj-pro .played-btn.confirm{
+  border-color:rgba(100,255,195,.82) !important;
+  background:rgba(70,235,170,.24) !important;
+  color:#dffff3 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(90,255,195,.06),
+    0 0 16px rgba(70,235,170,.22) !important;
+
+  animation:confirmGreenSoft 1s ease-in-out infinite !important;
+}
+
+@keyframes confirmGreenSoft{
+  0%,100%{
+    background:rgba(70,235,170,.22);
+    border-color:rgba(100,255,195,.72);
+    box-shadow:
+      0 0 0 2px rgba(90,255,195,.04),
+      0 0 12px rgba(70,235,170,.16);
+  }
+
+  50%{
+    background:rgba(95,255,195,.32);
+    border-color:rgba(140,255,215,.95);
+    box-shadow:
+      0 0 0 2px rgba(90,255,195,.08),
+      0 0 20px rgba(70,235,170,.30);
+  }
+}
+
+/* =========================================================
+   HUD PRINCIPAL MÁS OSCURO QUE LAS TARJETAS
+========================================================= */
+
+/* Fondo grande detrás de las tarjetas */
+body.dj.dj-pro .dj-pro-section,
+body.dj.dj-pro .requests-area{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3,0,3,.97),
+      rgba(0,0,0,.99)
+    ) !important;
+
+  border-color:rgba(255,45,105,.20) !important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.42),
+    inset 0 0 0 1px rgba(255,255,255,.012) !important;
+}
+
+/* Tarjetas de mesas: un poco más claras que el HUD de fondo */
+body.dj.dj-pro .table-card,
+body.dj.dj-pro .table-card.next-up{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,5,13,.96),
+      rgba(7,3,7,.98)
+    ) !important;
+
+  border-color:rgba(255,45,105,.28) !important;
+
+  box-shadow:
+    0 12px 26px rgba(0,0,0,.24),
+    inset 0 0 0 1px rgba(255,255,255,.018) !important;
+}
+
+/* =========================================================
+   AJUSTE CONTRASTE TARJETAS
+   - Tarjetas de mesa un poco más claras
+   - Tarjetas internas de datos un poco más oscuras
+========================================================= */
+
+/* Tarjetas grandes de cada mesa */
+body.dj.dj-pro .table-card,
+body.dj.dj-pro .table-card.next-up{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(26,8,18,.97),
+      rgba(11,4,9,.99)
+    ) !important;
+
+  border-color:rgba(255,45,105,.30) !important;
+}
+
+/* Tarjetas internas donde van nombre/canción/artista */
+body.dj.dj-pro .song-item{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(14,7,11,.98),
+      rgba(7,4,7,.99)
+    ) !important;
+
+  border-color:rgba(255,255,255,.07) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.01) !important;
+}
+
+/* Si es una canción nueva, mantenerla oscura también */
+body.dj.dj-pro .song-item.new-song{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,7,13,.98),
+      rgba(8,4,8,.99)
+    ) !important;
+}
+
+/* =========================================================
+   AJUSTE FINAL DE CONTRASTE
+   - Fondo/foto un poco más oscuro
+   - Tarjetas de mesa apenas más oscuras
+   - Bordes de tarjetas de mesa más tenues
+========================================================= */
+
+/* Oscurecer un poco la foto/fondo general */
+body.dj.dj-pro{
+  background:
+    radial-gradient(900px 460px at 12% 0%, rgba(255,62,131,.12), transparent 58%),
+    radial-gradient(760px 420px at 100% 0%, rgba(140,95,255,.08), transparent 58%),
+    radial-gradient(820px 460px at 50% 100%, rgba(0,186,255,.05), transparent 62%),
+    linear-gradient(180deg, rgba(4,4,7,.70), rgba(5,6,10,.84)),
+    url("/img/fondo-dj.jpg") !important;
+
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* Tarjetas grandes de mesa: solo un poco más oscuras */
+body.dj.dj-pro .table-card,
+body.dj.dj-pro .table-card.next-up{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(21,6,15,.98),
+      rgba(8,3,7,.995)
+    ) !important;
+
+  border-color:rgba(255,45,105,.21) !important;
+
+  box-shadow:
+    0 12px 26px rgba(0,0,0,.24),
+    inset 0 0 0 1px rgba(255,255,255,.012) !important;
+}
+
+/* =========================================================
+   ESTADO "AHORA SONANDO" — ILUMINACIÓN ROSADA
+   Replica el look de la referencia enviada.
+========================================================= */
+
+/* Tarjeta interna cuando la canción está reproduciéndose */
+body.dj.dj-pro .song-item.is-playing{
+  position:relative !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(36,5,24,.98),
+      rgba(14,4,10,.99)
+    ) !important;
+
+  border:1px solid rgba(255,35,140,.92) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(255,35,140,.10) inset,
+    0 0 16px rgba(255,35,140,.22),
+    0 0 28px rgba(255,35,140,.10) !important;
+}
+
+/* Badge AHORA SONANDO */
+body.dj.dj-pro .song-item.is-playing .playing-badge{
+  border:1px solid rgba(255,65,155,.72) !important;
+  background:rgba(255,35,140,.14) !important;
+  color:#ffd7ea !important;
+
+  box-shadow:
+    0 0 10px rgba(255,35,140,.12) !important;
+}
+
+/* Nombre del cliente */
+body.dj.dj-pro .song-item.is-playing .song-client{
+  color:#ff4d9d !important;
+  text-shadow:
+    0 0 6px rgba(255,45,145,.35) !important;
+}
+
+/* Etiquetas Canción / Artista */
+body.dj.dj-pro .song-item.is-playing .song-meta b{
+  color:#ff63aa !important;
+  text-shadow:
+    0 0 5px rgba(255,45,145,.24) !important;
+}
+
+/* Texto recibido del formulario permanece blanco */
+body.dj.dj-pro .song-item.is-playing .song-meta{
+  color:#ffffff !important;
+}
+
+/* #1 rosado más brillante durante reproducción */
+body.dj.dj-pro .song-item.is-playing .song-index{
+  color:#ff77b5 !important;
+  background:rgba(255,35,140,.12) !important;
+  border-color:rgba(255,35,140,.42) !important;
+
+  box-shadow:
+    0 0 10px rgba(255,35,140,.10) !important;
+}
+
+/* Botón PLAY cuando está activo: cuadrado rosado iluminado */
+body.dj.dj-pro .playback-btn.active{
+  border-color:rgba(255,70,160,.95) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,50,150,.92),
+      rgba(180,15,95,.95)
+    ) !important;
+
+  color:#ffffff !important;
+
+  box-shadow:
+    0 0 0 2px rgba(255,45,145,.08),
+    0 0 12px rgba(255,45,145,.42),
+    0 0 22px rgba(255,45,145,.24) !important;
+
+  animation:playingPinkPulse 1.2s ease-in-out infinite !important;
+}
+
+/* Pulso suave */
+@keyframes playingPinkPulse{
+  0%,100%{
+    box-shadow:
+      0 0 0 2px rgba(255,45,145,.06),
+      0 0 10px rgba(255,45,145,.34),
+      0 0 18px rgba(255,45,145,.18);
+  }
+
+  50%{
+    box-shadow:
+      0 0 0 2px rgba(255,45,145,.10),
+      0 0 16px rgba(255,45,145,.52),
+      0 0 26px rgba(255,45,145,.28);
+  }
+}
+
+/* =========================================================
+   PLAY VERDE — MISMO ESTILO DEL TICKET
+========================================================= */
+
+/* Play normal: verde tenue */
+body.dj.dj-pro .playback-btn{
+  border-color:rgba(60,210,160,.22) !important;
+  background:rgba(40,180,135,.07) !important;
+  color:rgba(165,235,210,.86) !important;
+  box-shadow:none !important;
+}
+
+body.dj.dj-pro .playback-btn:hover{
+  border-color:rgba(60,210,160,.32) !important;
+  background:rgba(40,180,135,.11) !important;
+  color:#d8fff1 !important;
+  box-shadow:0 0 10px rgba(55,205,155,.08) !important;
+}
+
+/* Play activo: verde más claro, igual que el ticket confirmado */
+body.dj.dj-pro .playback-btn.active{
+  border-color:rgba(100,255,195,.82) !important;
+  background:rgba(70,235,170,.24) !important;
+  color:#dffff3 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(90,255,195,.06),
+    0 0 16px rgba(70,235,170,.22) !important;
+
+  animation:playGreenSoft 1s ease-in-out infinite !important;
+}
+
+@keyframes playGreenSoft{
+  0%,100%{
+    background:rgba(70,235,170,.22);
+    border-color:rgba(100,255,195,.72);
+    box-shadow:
+      0 0 0 2px rgba(90,255,195,.04),
+      0 0 12px rgba(70,235,170,.16);
+  }
+
+  50%{
+    background:rgba(95,255,195,.32);
+    border-color:rgba(140,255,215,.95);
+    box-shadow:
+      0 0 0 2px rgba(90,255,195,.08),
+      0 0 20px rgba(70,235,170,.30);
+  }
+}
+
+/* =========================================================
+   BOTONES COMO ICONOS — SIN MARCO / SIN FONDO
+========================================================= */
+
+/* Base para play y ticket */
+body.dj.dj-pro .playback-btn,
+body.dj.dj-pro .played-btn{
+  width:30px !important;
+  height:30px !important;
+
+  padding:0 !important;
+
+  border:none !important;
+  border-radius:0 !important;
+
+  background:transparent !important;
+  box-shadow:none !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  line-height:1 !important;
+}
+
+/* PLAY normal: solo icono verde */
+body.dj.dj-pro .playback-btn{
+  color:rgba(120,235,190,.82) !important;
+}
+
+body.dj.dj-pro .playback-btn:hover{
+  background:transparent !important;
+  color:#aef5d5 !important;
+  box-shadow:none !important;
+  transform:scale(1.06) !important;
+}
+
+/* PLAY activo: icono verde más claro e iluminado */
+body.dj.dj-pro .playback-btn.active{
+  background:transparent !important;
+  border:none !important;
+  color:#b8ffe0 !important;
+
+  text-shadow:
+    0 0 6px rgba(80,255,185,.60),
+    0 0 12px rgba(80,255,185,.28) !important;
+
+  box-shadow:none !important;
+  animation:playIconGlow 1s ease-in-out infinite !important;
+}
+
+@keyframes playIconGlow{
+  0%,100%{
+    color:#afffdc;
+    text-shadow:
+      0 0 5px rgba(80,255,185,.45),
+      0 0 10px rgba(80,255,185,.20);
+  }
+
+  50%{
+    color:#d4ffed;
+    text-shadow:
+      0 0 8px rgba(80,255,185,.72),
+      0 0 16px rgba(80,255,185,.34);
+  }
+}
+
+/* TICKET normal: solo icono verde */
+body.dj.dj-pro .played-btn{
+  color:rgba(120,235,190,.82) !important;
+}
+
+body.dj.dj-pro .played-btn:hover{
+  background:transparent !important;
+  color:#aef5d5 !important;
+  box-shadow:none !important;
+  transform:scale(1.06) !important;
+}
+
+/* Primer clic del ticket: verde claro iluminado */
+body.dj.dj-pro .played-btn.confirm{
+  background:transparent !important;
+  border:none !important;
+  color:#c9ffe8 !important;
+
+  text-shadow:
+    0 0 6px rgba(80,255,185,.60),
+    0 0 12px rgba(80,255,185,.28) !important;
+
+  box-shadow:none !important;
+  animation:ticketIconGlow 1s ease-in-out infinite !important;
+}
+
+@keyframes ticketIconGlow{
+  0%,100%{
+    color:#b9ffe0;
+    text-shadow:
+      0 0 5px rgba(80,255,185,.45),
+      0 0 10px rgba(80,255,185,.20);
+  }
+
+  50%{
+    color:#e1fff1;
+    text-shadow:
+      0 0 8px rgba(80,255,185,.72),
+      0 0 16px rgba(80,255,185,.34);
+  }
+}
+
+/* =========================================================
+   PANEL DERECHO MÁS OSCURO
+   Igualar el fondo al resto de HUD principales
+========================================================= */
+
+body.dj.dj-pro .dj-fresh-panel{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3,0,3,.97),
+      rgba(0,0,0,.99)
+    ) !important;
+
+  border-color:rgba(255,45,105,.20) !important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.42),
+    inset 0 0 0 1px rgba(255,255,255,.012) !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
 }

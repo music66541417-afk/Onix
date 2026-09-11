@@ -930,7 +930,7 @@ const TZ_CHILE =
 
 const CUTOFF_HHMM =
   process.env.CUTOFF_HHMM ||
-  "03:30";
+  "06:00";
 
 const RESET_HHMM =
   process.env.RESET_HHMM ||

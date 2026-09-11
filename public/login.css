@@ -1,459 +1,382 @@
-:root{
-  --bg: #050506;
-
-  --card: rgba(10,10,12,.82);
-  --glass: rgba(255,255,255,.03);
-
-  --border: rgba(255,40,90,.18);
-
-  --text: rgba(255,255,255,.94);
-  --muted: rgba(255,255,255,.62);
-
-  /* 🎨 Zona Zero */
-  --accent1: #ff2d55;
-  --accent2: #781326;
-  --accent3: #ff4d6d;
-  --gold: #d6a46a;
-
-  --shadow: 0 25px 70px rgba(0,0,0,.72);
+* {
+  box-sizing: border-box;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: "Inter", sans-serif;
+  background: #050505;
+  color: #ffffff;
 }
 
-html,body{
-  height:100%;
-  margin:0;
+body {
+  min-height: 100vh;
 }
 
-body{
-  color:var(--text);
-
-  background:
-    radial-gradient(1200px 700px at 15% 10%, rgba(255,45,85,.18), transparent 60%),
-    radial-gradient(900px 600px at 85% 20%, rgba(120,19,38,.22), transparent 60%),
-    radial-gradient(1000px 700px at 50% 120%, rgba(255,0,80,.08), transparent 60%),
-    var(--bg);
+/* MISMAS DIMENSIONES Y DISTRIBUCIÓN QUE JOLLY */
+.shell {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* Layout */
-
-.shell{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-}
-
-/* LEFT */
-
-.left{
-  position:relative;
-  overflow:hidden;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(5,5,6,.25),
-      rgba(5,5,6,.82)
-    ),
-    url("/img/logo-zonazero.jpg");
-
-  background-size:cover;
-  background-position:center;
-}
-
-.left::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-
-  background:
-    radial-gradient(700px 500px at 20% 30%, rgba(255,45,85,.22), transparent 60%),
-    radial-gradient(900px 600px at 70% 25%, rgba(255,0,80,.14), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.5));
-
-  pointer-events:none;
-}
-
-.left-overlay{
-  position:relative;
-  height:100%;
-
-  display:flex;
-  align-items:flex-end;
-
-  padding:clamp(20px,4vw,52px);
-}
-
-.welcome{
-  max-width:560px;
-}
-
-.brand-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-
-  padding:8px 14px;
-
-  border-radius:999px;
-
-  border:1px solid rgba(255,45,85,.18);
-
-  background:rgba(0,0,0,.32);
-
-  color:rgba(255,255,255,.82);
-
-  font-weight:800;
-  font-size:12px;
-  letter-spacing:.5px;
-
-  margin-bottom:16px;
-
-  backdrop-filter:blur(10px);
-}
-
-.welcome h1{
-  margin:0;
-
-  font-size:clamp(38px,4vw,64px);
-
-  line-height:1.02;
-
-  letter-spacing:-0.04em;
-
-  font-weight:900;
-}
-
-.welcome p{
-  margin:16px 0 0;
-
-  font-size:15px;
-
-  color:rgba(255,255,255,.74);
-
-  line-height:1.6;
-}
-
-.bullets{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-
-  margin-top:22px;
-}
-
-.b{
-  font-size:12px;
-
-  color:rgba(255,255,255,.82);
-
-  border:1px solid rgba(255,45,85,.14);
-
-  background:rgba(0,0,0,.28);
-
-  padding:9px 12px;
-
-  border-radius:14px;
-
-  backdrop-filter:blur(10px);
-}
-
-/* RIGHT */
-
-.right{
-  position:relative;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:28px;
-}
-
-.right::before{
-  content:"";
-  position:absolute;
-  inset:0;
-
-  background:
-    radial-gradient(
-      650px 480px at 50% 10%,
-      rgba(255,45,85,.12),
-      transparent 60%
-    );
-
-  pointer-events:none;
-}
-
-/* CARD */
-
-.card{
-  position:relative;
-
-  width:min(440px,92vw);
-
-  padding:34px;
-
-  border-radius:24px;
-
-  background:var(--card);
-
-  border:1px solid rgba(255,45,85,.14);
-
-  box-shadow:var(--shadow);
-
-  backdrop-filter:blur(16px);
-}
-
-.card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-
-  border-radius:24px;
-
-  pointer-events:none;
-
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.03) inset;
-}
-
-.card-head .kicker{
-  font-size:12px;
-
-  letter-spacing:.22em;
-
-  color:rgba(255,255,255,.54);
-
-  font-weight:900;
-}
-
-.card-head h2{
-  margin:10px 0 6px;
-
-  font-size:34px;
-
-  letter-spacing:-0.03em;
-
-  font-weight:900;
-}
-
-.card-head .sub{
-  margin:0 0 18px;
-
-  color:rgba(255,255,255,.6);
-
-  font-size:13px;
-}
-
-/* FORM */
-
-.form{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-
-.field span{
-  display:block;
-
-  margin-bottom:8px;
-
-  font-size:12px;
-
-  color:rgba(255,255,255,.68);
-
-  font-weight:700;
-}
-
-.input-wrap{
-  position:relative;
-}
-
-.icon{
-  position:absolute;
-
-  left:13px;
-  top:50%;
-
-  transform:translateY(-50%);
-
-  opacity:.72;
-
-  font-size:14px;
-}
-
-.field input{
-  width:100%;
-  height:50px;
-
-  padding:0 14px 0 40px;
-
-  border-radius:14px;
-
-  border:1px solid rgba(255,45,85,.12);
-
-  background:rgba(255,255,255,.03);
-
-  color:var(--text);
-
-  font-size:14px;
-
-  outline:none;
-
-  transition:
-    border-color .18s ease,
-    box-shadow .18s ease,
-    background .18s ease;
-}
-
-.field input::placeholder{
-  color:rgba(255,255,255,.34);
-}
-
-.field input:focus{
-  border-color:rgba(255,45,85,.72);
-
-  box-shadow:
-    0 0 0 3px rgba(255,45,85,.14);
-
-  background:rgba(255,255,255,.045);
-}
-
-/* BUTTON */
-
-.btn{
-  margin-top:8px;
-
-  height:52px;
-
-  border-radius:14px;
-
-  border:none;
-
-  cursor:pointer;
-
-  color:white;
-
-  font-weight:900;
-
-  font-size:14px;
-
-  letter-spacing:.2px;
+/* FOTO ONIX COMPLETA DETRÁS DE TODO */
+.shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 
   background:
     linear-gradient(
       90deg,
-      var(--accent1),
-      var(--accent2)
+      rgba(0, 0, 0, 0.18) 0%,
+      rgba(0, 0, 0, 0.30) 38%,
+      rgba(0, 0, 0, 0.62) 63%,
+      rgba(0, 0, 0, 0.88) 100%
+    ),
+    url("/img/zona-bg.jpg") center center / cover no-repeat;
+}
+
+.shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+}
+
+.left,
+.right {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* IZQUIERDA — MISMAS MEDIDAS QUE JOLLY */
+.left {
+  display: flex;
+  align-items: flex-end;
+  padding: 48px 48px 56px 48px;
+  background: transparent;
+}
+
+.left-overlay {
+  max-width: 760px;
+}
+
+.welcome {
+  max-width: 760px;
+}
+
+/* ONIX MÁS GRANDE Y ROSADO */
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 25px;
+  margin-bottom: 20px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 45, 85, 0.20),
+      rgba(35, 8, 20, 0.62)
     );
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
+  border: 1px solid rgba(255, 88, 145, 0.88);
 
-  transition:
-    transform .12s ease,
-    box-shadow .12s ease,
-    filter .12s ease;
-}
-
-.btn:hover{
-  transform:translateY(-1px);
+  color: #ff9fbe;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 
   box-shadow:
-    0 10px 28px rgba(255,45,85,.26);
+    0 0 18px rgba(255, 45, 85, 0.18),
+    inset 0 1px 0 rgba(255, 210, 225, 0.08);
 
-  filter:brightness(1.03);
+  backdrop-filter: blur(8px);
 }
 
-.btn:active{
-  transform:translateY(0);
+.welcome h1 {
+  margin: 0 0 14px;
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
-.btn-spin{
-  width:16px;
-  height:16px;
-
-  border-radius:999px;
-
-  border:2px solid rgba(255,255,255,.3);
-
-  border-top-color:white;
-
-  display:none;
-
-  animation:spin .7s linear infinite;
+.welcome p {
+  margin: 0 0 26px;
+  max-width: 720px;
+  font-size: 25px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
 }
 
-.btn.loading{
-  opacity:.95;
-  cursor:default;
+.bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.btn.loading .btn-spin{
-  display:inline-block;
+.b {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.52);
+  border: 1px solid rgba(255, 90, 145, 0.15);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
 }
 
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
+/* DERECHA — MISMAS MEDIDAS QUE JOLLY */
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: transparent;
+}
+
+.card {
+  width: min(100%, 430px);
+  padding: 34px 30px 24px;
+  border-radius: 28px;
+  background: rgba(18, 8, 14, 0.76);
+  border: 1px solid rgba(255, 82, 138, 0.16);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.card-head {
+  margin-bottom: 22px;
+}
+
+.kicker {
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #ff9fbe;
+}
+
+.card-head h2 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.sub {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field span {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 54px;
+  padding: 0 16px;
+  border-radius: 16px;
+  background: rgba(8, 8, 8, 0.50);
+  border: 1px solid rgba(255, 102, 155, 0.15);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-wrap:focus-within {
+  border-color: rgba(255, 86, 143, 0.50);
+  box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.10);
+}
+
+.icon {
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.input-wrap input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.input-wrap input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.btn {
+  margin-top: 6px;
+  height: 54px;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 800;
+  font-family: inherit;
+  color: #ffffff;
+  background: linear-gradient(90deg, #ff2d55 0%, #9b1534 100%);
+  box-shadow: 0 12px 30px rgba(255, 45, 85, 0.18);
+  transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.btn:hover {
+  filter: brightness(1.06);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn.loading {
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.btn-spin {
+  display: none;
+}
+
+.toast {
+  min-height: 20px;
+  font-size: 14px;
+  color: #ff9fbe;
+  padding-top: 2px;
+}
+
+.foot {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 13px;
+  text-align: center;
+}
+
+.dot {
+  color: #ff5b91;
+}
+
+/* RESPONSIVE — IGUAL QUE JOLLY */
+@media (max-width: 1100px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    min-height: auto;
+    align-items: flex-end;
+    padding: 34px 24px 24px;
+  }
+
+  .right {
+    min-height: auto;
+    padding: 20px 24px 34px;
+    justify-content: flex-start;
+  }
+
+  .welcome h1 {
+    font-size: clamp(34px, 8vw, 52px);
+  }
+
+  .welcome p {
+    font-size: 17px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .shell::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(0, 0, 0, 0.50) 45%,
+        rgba(0, 0, 0, 0.85) 100%
+      ),
+      url("/img/zona-bg.jpg") center center / cover no-repeat;
   }
 }
 
-/* TOAST */
-
-.toast{
-  min-height:18px;
-
-  font-size:12px;
-
-  color:#ff8b9f;
-
-  font-weight:700;
-}
-
-/* FOOT */
-
-.foot{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  gap:8px;
-
-  margin-top:18px;
-
-  color:rgba(255,255,255,.54);
-
-  font-size:12px;
-}
-
-.dot{
-  color:var(--accent1);
-}
-
-/* RESPONSIVE */
-
-@media (max-width:980px){
-
-  .shell{
-    grid-template-columns:1fr;
+@media (max-width: 640px) {
+  .left {
+    padding: 24px 18px 14px;
   }
 
-  .left{
-    min-height:40vh;
+  .right {
+    padding: 14px 18px 24px;
   }
 
-  .right{
-    padding:20px;
+  .card {
+    padding: 26px 20px 20px;
+    border-radius: 22px;
   }
 
-  .card{
-    padding:28px;
+  .brand-pill {
+    font-size: 16px;
+    padding: 11px 20px;
+  }
+
+  .welcome h1 {
+    font-size: 36px;
+  }
+
+  .welcome p {
+    font-size: 15px;
+  }
+
+  .bullets {
+    gap: 8px;
+  }
+
+  .b {
+    font-size: 13px;
+    padding: 10px 12px;
   }
 }
