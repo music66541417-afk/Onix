@@ -3973,3 +3973,16 @@ body.dj.dj-pro .dj-fresh-position{
 
   text-shadow:none !important;
 }
+
+/* =========================================================
+   TOPBAR DJ — BOTONES SIN BORDES
+========================================================= */
+
+body.dj.dj-pro .top-actions .btn,
+body.dj.dj-pro .top-actions .badge,
+body.dj.dj-pro #btnNotificacionesDj,
+body.dj.dj-pro #djOrdersControl,
+body.dj.dj-pro #djOrdersSwitch{
+  border:none !important;
+  box-shadow:none !important;
+}
