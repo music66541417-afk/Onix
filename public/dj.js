@@ -49,6 +49,188 @@ let freshQueueDrag = {
 let pendingRequestsWhileDragging = null;
 let pendingPlaybackRender = false;
 
+
+/* =========================================================
+   NOTIFICACIONES DE NUEVOS PEDIDOS - SIN SONIDO
+========================================================= */
+
+let notificacionesActivas = false;
+let notificationTitleTimeout = null;
+
+function actualizarBotonNotificaciones() {
+  const button = document.getElementById("btnNotificacionesDj");
+
+  if (!button || !("Notification" in window)) {
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    notificacionesActivas = true;
+    button.textContent = "🔔 Notificaciones activas";
+    button.title = "Las notificaciones están activadas";
+  } else if (Notification.permission === "denied") {
+    notificacionesActivas = false;
+    button.textContent = "🔕 Notificaciones bloqueadas";
+    button.title = "Habilítalas desde los permisos del navegador";
+  } else {
+    notificacionesActivas = false;
+    button.textContent = "🔔 Activar notificaciones";
+    button.title = "Activar avisos de nuevos pedidos";
+  }
+}
+
+async function activarNotificaciones() {
+  if (!("Notification" in window)) {
+    alert("Este navegador no admite notificaciones.");
+    return;
+  }
+
+  if (Notification.permission === "denied") {
+    alert(
+      "Las notificaciones están bloqueadas. " +
+      "Debes habilitarlas desde los permisos del sitio en Chrome."
+    );
+    return;
+  }
+
+  try {
+    const permiso = await Notification.requestPermission();
+
+    actualizarBotonNotificaciones();
+
+    if (permiso === "granted") {
+      notificacionesActivas = true;
+
+      new Notification("ONIX Karaoke", {
+        body: "Notificaciones activadas correctamente."
+      });
+    }
+  } catch (error) {
+    console.error("Error activando notificaciones:", error);
+  }
+}
+
+function crearBotonNotificaciones() {
+  if (!("Notification" in window)) {
+    return;
+  }
+
+  if (document.getElementById("btnNotificacionesDj")) {
+    actualizarBotonNotificaciones();
+    return;
+  }
+
+  const button = document.createElement("button");
+
+  button.id = "btnNotificacionesDj";
+  button.type = "button";
+
+  Object.assign(button.style, {
+    position: "fixed",
+    right: "22px",
+    bottom: "22px",
+    zIndex: "99999",
+    padding: "10px 14px",
+    border: "1px solid rgba(255,255,255,.18)",
+    borderRadius: "12px",
+    background: "rgba(15,15,18,.96)",
+    color: "#fff",
+    fontWeight: "700",
+    cursor: "pointer",
+    boxShadow: "0 8px 24px rgba(0,0,0,.35)"
+  });
+
+  button.addEventListener(
+    "click",
+    activarNotificaciones
+  );
+
+  document.body.appendChild(button);
+
+  actualizarBotonNotificaciones();
+}
+
+function notificarNuevaSolicitud(request) {
+  if (!request) {
+    return;
+  }
+
+  if (!("Notification" in window)) {
+    return;
+  }
+
+  if (Notification.permission !== "granted") {
+    return;
+  }
+
+  notificacionesActivas = true;
+
+  const mesa =
+    request.table ?? "";
+
+  const cliente =
+    getClientName(request) ||
+    "Sin nombre";
+
+  const cancion =
+    request.song ||
+    "Sin canción";
+
+  const artista =
+    request.artist ||
+    "Sin artista";
+
+  try {
+    const notification =
+      new Notification(
+        "🎤 Nueva solicitud de karaoke",
+        {
+          body:
+            `Mesa ${mesa}\n` +
+            `${cliente}\n` +
+            `${cancion} - ${artista}`,
+          tag:
+            `pedido-${request.id}`
+        }
+      );
+
+    notification.onclick = () => {
+      window.focus();
+      notification.close();
+    };
+  } catch (error) {
+    console.error(
+      "No se pudo mostrar la notificación:",
+      error
+    );
+  }
+
+  const originalTitle =
+    document.title;
+
+  document.title =
+    `🔴 NUEVO PEDIDO · Mesa ${mesa}`;
+
+  clearTimeout(
+    notificationTitleTimeout
+  );
+
+  notificationTitleTimeout =
+    setTimeout(() => {
+      document.title =
+        originalTitle;
+    }, 10000);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    crearBotonNotificaciones
+  );
+} else {
+  crearBotonNotificaciones();
+}
+
 /* =========================================================
    BOTONES SUPERIORES
 ========================================================= */
@@ -580,6 +762,17 @@ function render(requests) {
     for (const id of currentIds) {
       if (!prevIds.has(id)) {
         newIdSet.add(id);
+
+        const nuevaSolicitud =
+          currentRequests.find(
+            (request) =>
+              String(request.id) ===
+              String(id)
+          );
+
+        notificarNuevaSolicitud(
+          nuevaSolicitud
+        );
       }
     }
 
