@@ -3986,3 +3986,20 @@ body.dj.dj-pro #djOrdersSwitch{
   border:none !important;
   box-shadow:none !important;
 }
+
+/* =========================================================
+   QUITAR BORDES EXTERIORES BURDEO
+   - Tarjetas grandes de mesa
+   - Barra superior
+========================================================= */
+
+/* Tarjetas grandes de cada mesa */
+body.dj.dj-pro .table-card,
+body.dj.dj-pro .table-card.next-up{
+  border:none !important;
+}
+
+/* Barra superior del Panel DJ */
+body.dj.dj-pro .dj-pro-topbar{
+  border:none !important;
+}
