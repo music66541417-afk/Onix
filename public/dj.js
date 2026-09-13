@@ -64,18 +64,23 @@ function actualizarBotonNotificaciones() {
     return;
   }
 
+  button.textContent = "🔔";
+
   if (Notification.permission === "granted") {
     notificacionesActivas = true;
-    button.textContent = "🔔 Notificaciones activas";
-    button.title = "Las notificaciones están activadas";
+    button.classList.add("active");
+    button.title = "Notificaciones activas";
+    button.setAttribute("aria-label", "Notificaciones activas");
   } else if (Notification.permission === "denied") {
     notificacionesActivas = false;
-    button.textContent = "🔕 Notificaciones bloqueadas";
-    button.title = "Habilítalas desde los permisos del navegador";
+    button.classList.remove("active");
+    button.title = "Notificaciones bloqueadas";
+    button.setAttribute("aria-label", "Notificaciones bloqueadas");
   } else {
     notificacionesActivas = false;
-    button.textContent = "🔔 Activar notificaciones";
-    button.title = "Activar avisos de nuevos pedidos";
+    button.classList.remove("active");
+    button.title = "Activar notificaciones";
+    button.setAttribute("aria-label", "Activar notificaciones");
   }
 }
 
@@ -124,28 +129,42 @@ function crearBotonNotificaciones() {
 
   button.id = "btnNotificacionesDj";
   button.type = "button";
+  button.className = "notification-top-btn";
+  button.textContent = "🔔";
 
   Object.assign(button.style, {
-    position: "fixed",
-    right: "22px",
-    bottom: "22px",
-    zIndex: "99999",
-    padding: "10px 14px",
-    border: "1px solid rgba(255,255,255,.18)",
+    width: "42px",
+    height: "38px",
+    minWidth: "42px",
+    padding: "0",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "1px solid rgba(255, 64, 129, .35)",
     borderRadius: "12px",
-    background: "rgba(15,15,18,.96)",
-    color: "#fff",
-    fontWeight: "700",
+    background: "rgba(15, 8, 14, .88)",
+    color: "#ff5c9d",
+    fontSize: "18px",
+    lineHeight: "1",
     cursor: "pointer",
-    boxShadow: "0 8px 24px rgba(0,0,0,.35)"
+    boxShadow: "none",
+    flex: "0 0 auto"
   });
 
-  button.addEventListener(
-    "click",
-    activarNotificaciones
-  );
+  button.addEventListener("mouseenter", () => {
+    button.style.background = "rgba(255, 64, 129, .12)";
+  });
 
-  document.body.appendChild(button);
+  button.addEventListener("mouseleave", () => {
+    button.style.background = "rgba(15, 8, 14, .88)";
+  });
+
+  button.addEventListener("click", activarNotificaciones);
+
+  // Insertarlo en la barra superior, justo a la izquierda de "pendientes"
+  if (countBadge?.parentElement) {
+    countBadge.parentElement.insertBefore(button, countBadge);
+  }
 
   actualizarBotonNotificaciones();
 }
@@ -165,34 +184,22 @@ function notificarNuevaSolicitud(request) {
 
   notificacionesActivas = true;
 
-  const mesa =
-    request.table ?? "";
-
-  const cliente =
-    getClientName(request) ||
-    "Sin nombre";
-
-  const cancion =
-    request.song ||
-    "Sin canción";
-
-  const artista =
-    request.artist ||
-    "Sin artista";
+  const mesa = request.table ?? "";
+  const cliente = getClientName(request) || "Sin nombre";
+  const cancion = request.song || "Sin canción";
+  const artista = request.artist || "Sin artista";
 
   try {
-    const notification =
-      new Notification(
-        "🎤 Nueva solicitud de karaoke",
-        {
-          body:
-            `Mesa ${mesa}\n` +
-            `${cliente}\n` +
-            `${cancion} - ${artista}`,
-          tag:
-            `pedido-${request.id}`
-        }
-      );
+    const notification = new Notification(
+      "🎤 Nueva solicitud de karaoke",
+      {
+        body:
+          `Mesa ${mesa}\n` +
+          `${cliente}\n` +
+          `${cancion} - ${artista}`,
+        tag: `pedido-${request.id}`
+      }
+    );
 
     notification.onclick = () => {
       window.focus();
@@ -205,30 +212,29 @@ function notificarNuevaSolicitud(request) {
     );
   }
 
-  const originalTitle =
-    document.title;
+  const originalTitle = document.title;
 
   document.title =
     `🔴 NUEVO PEDIDO · Mesa ${mesa}`;
 
-  clearTimeout(
-    notificationTitleTimeout
-  );
+  clearTimeout(notificationTitleTimeout);
 
-  notificationTitleTimeout =
-    setTimeout(() => {
-      document.title =
-        originalTitle;
-    }, 10000);
+  notificationTitleTimeout = setTimeout(() => {
+    document.title = originalTitle;
+  }, 10000);
 }
 
 if (document.readyState === "loading") {
   document.addEventListener(
     "DOMContentLoaded",
-    crearBotonNotificaciones
+    () => {
+      crearBotonNotificaciones();
+      createDjOrdersSwitch();
+    }
   );
 } else {
   crearBotonNotificaciones();
+  createDjOrdersSwitch();
 }
 
 /* =========================================================
@@ -294,8 +300,221 @@ logoutBtn?.addEventListener("click", async () => {
    ESTADO DE PEDIDOS
 ========================================================= */
 
+function updateDjOrdersSwitch(isOpen) {
+  const switchButton = document.getElementById("djOrdersSwitch");
+
+  if (!switchButton) {
+    return;
+  }
+
+  switchButton.classList.toggle("open", isOpen);
+  switchButton.classList.toggle("closed", !isOpen);
+  switchButton.setAttribute(
+    "aria-pressed",
+    isOpen ? "true" : "false"
+  );
+
+  const knob = switchButton.querySelector(".dj-orders-knob");
+
+  if (knob) {
+    knob.style.transform =
+      isOpen
+        ? "translateX(20px)"
+        : "translateX(0)";
+  }
+
+  switchButton.style.background =
+    isOpen
+      ? "rgba(34, 197, 94, .20)"
+      : "rgba(239, 68, 68, .20)";
+
+  switchButton.style.borderColor =
+    isOpen
+      ? "rgba(34, 197, 94, .65)"
+      : "rgba(239, 68, 68, .65)";
+
+  if (knob) {
+    knob.style.background =
+      isOpen
+        ? "#22c55e"
+        : "#ef4444";
+  }
+
+  switchButton.title =
+    isOpen
+      ? "Solicitudes activas"
+      : "Solicitudes cerradas";
+}
+
+async function toggleDjOrders() {
+  const switchButton =
+    document.getElementById("djOrdersSwitch");
+
+  if (!switchButton) return;
+
+  const isCurrentlyOpen =
+    switchButton.getAttribute("aria-pressed") === "true";
+
+  switchButton.disabled = true;
+
+  try {
+    const response = await fetch(
+      "/api/dj/orders",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          enabled: !isCurrentlyOpen,
+        }),
+      }
+    );
+
+    const data =
+      await response
+        .json()
+        .catch(() => null);
+
+    if (
+      !response.ok ||
+      !data?.ok
+    ) {
+      throw new Error(
+        data?.error ||
+        "No se pudo cambiar el estado de solicitudes"
+      );
+    }
+
+    updateDjOrdersSwitch(
+      !!data.ordersOpen?.enabled
+    );
+  } catch (error) {
+    alert(
+      error?.message ||
+      "No se pudo cambiar el estado de solicitudes."
+    );
+  } finally {
+    switchButton.disabled = false;
+  }
+}
+
+function createDjOrdersSwitch() {
+  if (document.getElementById("djOrdersControl")) {
+    return;
+  }
+
+  if (!countBadge?.parentElement) {
+    return;
+  }
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.id = "djOrdersControl";
+
+  Object.assign(wrapper.style, {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    height: "38px",
+    padding: "0 10px",
+    border: "1px solid rgba(255, 64, 129, .22)",
+    borderRadius: "12px",
+    background: "rgba(15, 8, 14, .88)",
+    flex: "0 0 auto",
+  });
+
+  const label =
+    document.createElement("span");
+
+  label.textContent = "SOLICITUDES";
+
+  Object.assign(label.style, {
+    fontSize: "12px",
+    fontWeight: "800",
+    letterSpacing: ".08em",
+    color: "#fff",
+    whiteSpace: "nowrap",
+  });
+
+  const switchButton =
+    document.createElement("button");
+
+  switchButton.id = "djOrdersSwitch";
+  switchButton.type = "button";
+  switchButton.setAttribute(
+    "aria-label",
+    "Activar o cerrar solicitudes"
+  );
+  switchButton.setAttribute(
+    "aria-pressed",
+    "false"
+  );
+
+  Object.assign(switchButton.style, {
+    position: "relative",
+    width: "44px",
+    height: "24px",
+    padding: "0",
+    borderRadius: "999px",
+    border: "1px solid rgba(239, 68, 68, .65)",
+    background: "rgba(239, 68, 68, .20)",
+    cursor: "pointer",
+    transition: "all .2s ease",
+    flex: "0 0 auto",
+  });
+
+  const knob =
+    document.createElement("span");
+
+  knob.className = "dj-orders-knob";
+
+  Object.assign(knob.style, {
+    position: "absolute",
+    left: "3px",
+    top: "3px",
+    width: "16px",
+    height: "16px",
+    borderRadius: "50%",
+    background: "#ef4444",
+    transition: "transform .2s ease, background .2s ease",
+    boxShadow: "0 0 8px rgba(0,0,0,.35)",
+  });
+
+  switchButton.appendChild(knob);
+  wrapper.appendChild(label);
+  wrapper.appendChild(switchButton);
+
+  switchButton.addEventListener(
+    "click",
+    toggleDjOrders
+  );
+
+  const notificationButton =
+    document.getElementById("btnNotificacionesDj");
+
+  if (
+    notificationButton &&
+    notificationButton.parentElement ===
+      countBadge.parentElement
+  ) {
+    countBadge.parentElement.insertBefore(
+      wrapper,
+      countBadge
+    );
+  } else {
+    countBadge.parentElement.insertBefore(
+      wrapper,
+      countBadge
+    );
+  }
+}
+
 function applyOrdersStatus(status) {
   const isOpen = !!status?.enabled;
+
+  updateDjOrdersSwitch(isOpen);
 
   if (ordersStatus) {
     ordersStatus.classList.remove(

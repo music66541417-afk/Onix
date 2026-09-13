@@ -894,6 +894,62 @@ app.post(
   }
 );
 
+
+/*
+  DJ y administrador pueden abrir/cerrar solicitudes
+  manualmente desde el panel DJ.
+
+  No existe cierre automático por horario.
+*/
+
+app.post(
+  "/api/dj/orders",
+  requireDjAccess,
+  async (req, res) => {
+    const { enabled } =
+      req.body || {};
+
+    if (
+      typeof enabled !==
+      "boolean"
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "Payload inválido",
+      });
+    }
+
+    try {
+      await pool.query(
+        `
+          UPDATE orders_status
+          SET
+            enabled = $1,
+            updated_at = NOW()
+          WHERE id = 1;
+        `,
+        [enabled]
+      );
+
+      ordersOpen = enabled;
+
+      emitOrdersStatus();
+
+      return res.json({
+        ok: true,
+        ordersOpen: {
+          enabled: ordersOpen,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        ok: false,
+        error: error.message,
+      });
+    }
+  }
+);
+
 /* =========================================================
    HEALTH CHECK
 ========================================================= */
@@ -921,59 +977,20 @@ app.get(
 );
 
 /* =========================================================
-   HORARIOS DEL SERVIDOR
+   ZONA HORARIA DEL SERVIDOR
+
+   Las solicitudes están disponibles 24/7.
+   Ya NO existe cierre ni reapertura automática por horario.
+
+   TZ_CHILE se mantiene porque también se usa en:
+   - estadísticas;
+   - historial;
+   - ruleta.
 ========================================================= */
 
 const TZ_CHILE =
   process.env.TZ_CHILE ||
   "America/Santiago";
-
-const CUTOFF_HHMM =
-  process.env.CUTOFF_HHMM ||
-  "06:00";
-
-const RESET_HHMM =
-  process.env.RESET_HHMM ||
-  "12:00";
-
-function hhmmToMinutes(hhmm) {
-  const match =
-    String(hhmm || "").match(
-      /^(\d{1,2}):(\d{2})$/
-    );
-
-  if (!match) {
-    return null;
-  }
-
-  const hours =
-    Number(match[1]);
-
-  const minutes =
-    Number(match[2]);
-
-  if (
-    hours < 0 ||
-    hours > 23 ||
-    minutes < 0 ||
-    minutes > 59
-  ) {
-    return null;
-  }
-
-  return (
-    hours * 60 +
-    minutes
-  );
-}
-
-const cutoffMin =
-  hhmmToMinutes(CUTOFF_HHMM) ??
-  3 * 60 + 30;
-
-const resetMin =
-  hhmmToMinutes(RESET_HHMM) ??
-  12 * 60;
 
 function getChileMinutesNow() {
   const parts =
@@ -1008,86 +1025,6 @@ function getChileMinutesNow() {
     minutes
   );
 }
-
-function isClosed(
-  nowMinutes,
-  cutoffMinutes
-) {
-  return (
-    nowMinutes >=
-      cutoffMinutes &&
-    nowMinutes < resetMin
-  );
-}
-
-function rejectIfClosedByAdmin() {
-  if (ordersOpen) {
-    return null;
-  }
-
-  return {
-    ok: false,
-    error:
-      "Lo sentimos, pedidos no disponibles.",
-    reason: "admin",
-  };
-}
-
-function rejectIfClosedBySchedule() {
-  const nowMinutes =
-    getChileMinutesNow();
-
-  if (
-    !isClosed(
-      nowMinutes,
-      cutoffMin
-    )
-  ) {
-    return null;
-  }
-
-  return {
-    ok: false,
-
-    error:
-      "Las solicitudes no están disponibles en este horario.",
-
-    tz: TZ_CHILE,
-    nowMinutes,
-    cutoff: CUTOFF_HHMM,
-    reset: RESET_HHMM,
-    reason: "schedule",
-  };
-}
-
-app.get(
-  "/api/hours",
-  (req, res) => {
-    const nowMinutes =
-      getChileMinutesNow();
-
-    return res.json({
-      ok: true,
-      tz: TZ_CHILE,
-      nowMinutes,
-
-      requests: {
-        cutoff: CUTOFF_HHMM,
-
-        closed: isClosed(
-          nowMinutes,
-          cutoffMin
-        ),
-      },
-
-      reset: RESET_HHMM,
-    });
-  }
-);
-
-/* =========================================================
-   AUTO-CIERRE Y AUTO-REINICIO DE PEDIDOS
-========================================================= */
 
 function getChileDateKey() {
   const parts =
@@ -1124,114 +1061,45 @@ function getChileDateKey() {
   return `${year}-${month}-${day}`;
 }
 
-let lastAutoClose = null;
-let lastAutoReset = null;
-
-async function autoCloseIfNeeded() {
-  await loadOrdersStatus();
-
-  const nowMinutes =
-    getChileMinutesNow();
-
-  const currentDay =
-    getChileDateKey();
-
-  const insideClosedWindow =
-    nowMinutes >= cutoffMin &&
-    nowMinutes < resetMin;
-
-  const shouldClose =
-    insideClosedWindow &&
-    ordersOpen === true &&
-    lastAutoClose !== currentDay;
-
-  if (!shouldClose) {
-    return;
+function rejectIfClosedByAdmin() {
+  if (ordersOpen) {
+    return null;
   }
 
-  try {
-    await pool.query(
-      `
-        UPDATE orders_status
-        SET
-          enabled = FALSE,
-          updated_at = NOW()
-        WHERE id = 1;
-      `
-    );
-
-    ordersOpen = false;
-    lastAutoClose = currentDay;
-
-    emitOrdersStatus();
-
-    console.log(
-      "🔴 Pedidos cerrados automáticamente"
-    );
-  } catch (error) {
-    console.log(
-      "⚠️ autoCloseIfNeeded:",
-      error.message
-    );
-  }
+  return {
+    ok: false,
+    error:
+      "Lo sentimos, pedidos no disponibles.",
+    reason: "admin",
+  };
 }
 
-async function autoResetIfNeeded() {
-  await loadOrdersStatus();
+/*
+  Esta ruta se mantiene por compatibilidad con el frontend.
+  Ahora siempre informa que NO existe cierre por horario.
+  El único cierre posible es el manual desde el Admin.
+*/
 
-  const nowMinutes =
-    getChileMinutesNow();
+app.get(
+  "/api/hours",
+  (req, res) => {
+    const nowMinutes =
+      getChileMinutesNow();
 
-  const currentDay =
-    getChileDateKey();
+    return res.json({
+      ok: true,
+      tz: TZ_CHILE,
+      nowMinutes,
 
-  const insideResetWindow =
-    nowMinutes >= resetMin &&
-    nowMinutes < resetMin + 2;
-
-  const shouldReset =
-    insideResetWindow &&
-    lastAutoReset !== currentDay;
-
-  if (!shouldReset) {
-    return;
+      requests: {
+        cutoff: null,
+        reset: null,
+        closed: false,
+        mode: "24/7",
+      },
+    });
   }
-
-  try {
-    await pool.query(
-      `
-        UPDATE orders_status
-        SET
-          enabled = TRUE,
-          updated_at = NOW()
-        WHERE id = 1;
-      `
-    );
-
-    ordersOpen = true;
-    lastAutoClose = null;
-    lastAutoReset = currentDay;
-
-    emitOrdersStatus();
-
-    console.log(
-      "🟢 Pedidos reiniciados automáticamente"
-    );
-  } catch (error) {
-    console.log(
-      "⚠️ autoResetIfNeeded:",
-      error.message
-    );
-  }
-}
-
-setInterval(() => {
-  autoCloseIfNeeded()
-    .catch(() => {});
-
-  autoResetIfNeeded()
-    .catch(() => {});
-}, 30_000);
+);
 
 /* =========================================================
    RUTAS DE LAS PÁGINAS
@@ -2135,15 +2003,6 @@ app.post(
       return res
         .status(403)
         .json(closedByAdmin);
-    }
-
-    const closedBySchedule =
-      rejectIfClosedBySchedule();
-
-    if (closedBySchedule) {
-      return res
-        .status(403)
-        .json(closedBySchedule);
     }
 
     const validationError =
@@ -3597,13 +3456,10 @@ async function startServer() {
     await loadOrdersStatus();
 
     /*
-      Verificamos si corresponde aplicar cierre o reinicio
-      automático al momento de arrancar Railway.
+      No se aplica ningún cierre automático por horario.
+      Los pedidos quedan disponibles 24/7, salvo cierre
+      manual desde el panel Admin.
     */
-
-    await autoCloseIfNeeded();
-
-    await autoResetIfNeeded();
 
     /*
       Iniciamos Express y Socket.IO.
